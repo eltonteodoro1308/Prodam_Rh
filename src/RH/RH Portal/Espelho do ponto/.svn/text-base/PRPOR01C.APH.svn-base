@@ -1,0 +1,551 @@
+<%
+Local cTitulo 		:= HttpGet->titulo
+Local cObjetivo 		:= HttpGet->objetivo
+Local nIndice			:= HttpGet->nIndice
+Local cMatricula		:= HttpSession->DadosFunc:CREGISTRATION
+Local cNome 			:= HttpSession->DadosFunc:CNAME		 
+Local cHorario 		:= HttpGet->Horario     
+%>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!doctype html public "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">	
+		<link href="styles/consulta.css" rel="stylesheet" type="text/css">
+		<link href="styles/estilo.css" rel="stylesheet" type="text/css">
+		<script src="scripts/ajax.js" language="JavaScript" type="text/javascript"></script>
+		<script src="scripts/prototype.js" language="JavaScript" type="text/javascript"></script>
+		<script src="scripts/scriptaculous.js" language="JavaScript" type="text/javascript"></script> 	
+		<style>
+			.R01 {
+				background:#ffffff;
+				}
+			.R02 {
+				border-top: 1px solid black;
+				border-left: 1px solid black;
+				border-right: 1px solid black;
+				border-bottom: 1px solid black;
+				}
+			.R03 {
+				background:#c4c0b9;
+				text-align: left;	
+				}
+			.B01 {
+				background-color: #8c9cbf;
+				border: 1px solid #172d6e;
+				border-bottom: 1px solid #0e1d45;
+				border-radius: 5px;
+				box-shadow: inset 0 1px 0 0 #b1b9cb;
+				color: #fff;
+				font: bold 14px/1 "helvetica neue", helvetica, arial, sans-serif;
+				padding: 7px 0 8px 0;
+				text-decoration: none;
+				text-align: center;
+				text-shadow: 0 -1px 1px #000f4d;
+				width: 100px;
+				height:30px;
+				margin: 3px;	
+			}	
+			.B02 {
+				background-color: #8c9cbf;
+				border: 1px solid #172d6e;
+				border-bottom: 1px solid #0e1d45;
+				border-radius: 5px;
+				box-shadow: inset 0 1px 0 0 #b1b9cb;
+				color: #fff;
+				font: bold 14px/1 "helvetica neue", helvetica, arial, sans-serif;
+				padding: 7px 0 8px 0;
+				text-decoration: none;
+				text-align: center;
+				text-shadow: 0 -1px 1px #000f4d;
+				width: 150px;
+				height:30px;
+				margin: 2px;	
+			}	
+			.B03 {  
+				height:15px;
+				width:15px;			
+				margin: 4px;
+			}	
+	  		.LinkDetalhes{
+				background:#c4c0b9;
+				background-color: #c4c0b9;
+				color: BLACK;
+				text-decoration: none;
+				display: inline-block;
+				width: 100%;
+			}						
+	  		.MsgErro{
+				color: #FF0000;
+				text-decoration: none;
+				text-align: left; 
+				vertical-align: middle;
+				font-weight: normal;
+				background: #FFE4C4;
+				display: block;
+				border: thin dashed #000000; 
+				padding: 20px;
+				width: 100%;
+				height:10px;
+	  		}
+		</style>
+		<script language="Javascript">
+			function ExibirRelatorio(nPageType,nIndice) {
+				var cURL='';
+				var cDestination='';
+				var oParams={};
+				
+				// Limpar
+				if (nPageType == 0) {	
+					document.getElementById("divRelatorio").innerHTML= '';
+					return false;
+				}
+
+				// Consultar
+				if (nPageType == 1) {
+					var datainicial 	= document.form.txtDataini.value;
+					var dataFinal 		= document.form.txtDatafim.value;
+					var DtUserini		= document.form.txtDtUserini.value;
+					var DtUserfim		= document.form.txtDtUserfim.value; 
+					var StatusApont 	= "";
+					var aguarde 		= '<div style="text-align: left; vertical-align: middle; width: 400px;"><img src="imagens-rh/ajax-loader.gif"><br><span class="TituloMenor">Gerando relatório, aguarde...</span></div>';
+				
+
+					if(document.getElementById("rdPendentesWF").checked){
+						StatusApont = document.getElementById("rdPendentesWF").value;
+					}else if(document.getElementById("rdPendentesRH").checked){
+						StatusApont = document.getElementById("rdPendentesRH").value;
+					}else if(document.getElementById("rdAtendidas").checked){
+						StatusApont = document.getElementById("rdAtendidas").value;
+					}else if(document.getElementById("rdReprovadas").checked){
+						StatusApont = document.getElementById("rdReprovadas").value;
+					}else if(document.getElementById("rdTodasSolic").checked){
+						StatusApont = document.getElementById("rdTodasSolic").value;
+
+					}else if(document.getElementById("rdFaltaMarcacao").checked){
+						StatusApont = document.getElementById("rdFaltaMarcacao").value;
+					}else if(document.getElementById("rdTodasMarc").checked){
+						StatusApont = document.getElementById("rdTodasMarc").value;
+					}
+
+					if (DtUserini==''){
+						var MsgErro 	= '<div style="text-align: left; vertical-align: middle; width: 400px;height:10px;"><label class="MsgErro">Data inicial não preenchida.</label></div>';
+						document.getElementById("divRelatorio").innerHTML= MsgErro;
+						return false;
+					}else {
+                        if (!valData(DtUserini)) {
+							var MsgErro	= '<div style="text-align: left; vertical-align: middle; width: 400px;height:10px;"><label class="MsgErro">Data inicial inválida.</label></div>';
+							document.getElementById("divRelatorio").innerHTML= MsgErro;
+							return false;
+                        }
+                    }
+
+					if (DtUserfim==''){
+						var MsgErro 	= '<div style="text-align: left; vertical-align: middle; width: 400px;"><label class="MsgErro">Data final não preenchida.</label></div>';
+						document.getElementById("divRelatorio").innerHTML= MsgErro;
+						return false;
+					}else {
+                        if (!valData(DtUserfim)) {
+							var MsgErro	= '<div style="text-align: left; vertical-align: middle; width: 400px;height:10px;"><label class="MsgErro">Data final inválida.</label></div>';
+							document.getElementById("divRelatorio").innerHTML= MsgErro;
+							return false;
+                        }
+					}
+					
+					if (ConverteData(DtUserini) > ConverteData(DtUserfim)) {
+						var MsgErro 	= '<div style="text-align: left; vertical-align: middle; width: 400px;"><label class="MsgErro">A data inicial não pode ser maior e que a data final.</label></div>';
+						document.getElementById("divRelatorio").innerHTML= MsgErro;
+						return false;
+					}
+
+					if (ConverteData(DtUserini) < ConverteData(datainicial)) {
+						var MsgErro 	= '<div style="text-align: left; vertical-align: middle; width: 400px;"><label class="MsgErro">A data inicial não pode ser menor e que a data '+datainicial+'.</label></div>';
+						document.getElementById("divRelatorio").innerHTML= MsgErro;
+						return false;
+					}
+
+					if (ConverteData(DtUserfim) > ConverteData(dataFinal)) {
+						var MsgErro 	= '<div style="text-align: left; vertical-align: middle; width: 400px;"><label class="MsgErro">A data final não pode ser maior e que a data '+dataFinal+'.</label></div>';
+						document.getElementById("divRelatorio").innerHTML= MsgErro;
+						return false;
+					}
+
+					oParams.PageType	= "1";
+					oParams.nIndice 	= nIndice;
+					oParams.dDataIni	= datainicial;
+					oParams.dDataFim	= dataFinal;
+					oParams.dDtUserini	= DtUserini;
+					oParams.dDtUserfim	= DtUserfim;
+					oParams.StatusAp	= StatusApont;
+					cURL 				= 'B_PRP01REL.APW';
+					cDestination 		= 'divRelatorio';
+
+					document.getElementById("divRelatorio").innerHTML= '';
+					document.getElementById(cDestination).innerHTML= aguarde;
+
+				}
+
+				// Saldo do Quadrimestre ao carregar a pagina
+				if (nPageType == 2) {
+					var Quadrimestre	= document.form.SelQuadrimestre.value;
+					var datainicial 	= Quadrimestre.substring(0,10);
+					var dataFinal 		= Quadrimestre.substring(14,24);
+					var aguarde 		= '<b>Banco de horas:</b><img src="imagens-rh/ajax-loader.gif"><br><span class="TituloMenor">Consultando, aguarde...</span>';
+					
+					document.getElementById("BancoHoras").innerHTML= aguarde;
+
+					oParams.PageType	= "2";
+					oParams.nIndice 	= nIndice;
+					oParams.dDataIni	= datainicial;
+					oParams.dDataFim	= dataFinal;
+					oParams.StatusAp	= StatusApont;
+					cURL 				= 'B_PRP01REL.APW';
+					cDestination 		= 'BancoHoras';	
+				}
+
+				new Ajax.Updater(cDestination, 
+								 cURL,
+									{
+										method: 'get',     
+										evalScripts: true,
+										parameters: oParams,
+   										onLoading: function () {
+        									BotaoEvento(1);
+    									},
+										onComplete: function(response) {
+        									BotaoEvento(2);
+    									}
+									}
+								);
+
+				return false;
+			}
+			function BotaoEvento(nOpcao) {
+				if (nOpcao==1){
+					document.getElementById('txtDtUserini').disabled=true;
+					document.getElementById('txtDtUserfim').disabled=true; 
+					document.getElementById('btnDataIni').disabled=true;
+					document.getElementById('btnDataFin').disabled=true;
+					document.getElementById("BtnVoltar").disabled = true;
+					document.getElementById("BtnConsultar").disabled = true;
+					document.getElementById("BtnLimpar").disabled = true;
+					document.getElementById('SelQuadrimestre').disabled=true;
+					document.getElementById('rdPendenteGestor').disabled=true;
+					document.getElementById('rdPendenteRH').disabled=true;
+					document.getElementById('rdPendenteGestorRH').disabled=true;
+					document.getElementById('rdFaltaMarcacao').disabled=true;
+					document.getElementById('rdTdos').disabled=true;		
+
+				}else{
+					document.getElementById('txtDtUserini').disabled=false;
+					document.getElementById('txtDtUserfim').disabled=false; 
+					document.getElementById('btnDataIni').disabled=false;
+					document.getElementById('btnDataFin').disabled=false;
+					document.getElementById('BtnVoltar').disabled=false; 
+					document.getElementById('BtnConsultar').disabled=false;
+					document.getElementById('BtnLimpar').disabled=false;
+					document.getElementById('SelQuadrimestre').disabled=false;
+					document.getElementById('rdPendenteGestor').disabled=false;
+					document.getElementById('rdPendenteRH').disabled=false;
+					document.getElementById('rdPendenteGestorRH').disabled=false;
+					document.getElementById('rdFaltaMarcacao').disabled=false;
+					document.getElementById('rdTdos').disabled=false;	 				
+				}
+				return true;
+			}
+			function ImpRelatorio() {
+            	var Conteudo_Div = document.getElementById("divImprimir").innerHTML;
+                var Relatorio_impresso = window.open('Espelho do ponto');
+				
+				Relatorio_impresso.document.write(Conteudo_Div);
+            	Relatorio_impresso.window.print();
+			}
+			function ExpandirTodos(DetTotal) {
+				var nTotalDetalhes	= parseInt(DetTotal)+1;
+				
+				for (i = 1; i < nTotalDetalhes; i++) { 
+    				Detalhes(i.toString(),true);	
+				}
+			}
+			function Detalhes(IndDet,ExpandirTodos) {
+				var LinkDetalhes='';
+				
+				if (ExpandirTodos){
+					LinkDetalhes='<a href="javascript:Detalhes('+ IndDet +');" class="LinkDetalhes"><b>Ocultar</b></a>';
+					document.getElementById("Detalhes"+IndDet).style.display = "block";
+					document.getElementById("ButDet"+IndDet).innerHTML= LinkDetalhes;				
+				}else{
+					if (document.getElementById("Detalhes"+IndDet).style.display == "block"){
+						LinkDetalhes='<a href="javascript:Detalhes('+ IndDet +');" class="LinkDetalhes"><b>Exibir</b></a>';
+						document.getElementById("Detalhes"+IndDet).style.display = "none";
+						document.getElementById("ButDet"+IndDet).innerHTML= LinkDetalhes;
+					}else{
+						LinkDetalhes='<a href="javascript:Detalhes('+ IndDet +');" class="LinkDetalhes"><b>Ocultar</b></a>';
+						document.getElementById("Detalhes"+IndDet).style.display = "block";
+						document.getElementById("ButDet"+IndDet).innerHTML= LinkDetalhes;
+					}
+				}
+			}
+
+			function AjustaData(DataAjusta){
+				return DataAjusta.substring(6,10)+DataAjusta.substring(3,5)+DataAjusta.substring(0,2);
+			}
+
+			function ConverteData(DataAjusta){
+				return new Date(DataAjusta.substring(6,10),DataAjusta.substring(3,5),DataAjusta.substring(0,2));
+			}
+
+        //Validando datas
+		function valData(valor) {
+			var date=valor;
+			var ardt=new Array;
+			var ExpReg=new RegExp("(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/[12][0-9]{3}");
+			var erro=false;
+
+			ardt=date.split("/");
+
+			if ( date.search(ExpReg)==-1){
+                erro = true;
+            } 
+			else if (((ardt[1]==4)||(ardt[1]==6)||(ardt[1]==9)||(ardt[1]==11))&&(ardt[0]>30)){
+				erro = true;
+            }
+			else if ( ardt[1]==2) {
+				if ((ardt[0]>28)&&((ardt[2]%4)!=0))
+					erro = true;
+				if ((ardt[0]>29)&&((ardt[2]%4)==0))
+					erro = true;
+     		}
+
+			if (erro) {
+				return false;
+			}
+			return true;
+		}
+
+		// construindo o calendário
+		function popdate(obj,div,tam,ddd,foc) {
+
+		if (ddd=="dd/mm/aaaa"){ddd=""}	
+
+		if (ddd) {
+           day = ""
+           mmonth = ""
+           ano = ""
+           c = 1
+           char = ""
+             for (s=0;s<parseInt(ddd.length);s++)
+              {
+                 char = ddd.substr(s,1)
+                 if (char == "/") 
+                 {
+                     c++; 
+                     s++; 
+                     char = ddd.substr(s,1);
+                 }
+                 if (c==1) day    += char
+                 if (c==2) mmonth += char
+                 if (c==3) ano    += char
+             }
+             ddd = mmonth + "/" + day + "/" + ano
+        }
+  
+        if(!ddd) {today = new Date()} else {today = new Date(ddd)}
+        date_Form = eval (obj)
+        if (date_Form.value == "") { date_Form = new Date()} else {date_Form = new Date(date_Form.value)}
+  
+        ano = today.getFullYear();
+        mmonth = today.getMonth ();
+        day = today.toString ().substr (8,2)
+  
+        umonth = new Array ("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro")
+        days_Feb = (!(ano % 4) ? 29 : 28)
+        days = new Array (31, days_Feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+
+        if ((mmonth < 0) || (mmonth > 11))  alert(mmonth)
+        if ((mmonth - 1) == -1) {month_prior = 11; year_prior = ano - 1} else {month_prior = mmonth - 1; year_prior = ano}
+        if ((mmonth + 1) == 12) {month_next  = 0;  year_next  = ano + 1} else {month_next  = mmonth + 1; year_next  = ano}
+        txt  = "<table bgcolor='#efefff' style='border:solid #A0BFD3; border-width:2' cellspacing='0' cellpadding='3' border='0' width='"+tam+"' height='"+tam*1.1 +"'>"
+        txt += "<tr bgcolor='#FFFFFF'><td colspan='7' align='center'><table border='0' cellpadding='0' width='100%' bgcolor='#FFFFFF'><tr>"
+        txt += "<td width=20% align=center><a href=javascript:popdate('"+obj+"','"+div+"','"+tam+"','"+((mmonth+1).toString() +"/01/"+(ano-1).toString())+"','"+foc+"') class='Cabecalho_Calendario' title='Ano Anterior'><<</a></td>"
+        txt += "<td width=20% align=center><a href=javascript:popdate('"+obj+"','"+div+"','"+tam+"','"+( "01/" + (month_prior+1).toString() + "/" + year_prior.toString())+"','"+foc+"') class='Cabecalho_Calendario' title='Mês Anterior'><</a></td>"
+        txt += "<td width=20% align=center><a href=javascript:popdate('"+obj+"','"+div+"','"+tam+"','"+( "01/" + (month_next+1).toString()  + "/" + year_next.toString())+"','"+foc+"') class='Cabecalho_Calendario' title='Próximo Mês'>></a></td>"
+        txt += "<td width=20% align=center><a href=javascript:popdate('"+obj+"','"+div+"','"+tam+"','"+((mmonth+1).toString() +"/01/"+(ano+1).toString())+"','"+foc+"') class='Cabecalho_Calendario' title='Próximo Ano'>>></a></td>"
+        txt += "<td width=20% align=right><a href=javascript:force_close('"+div+"') class='Cabecalho_Calendario' title='Fechar Calendário'><b>X</b></a></td></tr></table></td></tr>"
+        txt += "<tr><td colspan='7' align='right' bgcolor='#ccccff' class='mes'><a href=javascript:pop_year('"+obj+"','"+div+"','"+tam+"','" + (mmonth+1) + "') class='mes'>" + ano.toString() + "</a>"
+        txt += " <a href=javascript:pop_month('"+obj+"','"+div+"','"+tam+"','" + ano + "') class='mes'>" + umonth[mmonth] + "</a> <div id='popd' style='position:absolute'></div></td></tr>"
+        txt += "<tr bgcolor='#A7C4D6'><td width='14%' class='dia' align=center><b>Dom</b></td><td width='14%' class='dia' align=center><b>Seg</b></td><td width='14%' class='dia' align=center><b>Ter</b></td><td width='14%' class='dia' align=center><b>Qua</b></td><td width='14%' class='dia' align=center><b>Qui</b></td><td width='14%' class='dia' align=center><b>Sex<b></td><td width='14%' class='dia' align=center><b>Sab</b></td></tr>"
+        today1 = new Date((mmonth+1).toString() +"/01/"+ano.toString());
+        diainicio = today1.getDay () + 1;
+        week = d = 1
+        start = false;
+
+        for (n=1;n<= 42;n++) 
+        {
+        if (week == 1)  txt += "<tr bgcolor='#efefff' align=center>"
+        if (week==diainicio) {start = true}
+        if (d > days[mmonth]) {start=false}
+        if (start) 
+        {
+            dat = new Date((mmonth+1).toString() + "/" + d + "/" + ano.toString())
+            day_dat   = dat.toString().substr(0,10)
+            day_today  = date_Form.toString().substr(0,10)
+            year_dat  = dat.getFullYear ()
+            year_today = date_Form.getFullYear ()
+            colorcell = ((day_dat == day_today) && (year_dat == year_today) ? " bgcolor='#FFCC00' " : "" )
+            txt += "<td"+colorcell+" align=center><a href=javascript:block('"+  d + "/" + (mmonth+1).toString() + "/" + ano.toString() +"','"+ obj +"','" + div +"','" + foc +"') class='data'>"+ d.toString() + "</a></td>"
+            d ++ 
+        } 
+        else 
+        { 
+            txt += "<td class='data' align=center> </td>"
+        }
+        week ++
+        if (week == 8) 
+        { 
+            week = 1; txt += "</tr>"} 
+        }
+        txt += "</table>"
+        div2 = eval (div)
+        div2.innerHTML = txt 
+		}
+		// função para exibir a janela com os meses
+		function pop_month(obj, div, tam, ano)
+		{
+     		txt  = "<table bgcolor='#CCCCFF' border='0' width=80>"
+  	    	for (n = 0; n < 12; n++) { txt += "<tr><td align=center><a href=javascript:popdate('"+obj+"','"+div+"','"+tam+"','"+("01/" + (n+1).toString() + "/" + ano.toString())+"')>" + umonth[n] +"</a></td></tr>" }
+    		txt += "</table>"
+    		popd.innerHTML = txt
+		}
+
+		// função para exibir a janela com os anos
+		function pop_year(obj, div, tam, umonth)
+		{
+	        txt  = "<table bgcolor='#CCCCFF' border='0' width=160>"
+    		l = 1
+		    for (n=2000; n<2021; n++)
+    		  {  if (l == 1) txt += "<tr>"
+        		 txt += "<td align=center><a href=javascript:popdate('"+obj+"','"+div+"','"+tam+"','"+(umonth.toString () +"/01/" + n) +"')>" + n + "</a></td>"
+		         l++
+        		 if (l == 4) 
+            		{txt += "</tr>"; l = 1 } 
+     		  }
+    		txt += "</tr></table>"
+	        popd.innerHTML = txt 
+	   }
+
+
+		// função para fechar o calendário
+		function force_close(div) 
+    		{ div2 = eval (div); div2.innerHTML = ''}
+    
+		// funcao para fechar o calendário e setar a data no campo de data associado
+		function block(data, obj, div, foc)
+		{ 
+         force_close (div);
+
+		 var data_quebrada = data.split('/');
+         obj2 = eval(obj);
+
+    	 dia = (data_quebrada[0] < 10) ? '0' + data_quebrada[0] : data_quebrada[0];
+	     mes = (data_quebrada[1] < 10) ? '0' + data_quebrada[1] : data_quebrada[1];
+
+		 obj2.value = dia+'/'+mes+'/'+data_quebrada[2];
+
+         if (foc != '') { 
+            document.getElementById(foc).focus();
+         }
+                
+		}
+
+		function DateMask(inputData, e){
+
+			if(document.all)
+		   	   var tecla = event.keyCode;    // Internet Explorer
+			else 			
+		 	   var tecla = e.which; 		 // Outros Browsers
+
+
+			if(tecla >= 47&&tecla < 58){     // números de 0 a 9 e "/"
+		       var data = inputData.value;
+			
+			if (data.length == 2 || data.length == 5){
+				data += '/';
+				inputData.value = data;}
+			}else  
+		        // Backspace, Delete e setas direcionais
+		        //(para mover o cursor, apenas para FF)
+		        if(tecla == 8 || tecla == 0) 
+		           return true;
+			    else
+				   return false;
+		   
+		}	
+
+		</script>		 			
+	</head>
+<body>
+	<form name="form" role="form">
+	<table width="100%">
+		<tbody>
+		<tr>
+			<th width="100%" align='left'>Filtro do quadrimestre: <%=LEFT(httpSession->CQUADSEL,10)%> até <%=RIGHT(httpSession->CQUADSEL,10)%></th>
+		</tr>		
+		<tr>
+			<td style="border-width:1px;border:solid;background: #f9f9f9;">	
+				<table width="100%" border="0">
+					<tbody>
+					<tr>
+						<td width="50%">
+							<label style="height:5px;width:80px;"  for="Data inicial">Data inicial:</label>
+							<input  name="txtDataini" type="hidden" style="height:20px;width:150px;" id="txtDataini" maxlength="10" value="<%=LEFT(httpSession->CQUADSEL,10)%>"/>
+							<input  name="txtDtUserini" type="text" style="height:20px;width:150px;" id="txtDtUserini" maxlength="10" onkeypress="return DateMask(this, event);" tabindex="1"/>
+							<input TYPE="button" style="height:20px;width:30px;" NAME="btnDataIni" VALUE="..." Onclick="javascript:popdate('document.form.txtDtUserini','pop1','150',document.form.txtDtUserini.value)">
+							<span id="pop1" style="position:absolute"></span>
+							<br>
+							<br>
+							<label style="height:5px;width:80px;"  for="Data Final">Data Final:</label>
+							<input  name="txtDatafim" type="hidden" style="height:20px;width:150px;" id="txtDatafim" maxlength="10" value="<%=RIGHT(httpSession->CQUADSEL,10)%>"/>
+							<input  name="txtDtUserfim" type="text" style="height:20px;width:150px;" id="txtDtUserfim" maxlength="10" onkeypress="return DateMask(this, event);" tabindex="2" />
+							<input TYPE="button" style="height:20px;width:30px;" NAME="btnDataFin" VALUE="..." Onclick="javascript:popdate('document.form.txtDtUserfim','pop2','150',document.form.txtDtUserfim.value)">
+							<span id="pop2" style="position:absolute"></span>
+						</td>														
+						<td width="30%">   						
+							<input type="radio" class='B03' name="rdStatusAp" id="rdPendentesWF" value="1" tabindex="3">Solicitações Pendentes com o Gestor
+							<br>
+							<input type="radio" class='B03' name="rdStatusAp" id="rdPendentesRH" value="4" tabindex="4">Solicitações Pendentes com a GFD
+							<br>
+							<input type="radio" class='B03' name="rdStatusAp" id="rdAtendidas" value="2" tabindex="5">Solicitações Atendidas
+							<br>
+							<input type="radio" class='B03' name="rdStatusAp" id="rdReprovadas" value="3" tabindex="6">Solicitações Reprovadas
+							<br>
+							<input type="radio" class='B03' name="rdStatusAp" id="rdTodasSolic" value="5" tabindex="7">Todas as Solicitações
+
+							<br><br>
+
+							<input type="radio" class='B03' name="rdStatusAp" id="rdFaltaMarcacao" value="6" tabindex="8">Falta Marcação/Ausências
+							<br>
+							<input type="radio" class='B03' name="rdStatusAp" id="rdTodasMarc" value="7" checked tabindex="9">Todas as marcações
+						</td>							
+						<td width="20%">							 	
+							<input type="button" name="BtnConsultar" id="BtnConsultar" class="B01"  value="Consultar" onclick="javascript:ExibirRelatorio(1,<%=nIndice%>);" tabindex="10"/>
+							<br>
+							<input type="reset"  name="BtnLimpar" id="BtnLimpar" class="B01" value="Limpar" onclick="javascript:ExibirRelatorio(0,0);" tabindex="10" />
+							<br>
+							<input type="button" name="BtnVoltar" id="BtnVoltar" class="B01" value="Voltar" onClick="javascript:history.go(-1)"  tabindex="10" />																								
+						</td>						
+					</tr>		
+					</tbody>
+				</table>
+			</td>
+		<tr>	
+		</tbody>
+	</table>
+	</form>	
+	<br/>
+	<br/>
+	<div id="divRelatorio" name="divRelatorio">
+	</div>	
+</body>
+</html>

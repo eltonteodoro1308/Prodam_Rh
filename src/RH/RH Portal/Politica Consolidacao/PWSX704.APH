@@ -1,0 +1,225 @@
+<%
+Local nE 	:= 0
+Local nI 	:= 0
+Local nX 	:= 0
+Local nZ 	:= 0
+Local nPos	:= 0
+Local cNetLevel      := ""
+Local _nX	:= 0
+Local _nPos	:= 0
+Local oObj
+Local oParam 
+Local aRest			 := {}
+
+Local cTitulo 		:= HttpGet->titulo
+Local cObjetivo 		:= HttpGet->objetivo
+Local nIndice			:= HttpGet->nIndice 
+Local cHorario 		:= HttpGet->Horario 
+Local nReg				:= 0
+Local nCntPeso		:= 0
+
+HttpSession->BRWMYEVALUATES := {}
+HttpSession->BRWMYEVALUATED := {}
+HttpSession->aSuperior 		:= {}
+HttpSession->aPares 		:= {}
+%>
+
+<html>
+<head>
+<title>Portal Gestão do Capital Humano - Impressão do Consolidado</title> <!-- "Portal Gestão do Capital Humano - Impressão do Consolidado" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="styles/estilo.css" rel="stylesheet" type="text/css">
+<script language="Javascript">
+<!--
+	window.print();
+//-->
+</script>
+
+</head>
+
+<body>
+
+	<div align="left"></div>
+
+ 		<h2>Resultado Consolidado ( <%=HttpSession->cPolicyDesc%> )</h2>		
+
+		<form name="form12" method="post" action="">
+
+			<div id="divCabecalho" name="divCabecalho">
+				<fieldset>                   
+					<div class="container-cabec">
+						<div class="div-titulo">Matrícula:</div><!--Matricula:-->
+						<div class="div-conteudo"><%=HttpSession->DadosFunc:cRegistration%></div>
+					</div>
+					<div class="container-cabec">
+						<div class="div-titulo">Nome:</div><!--Nome:-->
+						<div class="div-conteudo"><%=HttpSession->DadosFunc:cName%></div>
+					</div>
+					<div class="container-cabec">
+						<div class="div-titulo">Admissão:</div><!--Admissao:-->
+						<div class="div-conteudo"><%=HttpSession->DadosFunc:cAdmissionDate%></div>
+					</div>
+					<div class="container-cabec">
+						<div class="div-titulo">Superior:</div><!--Superior:-->
+						<div class="div-conteudo"><%=HttpSession->DadosFunc:cNameSup%></div>
+					</div>
+					<div class="container-cabec">
+						<div class="div-titulo">Cargo:</div><!--Cargo:-->
+						<div class="div-conteudo"><%=HttpSession->DadosFunc:cPosition%></div>
+					</div>
+					<div class="container-cabec">
+						<div class="div-titulo">Especialização:</div><!--Especialização:-->
+						<div class="div-conteudo"><%=HttpSession->DadosFunc:cFunctionDesc%></div>
+					</div>
+					<div class="container-cabec">
+						<div class="div-titulo">Departamento: <!-- Departamento: --></div>
+						<div class="div-conteudo"><%=HttpSession->DadosFunc:cDescrDepartment%></div>
+					</div>
+					<div class="container-cabec">
+						<div class="div-titulo">Pontuação: <!-- Pontuação: --></div>
+						<div class="div-conteudo"><%=HttpSession->aStructure[ val(httpGet->NINDICE) ]:cHoursMonth%></div>
+					</div>
+					<div class="container-cabec">
+						<div class="div-titulo">Status: <!-- Status: --></div>
+						<div class="div-conteudo"><%=HttpSession->aLegenda[aScan(HttpSession->aLegenda,{|x| x[1]==HttpSession->aStructure[ val(httpGet->NINDICE) ]:cSituacao}),3]%></div>
+					</div>
+				</fieldset>
+		
+			</div> 
+
+			<!-- Imprime o bloco de assinatura somente se estiver liberado -->
+			<% IF HttpSession->aStructure[ val(httpGet->NINDICE) ]:cSituacao == '0' %>
+				<hr align="left">	
+				<br>
+				<br>
+				<br>
+				<div>
+				<table width="80%" align="left" id="Assign"> 
+					<tr>
+						<td width="50%" align="center"><h4>____________________________________________<br>ASSINATURA RESPONSÁVEL</h4></td>
+						<td width="50%" align="center"><h4>____________________________________________<br>ASSINATURA COLABORADOR</h4></td>
+					</tr>
+				</table>
+				</div>
+				<br>
+			<% EndIF %>
+
+			<!-- METAS -->
+			<% IF !EMPTY(HttpSession->Metas) %>
+
+				<br>
+				<br>
+				<hr align="left">	
+			  	<h3>METAS</h3>		
+
+				<table width="80%" border=1 cellspacing=0 cellpadding=0>
+						 <tr>
+						 	<td width="40%" align="left" ><h4>Descrição</h4></td> 
+						 	<td width="15%" align="center" ><h4>Atingimento</h4></td>
+						 	<td width="05%" align="center" ><h4>Peso</h4></td> 
+						 	<td width="40%" align="left" ><h4>Justificativa</h4></td> 
+					  	 </tr>
+						<% For nReg:=1 to Len(HttpSession->Metas) %>
+							<% If HttpSession->Metas[nReg]:CSTATUS $ "13" %>
+								<tr>
+									<td width="40%" align="left" ><%=HttpSession->Metas[nReg]:CMETA%></td>
+									<td width="15%" align="center" ><%=HttpSession->Metas[nReg]:NPERCREAL%>%</td>
+									<td width="05%" align="center" ><%=HttpSession->Metas[nReg]:NPESO%></td>
+									<td width="40%" align="left" ><%=HttpSession->Metas[nReg]:CJUSTIFIC%></td>
+								</tr>
+							<% EndIf  %>							
+						<% Next nReg %>							
+				</table>
+			<% EndIf %>				
+				
+
+			<!-- COMPETENCIAS -->
+			<% For nE := 1 to len(HttpSession->GetPEvaluate) %>
+			
+				<br>
+				<br>
+				<hr align="left">	
+				<h3>COMPETÊNCIAS - <%=HttpSession->GetPEvaluate[nE]:cDescription%></h3>		
+	       
+				<% For nI := 1 to len(HttpSession->GetPEvaluate[nE]:oWsListOfCompetence:oWsCompetences) %>
+
+					<%If nI>1 %>
+						<br>
+					<%EndIf%>
+					<h4>&nbsp;&nbsp;<%=AllTrim(HttpSession->GetPEvaluate[nE]:oWsListOfCompetence:oWsCompetences[nI]:cCOMPETENCEITEMDESCRIPTION)%></h4>
+
+					<table width="80%" align="left" id="tab<%=HttpSession->GetPEvaluate[nE]:oWsListOfCompetence:oWsCompetences[nI]:cCompetenceItem%>"> 
+
+						<% //MOSTRA O CABECALHO APENAS SE TIVER ALGUMA QUESTAO COM ALTERNATIVAS                     
+				  		If Ascan(HttpSession->GetPEvaluate[nE]:oWsListOfCompetence:oWsCompetences[nI]:oWSListOfQuestion:oWsQuestions, {|x| x:cObjectType != "3"}) > 0 
+						%>
+			  				<% For nx := 1 To Len( HttpSession->GetPEvaluate[nE]:oWsListOfCompetence:oWsCompetences[nI]:oWSListOfQuestion:oWsQuestions ) %>
+	  							<%If HttpSession->GetPEvaluate[nE]:oWsListOfCompetence:oWsCompetences[nI]:oWSListOfQuestion:oWsQuestions[nX]:cObjectType <> "3" %>
+									<tr> 
+		    							<td class="texto" width="05%">
+											&nbsp;
+			  							</td>	
+		    							<td class="texto" width="80%">
+			  								<h4><%=AllTrim(HttpSession->GetPEvaluate[nE]:oWsListOfCompetence:oWsCompetences[nI]:oWSListOfQuestion:oWsQuestions[nX]:cQuestion)%></h4>
+	                                      		<% If !Empty(HttpSession->GetPEvaluate[nE]:oWsListOfCompetence:oWsCompetences[nI]:oWSListOfQuestion:oWsQuestions[nX]:cJustification) %>
+	                                      			<div class='texto'>Justificativa: <%=HttpSession->GetPEvaluate[nE]:oWsListOfCompetence:oWsCompetences[nI]:oWSListOfQuestion:oWsQuestions[nX]:cJustification%></div>
+	                                      			<br>
+	                                      		<% EndIf %>
+			  							</td>	
+			  							<td class="texto" width="15%" align="Center">
+											<% if HttpSession->GetPEvaluate[nE]:oWsListOfCompetence:oWsCompetences[nI]:oWSListOfQuestion:oWsQuestions[nX]:cObjectType $ "124" %>
+												<h4>NA: 
+												<% If Empty(HttpSession->GetPEvaluate[nE]:oWsListOfCompetence:oWsCompetences[nI]:oWsListOfQuestion:oWsQuestions[nX]:cAlternativeChoice) %>
+			  										--
+												<% Else %>                 
+													<%=HttpSession->GetPEvaluate[nE]:oWsListOfCompetence:oWsCompetences[nI]:oWsListOfQuestion:oWsQuestions[nX]:cAlternativeChoice%>
+												<% EndIf %>
+												</h4>                 
+											<% EndIf %>
+										</td>
+									</tr>						
+								<% elseIf HttpSession->GetPEvaluate[nE]:oWsListOfCompetence:oWsCompetences[nI]:oWSListOfQuestion:oWsQuestions[nX]:cObjectType == "3" %>
+               							<tr>
+			   								<td>&nbsp;</td>						
+											<td colspan="3" class="texto">Resp.: <%=AllTrim(HttpSession->GetPEvaluate[nE]:oWsListOfCompetence:oWsCompetences[nI]:oWSListOfQuestion:oWsQuestions[nX]:cAnswerDescription)%></td>
+										</tr>
+								<% EndIf%>
+							<% Next nx %> 
+						<%EndIf%>
+					</table>						
+				<% Next nI %>				
+  			
+			<% Next nE %>				
+
+			<% If HttpSession->PerGoals + HttpSession->PerAssess < 100 %>
+
+				<!-- OUTRAS PONTUACOES -->
+				<br>
+				<hr align="left">	
+			  	<h3>OUTRAS PONTUAÇÕES</h3>		
+				<table width="80%" align="left" id="Others">
+				<% If len(HttpSession->Others) > 0 %>
+					<% For nE := 1 to len(HttpSession->Others) %>
+						<tr> 
+							<td class="texto">
+		  						<h4><%=HttpSession->Others[nE]%></h4> 
+		  					</td>
+						</tr>
+					<% Next nE %>				
+				<% Else %>
+					<tr> 
+						<td class="texto">
+	  						<h4>Não há formação acadêmica validada</h4> 
+	  					</td>
+					</tr>
+				<% EndIf %>
+				</table>
+				<br>
+				<hr align="left">	
+
+			<% EndIf %>
+
+</form>
+</body>
+</html>
+

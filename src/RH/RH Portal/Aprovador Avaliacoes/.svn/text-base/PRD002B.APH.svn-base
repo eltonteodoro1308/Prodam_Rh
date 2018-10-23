@@ -1,0 +1,172 @@
+<%
+#INCLUDE "PRD002B.CH"
+
+/*/
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÚÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿±±
+±±³Descricao ³ Pagina da lista de avaliações a serem aprovadas pelo gestor logado       ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+±±³Uso       ³ RH/Portais                         		            		  		        ³±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+/*/
+
+   Local nReg         := 0
+   Local nInicio      := 0
+   Local nItens       := 0 
+   Local cMsgImg      := '' 
+   Local cBase        := '' 
+   Local cParam       := '' 
+   Local cParticipant := '' 
+
+   If nPageTotal > 0
+      nItens := HttpSession->EvalManager:NITEMSTOTAL
+   EndIf
+
+%>
+
+<!doctype html public "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	
+<head>
+	<title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+	<link href="styles/consulta.css" rel="stylesheet" type="text/css">
+	<link href="styles/estilo.css" rel="stylesheet" type="text/css">
+
+	<script src="./scripts/ajax.js" language="JavaScript" type="text/javascript"></script>
+	<script src="./scripts/prototype.js" language="JavaScript" type="text/javascript"></script>
+	<script src="./scripts/scriptaculous.js" language="JavaScript" type="text/javascript"></script>
+</head>
+
+
+
+    <input name="nIndice" type="hidden" id="nIndice" value="">
+    <input name="cAction" type="hidden" id="cAction" value="">
+    <input name="cObs"    type="hidden" id="cObs"    value="">
+
+    <h3><%=OemToAnsi(STR0001)%></h3><!-- Lista de Pendências -->
+    <% nInicio++ %>
+
+    <fieldset>
+		<select name="ddlcodigo" id="ddlcodigo">
+			<option value="1" <%=IIF(HttpGet->FilterField == "1", "selected", '')%>><%=STR0002%></option><!-- Cod. do Avaliado -->
+			<option value="2" <%=IIF(HttpGet->FilterField == "2", "selected", '')%>><%=STR0003%></option><!-- Nome do Avaliado -->
+		</select>
+
+		<input name="txtfiltro" type="text" id="txtfiltro" size="60" maxlength="50" class="Texto" value="<%=HttpGet->FilterValue%>">
+		<input type="submit" name="btnfiltro" id="btnfiltro" value="<%=OemToAnsi(STR0008)%>" onClick="GoToPage(event, 1, 1, <%=nPageTotal%>, $('ddlcodigo').value, $('txtfiltro').value, '<%=cParticipant%>');"> <!--Filtrar-->
+    </fieldset>
+    <br />
+
+ 
+    <table width="800">
+		<tr>
+			<th style="text-align:center"><%=OemToAnsi(STR0002)%></th><!-- Avaliado -->
+			<th style="text-align:center"><%=OemToAnsi(STR0003)%></th><!-- Nome do Avaliado -->
+			<th style="text-align:center"><%=OemToAnsi(STR0004)%></th><!-- Descrição da Avaliação -->
+			<th style="text-align:center"><%=OemToAnsi(STR0005)%></th><!-- Liberado desde -->
+		</tr>
+
+       <%	If (nItens > 0) %>
+
+			<%	For nReg := nInicio to nItens %>
+				<tr>
+					<td class='info-cent'>
+					    <a href="#" class="links" onClick="changeEval('eval<%=nReg%>')"><%=HttpSession->EvalManager:OWSITEMSOFMANAGERFLOW:OWSMANAGERFLOWDETAIL[nReg]:CEVALUATEDID%></a>
+					</td>
+					<td><%=HttpSession->EvalManager:OWSITEMSOFMANAGERFLOW:OWSMANAGERFLOWDETAIL[nReg]:CEVALUATEDNAME%></td>
+					<td><%=HttpSession->EvalManager:OWSITEMSOFMANAGERFLOW:OWSMANAGERFLOWDETAIL[nReg]:CEVALUATIONDESC%></td>
+					<td class='info-cent'>
+                      <%=substr(HttpSession->EvalManager:OWSITEMSOFMANAGERFLOW:OWSMANAGERFLOWDETAIL[nReg]:CEMAILDATE,7,2) +'/' +substr(HttpSession->EvalManager:OWSITEMSOFMANAGERFLOW:OWSMANAGERFLOWDETAIL[nReg]:CEMAILDATE,5,2) +'/' +substr(HttpSession->EvalManager:OWSITEMSOFMANAGERFLOW:OWSMANAGERFLOWDETAIL[nReg]:CEMAILDATE,1,4)%>
+					</td>
+				</tr>
+
+				<tr>														
+					<td colspan='4' style="background: #fff;">
+						<div id="eval<%=nReg%>" name="eval<%=nReg%>" style="display : none; border:2px #333 dotted;" >
+
+                        <table width="800">	
+                           <tr>
+                              <td class='info-esq' width="400" bgcolor="#FFFFFF">
+                   				  <font size="1" color="#00a9c7"><%=STR0015%></font> <!-- Histórico de Observações-->
+                                 <textarea name="txtHist<%=nReg%>" readonly cols="55" rows="6" id="txtHist<%=nReg%>">
+                                     <%=NoAcento(AnsiToOem(AllTrim( HttpSession->EvalManager:OWSITEMSOFMANAGERFLOW:OWSMANAGERFLOWDETAIL[nReg]:COBSOFAPPROVAL)))%>
+                                 </textarea>
+                              </td>
+                              <td class='info-esq' width="400" bgcolor="#FFFFFF">
+                   				  <font size="1" color="#00a9c7"><%=STR0016%></font> <!-- Informe novas observações-->
+                                 <textarea name="txtObs<%=nReg%>" cols="55" rows="6" id="txtObs<%=nReg%>" ></textarea>
+                              </td>
+                           </tr> 
+                           <tr>
+                              <td width="500" class='info-cent' bgcolor="#FFFFFF">
+                                  <input type="button" name="btnAval<%=nReg%>" class="botoes" style="padding: 0px 105px;" onClick="	javascript:fEvalOpen(<%=nReg%>)" value="<%=STR0014%>"> <!--Verificar a avaliação-->
+                              </td>
+                              <td width="300" class='info-cent' bgcolor="#FFFFFF">
+                                 <input type="button" name="btnAprovar<%=nReg%>"  class="botoes" onClick="javascript:fSubmitAction('1',<%=nReg%>,'txtObs<%=nReg%>')" value="<%=STR0017%>" /> <!--Aprovar-->
+                                 <input type="button" name="btnReprovar<%=nReg%>" class="botoes" onClick="javascript:fSubmitAction('2',<%=nReg%>,'txtObs<%=nReg%>')" value="<%=STR0018%>" /> <!--Reprovar-->
+                                 <input type="button" name="btnFechar<%=nReg%>"   class="botoes" onclick="changeEval('eval<%=nReg%>')" value="<%=STR0019%>" /> <!--Fechar-->
+                              </td>
+                           </tr> 
+                           <tr>
+                              <td></td>
+                              <td></td>
+                           </tr> 
+
+                        </table>	
+
+						</div>
+					</td>
+				</tr>
+
+			<%	Next nReg %>
+
+		<% Else %> 
+			<tr>
+				<td class='info-cent' colspan="6">
+				    <font size="3" color="#00a9c7"><%=STR0010%></font> <!--Nao existem registros para exibição-->
+              </td>
+			</tr>
+		<% EndIf %>
+
+
+		<tr>
+			<td class='info-cent' colspan="6">
+			<% If (nPageTotal > 1) %>
+					<div class='container-pagin'>
+						<div class="pagin-esq" style="width: 10%; margin-top: 1%;">
+							<font size="3" color="#00a9c7"><%=OemToAnsi(STR0009)%>:<!--Pagina:--></font>
+						</div>
+						<div class="pagin-esq" style="width: 7%;">
+							<input id="txtPagina" name="txtPagina" type="text" style="text-align:right; color:#00a9c7;" value="<%=nCurrentPage%>" size="2" maxlength="3" onKeyPress="return GoToPage(event, 1, this.value, <%=nPageTotal%>, $('ddlcodigo').value, $('txtfiltro').value,'<%=cParticipant%>');">
+						</div>
+						<div class="pagin-esq" style="width: 12%; margin-top: 1%;">
+                         <font size="3" color="#00a9c7">	&nbsp;/&nbsp;<%=nPageTotal%></font>
+						</div>
+
+						<div class="pagin-dir">
+							<%	IF (nCurrentPage > 1) %>
+								<a href="#" onclick="GoToPage(event, 1, 1, <%=nPageTotal%>, $('ddlcodigo').value, $('txtfiltro').value,'<%=cEmployeeFilial%>','<%=cParticipant%>');" class="ButtonFirst"></a>
+							 	<a href="#" onclick="GoToPage(event, 1, <%=nCurrentPage-1%>, <%=nPageTotal%>, $('ddlcodigo').value, $('txtfiltro').value,'<%=cParticipant%>');" class="ButtonPrevious"></a>
+							<%	Else	%>						
+								<a href="#" class="ButtonFirstDisabled"></a>
+								<a href="#" class="ButtonPreviousDisabled"></a>
+							<%	EndIf	%>
+						
+							<%	IF (nCurrentPage != nPageTotal) %>
+								<a href="#" onclick="GoToPage(event, 1, <%=nCurrentPage+1%>, <%=nPageTotal%>, $('ddlcodigo').value, $('txtfiltro').value,'<%=cParticipant%>');" class="ButtonNext"></a>
+								<a href="#" onclick="GoToPage(event, 1, <%=nPageTotal%>, <%=nPageTotal%>, $('ddlcodigo').value, $('txtfiltro').value,'<%=cParticipant%>');" class="ButtonLast"></a>
+							<%	Else	%>						
+								<a href="#" class="ButtonNextDisabled"></a>
+								<a href="#" class="ButtonLastDisabled"></a>
+							<%	EndIf	%>
+						</div>
+					</div>
+			<% EndIf  %>
+			</td>
+		</tr>
+
+    </table>

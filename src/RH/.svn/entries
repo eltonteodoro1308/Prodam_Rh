@@ -1,0 +1,64 @@
+10
+
+dir
+28
+http://187.94.62.197:1406/svn/Prodam_V12.1.17/RH
+http://187.94.62.197:1406/svn/Prodam_V12.1.17
+
+
+
+2018-08-23T14:22:10.146574Z
+2
+VisualSVN Server
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+475e9092-01e8-5b44-b155-98364a21c4ff
+
+APD
+dir
+
+Bonus PLR
+dir
+
+CSA
+dir
+
+Folha de Pagamento
+dir
+
+Medicina e Segurança
+dir
+
+Ponto Eletronico
+dir
+
+Portal Candidato
+dir
+
+RH Portal
+dir
+
+RH_RONALDO
+dir
+
+RSP
+dir
+
+Recrutamento e seleção
+dir
+
+TRM
+dir
+

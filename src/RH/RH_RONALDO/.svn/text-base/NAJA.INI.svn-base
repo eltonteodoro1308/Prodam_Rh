@@ -1,0 +1,21 @@
+[HEADER]
+H01IDENTIFICADOR            N00010"0"
+H01TABULADOR                C00010"|"
+H01TABULADOR                C00010"|"
+H01DT_EMISSAO               C00100cPagto
+[ITENS-FUNCIONARIOS]
+D05CD_MATRIC_FUN            C00060QD03VB->RA_MAT
+D05TABULADOR                C00010"|"
+D05QT_INSUMO_INS            N00020Str(QD03VB->RG2_DUTILM)
+D05TABULADOR                C00010"|"
+D05ANO                      C00040cAno
+D05TABULADOR                C00010"-"
+D05MES                      C00020cMes
+D05TABULADOR                C00010"-"
+D05DIAINI                   C00020cDtIni
+D05TABULADOR                C00010"|"
+D05ANO                      C00040cAno
+D05TABULADOR                C00010"-"
+D05MES                      C00020cMes
+D05TABULADOR                C00010"-"
+D05DIAFIM                   C00020cDtFim

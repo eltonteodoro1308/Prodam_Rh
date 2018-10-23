@@ -1,0 +1,131 @@
+<%
+	Local nReg          	:= 0
+	Local nInicio       	:= 1
+	Local cEmployeeFilial:= Iif(Valtype(HttpGet->EmployeeFilial) == "U", "", HttpGet->EmployeeFilial)
+	Local cRegistration  := Iif(Valtype(HttpGet->Registration) == "U", "", HttpGet->Registration)
+	Local cTitulo			:= ''
+%>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">	   
+	</head>
+<body>
+	<% if (HttpSession->cParticipantID == HttpSession->aStructure[nInicio]:cParticipantID) %>
+		<h3>Minhas marca&ccedil;&otilde;es</h3>
+		<table width="100%">
+			<tbody>
+			<tr>
+				<th width="10%">Matricula</th>
+				<th width="27%">Nome</th>
+				<th width="10%">Admiss&atilde;o</th>
+				<th width="14%">Departamento</th>
+				<th width="14%">Situa&ccedil;&atilde;o</th>
+				<th width="22%">Saldo de <%=HttpSession->cQuadSel%> </th>
+		      	<th width="3%" >&nbsp;</th>				
+			</tr>
+			<tr>
+				<td class="info-cent">
+					<a href="B_PRP01PAR.APW?nIndice=1" class="links"><%=HttpSession->aStructure[nInicio]:cRegistration%> </a>
+				</td>
+				<td><%=HttpSession->aStructure[nInicio]:cName%></td>
+				<td><%=HttpSession->aStructure[nInicio]:cAdmissionDate%></td>
+				<td><%=HttpSession->aStructure[nInicio]:cDescrDepartment%></td>
+				<td><%=Iif(Empty(HttpSession->aStructure[nInicio]:cDescSituacao),HttpSession->aStructure[nInicio]:cSituacao,HttpSession->aStructure[nInicio]:cDescSituacao)%></td>				
+				<td><center><%=HttpSession->aStructure[nInicio]:ntotal%></center></td>
+				<% IF (HttpSession->aStructure[nInicio]:lPossuiEquipe) %>
+    			<td>
+				 	<a href="#" onclick="javascript:GoToPage(null,1,null,null,null,null,'<%=HttpSession->aStructure[nInicio]:cEmployeeFilial%>','<%=HttpSession->aStructure[nInicio]:cRegistration%>')">
+    					<img id="img_equipe" name="img_equipe" src='imagens-rh/icone_equipe.gif' width="20" height="20" border='0'>
+    				</a>
+    			</td>
+ 		    	<% ELSE  %>
+    				<td>&nbsp;</td>   			
+    			<% EndIf  %>				
+			</tr>
+			</tbody>
+		</table>
+	<% EndIf %>
+             
+
+		<h3>Minha equipe</h3>
+		<fieldset>
+			<select name="ddlcodigo" id="ddlcodigo">
+				<option value="1" <%=IIF(HttpGet->FilterField == "1", "selected", '')%>>Matricula</option>
+				<option value="2" <%=IIF(HttpGet->FilterField == "2", "selected", '')%>>Nome</option>
+			</select>
+			<input name="txtfiltro" type="text" id="txtfiltro" size="50" maxlength="50" class="Texto" value="<%=HttpGet->FilterValue%>">
+			<input type="submit" name="btnfiltro" id="btnfiltro" value="Filtrar" class="Botoes" onClick="GoToPage(event, 1, 1, <%=nPageTotal%>, $('ddlcodigo').value, $('txtfiltro').value, '<%=cEmployeeFilial%>', '<%=cRegistration%>');">
+		</fieldset>		
+		<table width="100%">
+			<tbody>
+			<tr>
+				<th width="10%">Matricula</th>
+				<th width="27%">Nome</th>
+				<th width="10%">Admiss&atilde;o</th>
+				<th width="14%">Departamento</th>
+				<th width="14%">Situa&ccedil;&atilde;o</th>
+				<th width="22%">Saldo de <%=HttpSession->cQuadSel%> </th>
+		      	<th width="3%" >&nbsp;</th>	
+			</tr>
+			
+			<% nInicio++ %>
+			<%If Len(HttpSession->aStructure) > 1 %>
+				<% For nReg := nInicio to Len(HttpSession->aStructure)%>
+					<tr height="21" bgcolor="#F2F2F2">
+						<td class="info-cent">
+							<a href="B_PRP01PAR.APW?nIndice=<%=nReg%>" class="links"><%=HttpSession->aStructure[nReg]:cRegistration%></a>
+						</td>								
+						<td><%=HttpSession->aStructure[nReg]:cName%></td>
+						<td><%=HttpSession->aStructure[nReg]:cAdmissionDate%></td>
+						<td><%=HttpSession->aStructure[nReg]:cDescrDepartment%></td>
+						<td><%=Iif(Empty(HttpSession->aStructure[nReg]:cDescSituacao),HttpSession->aStructure[nReg]:cSituacao,HttpSession->aStructure[nReg]:cDescSituacao)%></td>
+		    			<td><center><%=HttpSession->aStructure[nReg]:ntotal%></center></td>
+		    			<% IF (HttpSession->aStructure[nReg]:lPossuiEquipe) %>
+		    			<td>
+						 	<a href="#" onclick="javascript:GoToPage(null,1,null,null,null,null,'<%=HttpSession->aStructure[nReg]:cEmployeeFilial%>','<%=HttpSession->aStructure[nReg]:cRegistration%>')">
+		    					<img id="img_equipe" name="img_equipe" src='imagens-rh/icone_equipe.gif' width="20" height="20" border='0'>
+		    				</a>
+		    			</td>
+		    			<% ELSE  %>
+		    				<td>&nbsp;</td>
+		    			<% EndIf  %>		    							    			
+					</tr>
+				<% Next nReg %>
+	
+				<% If (nPageTotal > 1)	%>
+				    <tr bgcolor="#F2F2F2" class="Texto">
+						<td colspan="5">
+							<div style="float:left">
+								Pagina:
+								<input id="txtPagina" name="txtPagina" type="text" style="text-align:right" value="<%=nCurrentPage%>" size="3" maxlength="3" onKeyPress="return GoToPage(event, 1, this.value, <%=nPageTotal%>, $('ddlcodigo').value, $('txtfiltro').value,'<%=cEmployeeFilial%>','<%=cRegistration%>');">&nbsp;/&nbsp;<%=nPageTotal%>&nbsp;
+							</div>
+							<div style="float:right">
+								<%	IF (nCurrentPage > 1) %>
+									<a href="#" onclick="GoToPage(event, 1, 1, <%=nPageTotal%>, $('ddlcodigo').value, $('txtfiltro').value,'<%=cEmployeeFilial%>','<%=cRegistration%>');" class="ButtonFirst"></a>
+								 	<a href="#" onclick="GoToPage(event, 1, <%=nCurrentPage-1%>, <%=nPageTotal%>, $('ddlcodigo').value, $('txtfiltro').value,'<%=cEmployeeFilial%>','<%=cRegistration%>');" class="ButtonPrevious"></a>
+								<%	Else	%>						
+									<a href="#" class="ButtonFirstDisabled"></a>
+									<a href="#" class="ButtonPreviousDisabled"></a>
+								<%	EndIf	%>
+							
+								<%	IF (nCurrentPage != nPageTotal) %>
+									<a href="#" onclick="GoToPage(event, 1, <%=nCurrentPage+1%>, <%=nPageTotal%>, $('ddlcodigo').value, $('txtfiltro').value,'<%=cEmployeeFilial%>','<%=cRegistration%>');" class="ButtonNext"></a>
+									<a href="#" onclick="GoToPage(event, 1, <%=nPageTotal%>, <%=nPageTotal%>, $('ddlcodigo').value, $('txtfiltro').value,'<%=cEmployeeFilial%>','<%=cRegistration%>');" class="ButtonLast"></a>
+								<%	Else	%>						
+									<a href="#" class="ButtonNextDisabled"></a>
+									<a href="#" class="ButtonLastDisabled"></a>
+								<%	EndIf	%>
+							</div>
+						</td>
+					</tr>
+				<% EndIf  %>
+			<% Else %> 
+				<tr bgcolor="#F2F2F2" class="Texto">
+					<td colspan="8"><span class="TituloMenor"><strong><center>N&atilde;o existem registros para exibi&ccedil;&atilde;o</center></strong></span></td>
+				</tr>
+			<% EndIf %>			
+			</tbody>
+		</table>										
+</body>
+</html>

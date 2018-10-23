@@ -1,0 +1,630 @@
+<%
+#INCLUDE "PROTHEUS.CH"
+#INCLUDE "APWEBEX.CH"
+
+Local m 		:= 1
+Local cLinkAlt 	:= ""
+Local cLinkDel 	:= ""
+Local cInfoWS	:= ""
+Local nX
+
+Local aArea		:= U_GetArea()
+
+%>	
+<html>
+<head> 
+<title></title>
+<META HTTP-EQUIV="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="styles/consulta.css" rel="stylesheet" type="text/css">
+<link href="styles/estilo.css" rel="stylesheet" type="text/css">		
+<script src="scripts/ajax.js" language="JavaScript" type="text/javascript"></script>		
+<script src="scripts/prototype.js" language="JavaScript" type="text/javascript"></script>
+<script src="scripts/scriptaculous.js" language="JavaScript" type="text/javascript"></script>
+</head>
+<style type='text/css'>
+#tabResults {
+width: 100%;
+}
+.clsDepto{
+width: 25%;
+}
+.clsFunc{
+width: 25%;
+}
+.clsCon{
+width: 50%;
+}
+
+
+</style>
+<script type="text/javascript">
+function desForm(opcao){
+	if (opcao != ""){
+		pesquisaFunc.depto.disabled = true;
+		pesquisaFunc.expFunc.disabled = true;
+		pesquisaFunc.curFunc.disabled = true;
+		document.getElementById("Area1").disabled = true;
+		document.getElementById("Area2").disabled = true;
+		document.getElementById("Categoria1").disabled = true;
+		document.getElementById("Categoria2").disabled = true;
+		document.getElementById("Conhecimento1").disabled = true;
+		document.getElementById("Conhecimento2").disabled = true;
+		document.getElementById("Nivel1").disabled 	 = true;
+		document.getElementById("Nivel2").disabled   = true;
+		document.getElementById("Operador").disabled = true;
+		document.getElementById('F3Dep').style.display = "none";
+	}
+	else {
+		pesquisaFunc.depto.disabled = false;
+		pesquisaFunc.expFunc.disabled = false;
+		pesquisaFunc.curFunc.disabled = false;
+		document.getElementById("Area1").disabled = false;
+		document.getElementById("Area2").disabled = false;
+		document.getElementById("Categoria1").disabled = false;
+		document.getElementById("Categoria2").disabled = false;
+		document.getElementById("Conhecimento1").disabled = false;
+		document.getElementById("Conhecimento2").disabled = false;
+		document.getElementById("Nivel1").disabled 	 = false;
+		document.getElementById("Nivel2").disabled   = false;
+		document.getElementById("Operador").disabled = false;
+		document.getElementById('F3Dep').style.display = "";	
+	}
+}
+
+function limpaForm(){
+
+		pesquisaFunc.nomeFunc.value = '';
+		pesquisaFunc.depto.value = '';
+		pesquisaFunc.expFunc.value = '';
+		pesquisaFunc.curFunc.value = '';
+		document.getElementById("Area1").value = '';
+		document.getElementById("Area2").value = '';
+		document.getElementById("Categoria1").value = '';
+		document.getElementById("Categoria2").value = '';
+		document.getElementById("Conhecimento1").value = '';
+		document.getElementById("Conhecimento2").value = '';
+		document.getElementById("Nivel1").value 	 = '';
+		document.getElementById("Nivel2").value   = '';
+		document.getElementById("Operador").value = '';	
+		pesquisaFunc.depto.disabled = false;
+		pesquisaFunc.expFunc.disabled = false;
+		pesquisaFunc.curFunc.disabled = false;
+		document.getElementById("Area1").disabled = false;
+		document.getElementById("Area2").disabled = false;
+		document.getElementById("Categoria1").disabled = false;
+		document.getElementById("Categoria2").disabled = false;
+		document.getElementById("Conhecimento1").disabled = false;
+		document.getElementById("Conhecimento2").disabled = false;
+		document.getElementById("Nivel1").disabled 	 = false;
+		document.getElementById("Nivel2").disabled   = false;
+		document.getElementById("Operador").disabled = false;
+		document.getElementById('F3Dep').style.display = "";	
+
+		var _select = document.getElementById('Categoria1');
+
+
+ 		var i;
+    	for(i=_select.options.length-1;i>=1;i--)
+    	{
+        	_select.remove(i);
+    	}
+			
+		var _select2 = document.getElementById('Categoria2');
+
+    	for(i=_select2.options.length-1;i>=1;i--)
+    	{
+        	_select2.remove(i);
+    	}
+         
+		var _select3 = document.getElementById('Conhecimento1');
+
+    	for(i=_select3.options.length-1;i>=1;i--)
+    	{
+        	_select3.remove(i);
+    	}
+
+		var _select4 = document.getElementById('Conhecimento2');
+	
+    	for(i=_select4.options.length-1;i>=1;i--)
+    	{
+        	_select4.remove(i);
+    	}			
+		
+		document.getElementById("DivBusca").innerHTML= "";
+
+}
+        function SearchCat(area, selCat,  selCon) {
+
+			if (area != ""){
+			         
+        	new Ajax.Request( "B_DMEUCADFUNC.APW",
+                     	{
+                                method: 'get',
+                                asynchronous: false,
+                                parameters: {tipoVal: area },
+                                onFailure: function() { alert('Erro ao carregar categorias!'); return; },
+                                onSuccess: function(transport) 
+                                        { var response = transport.responseText || "";															 	                                  
+                                                                var resultado = response.split('*');                                                               
+																var _select  = document.getElementById(selCat);
+																var _select2 = document.getElementById(selCon);
+																var i = 0
+																	
+																	for (i = _select.length; i > 0; i--){
+																		_select.remove(i);
+																	}
+
+																	for (i = _select2.length; i > 0; i--){
+																		_select2.remove(i);
+																	}
+
+		
+																	for (i = 0; i < resultado.length; i++){
+																		 																		
+      																	var valor = resultado[i].substring(0,3);
+																		var desc  = resultado[i];
+      																	var op = new Option(desc, valor, false, false);
+																		_select.options[i+1] = op;      																      												
+        															}
+															 
+                                        						document.getElementById(selCat).disabled = false;
+																transport.responseText = ""  
+                                        }
+                     }
+               );
+
+			}
+			else
+			{
+				var _select = document.getElementById(selCat);
+				for (i = _select.length; i > 0; i--){
+					_select.remove(i);
+					}
+				document.getElementById(selCat).disabled = true;
+
+				var _select2 = document.getElementById(selCon);
+				for (i = _select2.length; i > 0; i--){
+					_select2.remove(i);
+					}
+				document.getElementById(selCon).disabled = true;
+
+			}
+
+        }
+
+
+        function SearchCon(categ, selArea, selCon) {
+
+			var area = document.getElementById(selArea).value;
+
+			if (categ != "" && area != "") {
+			         
+        	new Ajax.Request( "B_EMeuCadFunc.APW",
+                     	{
+                                method: 'get',
+                                asynchronous: false,
+                                parameters: {tipoVal: area , categ: categ},
+                                onFailure: function() { alert('Erro ao carregar conhecimentos!'); return; },
+                                onSuccess: function(transport) 
+                                        { var response = transport.responseText || "";															 	                                  
+                                                                var resultado = response.split('*');                                                               
+																var _select = document.getElementById(selCon);
+																var i = 0
+																	
+																	for (i = _select.length; i > 0; i--){
+																		_select.remove(i);
+																	}
+		
+																	for (i = 0; i < resultado.length; i++){
+																		 																		
+      																	var valor = resultado[i].substring(0,3);
+																		var desc  = resultado[i];
+      																	var op = new Option(desc, valor, false, false);
+																		_select.options[i+1] = op;      																      												
+        															} 
+                                        						document.getElementById(selCon).disabled = false;															
+																transport.responseText = ""  
+                                        }
+                     }
+               );
+
+			}
+			else
+			{
+				var _select = document.getElementById(selCon);
+				for (i = _select.length; i > 0; i--){
+					_select.remove(i);
+					}
+				document.getElementById(selCon).disabled = true;
+			}
+
+        }
+
+
+function fBusca(){
+	var oParams		= {};
+	var cURL 		= 'B_APesquisaFunc.APW';
+	var cDest 		= 'DivBusca';
+	var Func	 	= document.getElementById("nomeFunc").value;
+	var Depto	 	= document.getElementById("depto").value;
+	var Exp		 	= document.getElementById("expFunc").value; 
+	var Cursos	 	= document.getElementById("curFunc").value;  
+	var FilArea1 	= document.getElementById("Area1").value;
+	var FilArea2 	= document.getElementById("Area2").value;
+	var FilCat1		= document.getElementById("Categoria1").value;	 
+	var FilCat2     = document.getElementById("Categoria2").value;
+	var FilCon1		= document.getElementById("Conhecimento1").value;
+	var FilCon2		= document.getElementById("Conhecimento2").value;
+	var FilNiv1		= document.getElementById("Nivel1").value;
+	var FilNiv2		= document.getElementById("Nivel2").value;
+
+	if (Func == '' && Depto == '' && Exp == '' && Cursos == '' && FilArea1 == '' && FilArea2 == '' && FilCat1 == '' && FilCat2 == '' && FilCon1 == '' && FilCon2 == '' && FilNiv1 == '' && FilNiv2 == ''){
+		alert("Por favor, preencha ao menos um filtro para gerar o Excel.");
+		return;
+	}
+ 
+	if (FilArea2 != '' && document.getElementById("Operador").value == ''){
+		alert("Por favor, preencha o operador para realizar a busca utilizando as 2 opções de conhecimento.");
+		return;
+	}
+	
+
+	
+	oParams.expFunc		= document.getElementById("expFunc").value;
+	oParams.curFunc		= document.getElementById("curFunc").value;	
+	oParams.depto		= document.getElementById("depto").value;
+	oParams.nomeFunc	= document.getElementById("nomeFunc").value;
+	oParams.formOp		= document.getElementById("Operador").value;	
+	oParams.formArea1	= document.getElementById("Area1").value;
+	oParams.formArea2	= document.getElementById("Area2").value;
+	oParams.formCat1	= document.getElementById("Categoria1").value;	 
+	oParams.formCat2	= document.getElementById("Categoria2").value;
+	oParams.formCon1	= document.getElementById("Conhecimento1").value;
+	oParams.formCon2	= document.getElementById("Conhecimento2").value;
+	oParams.formNiv1	= document.getElementById("Nivel1").value;
+	oParams.formNiv2	= document.getElementById("Nivel2").value;
+
+	new Ajax.Updater(cDest, 
+					 cURL,
+						{
+							method: 'get',     
+							evalScripts: true,
+							parameters: oParams,
+   							onLoading: function () {
+        						ExibeLoading('B_AExLoad.APW','','400','10','yes');
+    						},
+							onComplete: function(response) {
+        						FechaLoading(1);
+    						}
+						}
+					);	
+	return;
+	/*
+	var Func	 		= document.getElementById("nomeFunc").value;
+	var Depto	 		= document.getElementById("depto").value;
+	var Exp		 		= document.getElementById("expFunc").value; 
+	var Cursos	 		= document.getElementById("curFunc").value;  
+	var FilArea1 		= document.getElementById("Area1").value;
+	var FilArea2 		= document.getElementById("Area2").value;
+	var FilCat1			= document.getElementById("Categoria1").value;	 
+	var FilCat2     	= document.getElementById("Categoria2").value;
+	var FilCon1			= document.getElementById("Conhecimento1").value;
+	var FilCon2			= document.getElementById("Conhecimento2").value;
+	var FilNiv1			= document.getElementById("Nivel1").value;
+	var FilNiv2			= document.getElementById("Nivel2").value;
+
+	if (Func == '' && Depto == '' && Exp == '' && Cursos == '' && FilArea1 == '' && FilArea2 == '' && FilCat1 == '' && FilCat2 == '' && FilCon1 == '' && FilCon2 == '' && FilNiv1 == '' && FilNiv2 == ''){
+		alert("Por favor, preencha ao menos um filtro para realizar a pesquisa.");
+		return;
+	}
+ 
+	if (FilArea2 != '' && document.getElementById("Operador").value == ''){
+		alert("Por favor, preencha o operador para realizar a busca utilizando as 2 opções de conhecimento.");
+		return;
+	}
+						
+	pesquisaFunc.formArea1.value    = document.getElementById("Area1").value
+	pesquisaFunc.formArea2.value    = document.getElementById("Area2").value
+
+	pesquisaFunc.formCat1.value		= document.getElementById("Categoria1").value
+	pesquisaFunc.formCat2.value		= document.getElementById("Categoria2").value
+
+	pesquisaFunc.formCon1.value		= document.getElementById("Conhecimento1").value
+	pesquisaFunc.formCon2.value		= document.getElementById("Conhecimento2").value
+
+	pesquisaFunc.formNiv1.value		= document.getElementById("Nivel1").value
+	pesquisaFunc.formNiv2.value		= document.getElementById("Nivel2").value
+
+	pesquisaFunc.formOp.value		= document.getElementById("Operador").value
+
+	pesquisaFunc.action             = "B_APesquisaFunc.APW";
+	pesquisaFunc.submit();
+	*/
+	
+}
+
+function HabNiv(valor, nivel) {
+	if (valor != ''){
+		document.getElementById(nivel).disabled = false;
+	}else{
+		document.getElementById(nivel).disabled = true;
+	}
+}
+
+function ScrollPage(){
+	document.body.scrollTop = document.body.scrollHeight;
+}
+
+function fAbre( cMat, cNome )
+{
+	window.open( "B_MEUCADFUNC.APW?Matricula=" + cMat + "&xNomeFun="+cNome, "", "width=800, height=600, scrollbars=1" );
+}
+
+function GerarExcel() {
+	var oParams		= {};
+	var cURL 		= 'B_AGExcel.APW';
+	var cDest 		= 'DivBusca';
+	var Func	 	= document.getElementById("nomeFunc").value;
+	var Depto	 	= document.getElementById("depto").value;
+	var Exp		 	= document.getElementById("expFunc").value; 
+	var Cursos	 	= document.getElementById("curFunc").value;  
+	var FilArea1 	= document.getElementById("Area1").value;
+	var FilArea2 	= document.getElementById("Area2").value;
+	var FilCat1		= document.getElementById("Categoria1").value;	 
+	var FilCat2     = document.getElementById("Categoria2").value;
+	var FilCon1		= document.getElementById("Conhecimento1").value;
+	var FilCon2		= document.getElementById("Conhecimento2").value;
+	var FilNiv1		= document.getElementById("Nivel1").value;
+	var FilNiv2		= document.getElementById("Nivel2").value;
+
+	if (Func == '' && Depto == '' && Exp == '' && Cursos == '' && FilArea1 == '' && FilArea2 == '' && FilCat1 == '' && FilCat2 == '' && FilCon1 == '' && FilCon2 == '' && FilNiv1 == '' && FilNiv2 == ''){
+		alert("Por favor, preencha ao menos um filtro para gerar o Excel.");
+		return;
+	}
+ 
+	if (FilArea2 != '' && document.getElementById("Operador").value == ''){
+		alert("Por favor, preencha o operador para realizar a busca utilizando as 2 opções de conhecimento.");
+		return;
+	}
+	
+
+	
+	oParams.expFunc		= document.getElementById("expFunc").value;
+	oParams.curFunc		= document.getElementById("curFunc").value;	
+	oParams.depto		= document.getElementById("depto").value;
+	oParams.nomeFunc	= document.getElementById("nomeFunc").value;
+	oParams.formOp		= document.getElementById("Operador").value;	
+	oParams.formArea1	= document.getElementById("Area1").value;
+	oParams.formArea2	= document.getElementById("Area2").value;
+	oParams.formCat1	= document.getElementById("Categoria1").value;	 
+	oParams.formCat2	= document.getElementById("Categoria2").value;
+	oParams.formCon1	= document.getElementById("Conhecimento1").value;
+	oParams.formCon2	= document.getElementById("Conhecimento2").value;
+	oParams.formNiv1	= document.getElementById("Nivel1").value;
+	oParams.formNiv2	= document.getElementById("Nivel2").value;
+
+	new Ajax.Updater(cDest, 
+					 cURL,
+						{
+							method: 'get',     
+							evalScripts: true,
+							parameters: oParams,
+   							onLoading: function () {
+        						ExibeLoading('B_AExLoad.APW','','400','10','yes');
+    						},
+							onComplete: function(response) {
+        						FechaLoading(2);
+    						}
+						}
+					);	
+	return;
+}
+
+function ExibeLoading(pagina,nome,w,h,scroll){
+	var LeftPosition = (screen.width) ? (screen.width-w)/2 : 0;
+	var TopPosition = (screen.height) ? (screen.height-h)/2 : 0;
+	var settings = 'height='+h+',width='+w+',top='+TopPosition+',left='+LeftPosition+',scrollbars='+scroll+',resizable'
+
+	document.getElementById("DivBusca").innerHTML= "";
+
+	TelaLoading = window.open(pagina,nome,settings);
+}
+
+function FechaLoading(nTipo){
+
+	TelaLoading.close();
+	
+	if (nTipo == 2){ 
+		if (ChecaFile("<%=HttpSession->cLinkExcel%>")) {
+			window.open("<%=HttpSession->cLinkExcel%>","_blank");
+		}else {
+			var cMsg = 	" <table width='100%' border='1'>\
+						 	<tbody>\
+						 		<tr bgcolor='#F2F2F2' class='Texto'>\
+						 			<td>\
+					 					<span class='TituloMenor'>\
+					 						<strong><center>N&atilde;o existem registros para gerar o Excel</center></strong>\
+					 					</span>\
+					 				</td>\
+					 			</tr>\
+					 		</tbody>\
+					 	</table>";
+
+			document.getElementById("DivBusca").innerHTML= cMsg;
+		}
+	}
+}
+
+function ChecaFile(url)
+{
+    var oReq = new XMLHttpRequest();
+    oReq.open('HEAD', url, false);
+    oReq.send();
+     
+    if (oReq.status == "404") {
+        return false;
+    } else {
+        return true;
+    }
+}	
+
+</script>
+<% If ValType(HttpSession->aSearchResults) <> 'U' %>
+	<body onload="ScrollPage()">	
+<% Else %>
+	<body>
+<% EndIf %>
+	<p></p>
+	
+	<form name="pesquisaFunc" action="" method="post">
+		<div id="divPesquisa" name="divPesquisa">
+		
+			<fieldset class="field-com-borda">
+			
+				<div id="divDep" name="divDep">
+					<h2><%="Banco de Talentos - Pesquisa"%></h2>
+					<br />
+					<label><%="Nome"%>:</label><!-- Nome -->				
+					<input name="nomeFunc" type="text" readonly value="" class="Texto" id="nomeFunc" size="30" onBlur="desForm(this.value)">
+					<a href="#"><img align="left" src="imagens-rh/ico-zoom.gif" id="btnSearchState" name="btnSearchState" width="25" height="25" border="0" align="absmiddle" onClick="ShowSearch(this, 'nomeFunc', 'XSRAPP')" title="<%='Selecione o Funcionário'%>" /></a>					
+					<br/>				
+					<label><%="Departamento"%>:</label><!-- Departamento -->					
+					<input name="depto" type="text" readonly value="" class="Texto" id="depto" size="30">
+					<a href="#" id="F3Dep"><img align="left" src="imagens-rh/ico-zoom.gif" id="btnSearchState2" name="btnSearchState2" width="25" height="25" border="0" align="absmiddle" onClick="ShowSearch(this, 'depto', 'XSQBPP')" title="<%='Selecione o Departamento'%>" /></a>					
+					<br/>
+				</div>		
+				<br/>
+	
+				<div id="divCursos" name="divCursos">
+					<h2><%="Cursos"%></h2>			
+					<br />
+					<input name="curFunc" type="text" value="" class="Texto" id="curFunc" size="100">
+					<a href="#" class="tooltip"><img src='imagens-rh/help.png' alt='Alerta Campo Experiência' ><span>exemplo: UML|JavaScript|ADVPL</span></a>				
+				</div>
+				<br />
+					
+				<div id="divConhec" name="divConhec">		
+					<h2><%="Conhecimentos"%></h2>		
+					<br />
+					<table width="800" id="tab_conhecimentos"> <!-- Conhecimentos -->
+					
+						<tr>
+							<th><%="Área"%>:</th>
+							<th><%="Categoria"%>:</th>
+							<th><%="Conhecimento"%>:</th>
+							<th><%="Nível"%>:</th>
+							<th><%="Operador"%>:</th>						
+						</tr>
+						
+						<tr>
+						
+							<td>
+								<input type="hidden" name="formArea1" value="">
+								<select id="Area1" class="selCon" onChange="SearchCat(this.value, 'Categoria1', 'Conhecimento1')">	
+				 					<option value=""><%="Selecione..."%></option>
+				 					<% For nX := 1 To Len(aArea) %>
+										<option value="<%=SubStr(aArea[nX],1,3)%>"><%=RTrim(aArea[nX])%></option>			
+									<% Next nX %>				 		
+				 				<select/>
+				 			</td>
+				 			
+				 			<td>
+				 				<input type="hidden" name="formCat1" value="">
+				 				<select id="Categoria1" class="selCon" onChange="SearchCon(this.value, 'Area1', 'Conhecimento1')">	
+				 					<option value=""><%="Selecione..."%></option>
+				 				<select/>
+				 			</td>
+				 			<td>
+				 				<input type="hidden" name="formCon1" value="">
+				 				<select id="Conhecimento1" class="selCon" onChange="HabNiv(this.value,'Nivel1')">	
+				 					<option value=""><%="Selecione..."%></option>
+				 				<select/>
+				 			</td>
+				 			<td>
+				 				<input type="hidden" name="formNiv1" value="">
+				 				<select id="Nivel1" class="selCon" disabled>	
+				 					<option value=""><%="Selecione..."%></option>
+				 					<option value="1"><%="Teórico"%></option>
+				 					<option value="2"><%="Regular"%></option>
+				 					<option value="3"><%="Bom"%></option>
+				 		 			<option value="4"><%="Ótimo"%></option>				 						 							 				 		
+				 				<select/>
+				 			</td>
+				 			<td>
+				 				<input type="hidden" name="formOp" value="">
+				 				<select id="Operador" class="selCon">	
+				 					<option value=""><%="Selecione..."%></option>
+				 					<option value="1"><%="E"%></option>
+				 					<option value="2"><%="OU"%></option>
+				 				<select/>
+				 			</td>
+				 			
+				 		</tr>
+				 		
+				 		<tr>
+						
+							<td>
+								<input type="hidden" name="formArea2" value="">
+								<select id="Area2" class="selCon" onChange="SearchCat(this.value, 'Categoria2', 'Conhecimento2')">	
+				 					<option value=""><%="Selecione..."%></option>
+				 					<% For nX := 1 To Len(aArea) %>
+										<option value="<%=SubStr(aArea[nX],1,3)%>"><%=RTrim(aArea[nX])%></option>			
+									<% Next nX %>				 		
+				 				<select/>
+				 			</td>
+				 			
+				 			<td>
+				 				<input type="hidden" name="formCat2" value="">
+				 				<select id="Categoria2" class="selCon" onChange="SearchCon(this.value, 'Area2', 'Conhecimento2')">	
+				 					<option value=""><%="Selecione..."%></option>
+				 				<select/>
+				 			</td>
+				 			<td>
+				 				<input type="hidden" name="formCon2" value="">
+				 				<select id="Conhecimento2" class="selCon"  onChange="HabNiv(this.value, 'Nivel2')">	
+				 					<option value=""><%="Selecione..."%></option>
+				 				<select/>
+				 			</td>
+				 			<td>
+				 				<input type="hidden" name="formNiv2" value="">
+				 				<select id="Nivel2" class="selCon" disabled>	
+				 					<option value=""><%="Selecione..."%></option>
+				 					<option value="1"><%="Teórico"%></option>
+				 					<option value="2"><%="Regular"%></option>
+				 					<option value="3"><%="Bom"%></option>
+				 		 			<option value="4"><%="Ótimo"%></option>				 						 							 				 		
+				 				<select/>
+				 			</td>
+				 			<td>
+				 			</td>
+				 			
+				 		</tr>
+				 				
+					</table>				 		 				 	
+				</div>
+				<br />
+						
+				<div id="divExp" name="divExp">					
+					<h2><%="Experiência"%></h2>			
+					<h3><%="Projeto, Sub-Projeto ou Área de Interesse"%>:</h3>
+					<br />				
+					<input name="expFunc" type="text" value="" class="Texto" id="expFunc" size="100">
+					<a href="#" class="tooltip"><img src='imagens-rh/help.png' alt='Alerta Campo Experiência' ><span>exemplo: Implantação|Desenvolvimento|Integração WebService</span></a>				
+				</div>
+				<br />
+				
+				<input name='bbuscar' id='bbuscar' type='button' value='Buscar' class='button Botoes' onClick='fBusca()'/>
+				<input name='blimpar' id='blimpar' type='button' value='Limpar' class='button Botoes' onClick='limpaForm()'/>
+				<input name='bExcel' id='bExcel' type='button' value='Gerar Excel' class='button Botoes' onClick='GerarExcel()'/>
+								
+				<br/>
+				<br/>
+				
+				<div id="DivBusca">
+				</div>
+			</fieldset>										
+		</div>
+	</form>
+	
+</body>
+</html>

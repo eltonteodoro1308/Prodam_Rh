@@ -1,0 +1,118 @@
+<%
+Local nCount
+%>
+
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="styles/consulta.css" rel="stylesheet" type="text/css">
+<link href="styles/estilo.css" rel="stylesheet" type="text/css">
+</head>
+
+<script language=JavaScript>
+        function partialCheckOut(f){
+            var radios      = f.tpConsulta;
+            var radioResult = "";
+
+            for (var i = 0, length = radios.length; i < length; i++) {
+                if (radios[i].checked) {
+                    radioResult = radios[i].value;  
+                    break;
+                }
+            }
+
+            if (radioResult == "") {
+                alert("Nenhuma opcao foi selecionada!");
+                return false;
+            }
+        }   
+ </script>
+
+
+<body>
+<form name="form10" onSubmit="return partialCheckOut(this)" action="B_F010132b.APW" method="post">
+
+<h3>Alteracao de Beneficios VA e VR</h3>
+
+<% If HttpSession->ResultF0101302 == '1' %>
+   <script language=JavaScript>
+        alert("Operação realizada com sucesso!");
+    </script>
+<%EndIf%>
+
+<table width="530" class="TabelaBorda1" border="0" cellspacing="2" cellpadding="2">
+
+	<table 'width="530' class="TabelaBorda1" border="0" cellspacing="2" cellpadding="2">
+        <tr height="23">
+            <td width="100" class="FundoDestaques">
+                <span class="TituloMenorBold">Filial</span>
+            </td>
+            <td width="430" class="FundoDestaques">
+                <span class="TituloMenor"><%=HttpPost->ProdamFunc:cFilEmployee%></span>
+            </td>
+        </tr>
+        <tr height="23">
+            <td width="100" class="FundoDestaques">
+                <span class="TituloMenorBold">Matricula</span>
+            </td>
+            <td width="430" class="FundoDestaques">
+                <span class="TituloMenor"><%=HttpPost->ProdamFunc:cRegEmployee%></span>
+            </td>
+        </tr>
+<%If !Empty(HttpPost->ProdamFunc:cName)%>
+
+        <tr height="23">
+            <td width="100" class="FundoDestaques">
+                <span class="TituloMenorBold">Nome</span>
+            </td>
+            <td width="430" class="FundoDestaques">
+                <span class="TituloMenor"><%=HttpPost->ProdamFunc:cName%></span>
+            </td>
+        </tr>
+        <tr height="23">
+            <td width="100" class="FundoDestaques">
+                <span class="TituloMenorBold">Departamento</span>
+            </td>
+            <td width="430" class="FundoDestaques">
+                <span class="TituloMenor"><%=HttpPost->ProdamFunc:cDepartment%></span>
+            </td>
+        </tr>
+</table>
+
+	<%If Empty(SubStr(HttpPost->ProdamFunc:cQtdDiasCalc,1,2)) .Or. Empty(SubStr(HttpPost->ProdamFunc:cQtdDiasCalc,4,2))%>
+		<br>
+		<br>
+		<p>Um dos Beneficios (VA ou VR) ainda não foi calculado!<br />
+	<%Else%>
+		<table>
+			<br>
+			<br>
+			Esta rotina faz o acumulo dos vales de acordo com a opção selecionada abaixo.<br /> 
+			Se selecionar o Benefício VA, os vales de VR serão todos acumulados no VA.<br />
+			Se selecionar VR, os vales de VA serão todos acumulados no Benefício VR.<br />
+			<br>
+		</table>
+		
+		<fieldset>
+			<br>
+			<input type="radio" name="tpConsulta" id="tpConsulta" value="VA" checked="checked" />
+			<label class="labelInvert">Beneficio VA: &nbsp<%=SubStr(HttpPost->ProdamFunc:cQtdDiasCalc,1,2)%></label>
+		    &nbsp
+			<input type="radio" name="tpConsulta" id="tpConsulta" value="VR" />
+			<label class="labelInvert">Beneficio VR: &nbsp<%=SubStr(HttpPost->ProdamFunc:cQtdDiasCalc,4,2)%></label>
+		</fieldset>	
+		
+		<input name="btnSalvar" id="btnSalvar" type="submit" class="Botoes" value="SALVAR &gt;&gt;"> 
+	<%EndIf%>
+
+<%Else%>
+
+	</table>
+	<br>
+	<br>
+	<p>Beneficios não calculados ou<br />
+	Data fora do período de troca!</p>
+<%EndIf%>
+
+</form>
+</body>

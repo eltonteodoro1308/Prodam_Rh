@@ -1,0 +1,183 @@
+<%
+Local cTitulo 	:= HttpGet->titulo
+Local cObjetivo 	:= HttpGet->objetivo
+Local nReg 		:= 0
+%>
+
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!doctype html public "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<link href="styles/consulta.css" rel="stylesheet" type="text/css">
+		<link href="styles/estilo.css" rel="stylesheet" type="text/css">		
+		<script src="scripts/ajax.js" language="JavaScript" type="text/javascript"></script>
+		<script src="scripts/prototype.js" language="JavaScript" type="text/javascript"></script>
+		<script src="scripts/scriptaculous.js" language="JavaScript" type="text/javascript"></script>	 
+	</head>
+	
+	<script language="Javascript">
+	<!--
+		function GoToPage(ev, nPageType, nPage, nTotalPage, cFilterField, cFilterValue, cEmployeeFilial, cRegistration, datainicial, dataFinal) {
+			var cURL
+			var cDestination
+			var Quadrimestre	= '';
+		
+			if (ev) {
+				if (ev.type == "keypress") {
+					var keyCode = window.event ? ev.keyCode : ev.which;
+				
+					if (keyCode != 13)
+						return true;
+				
+					if (nPage > nTotalPage) {
+						alert('Pagina Invalida');
+						return false;
+					}
+				}
+			}
+		
+			if (nPageType == 1 ) {
+				cURL 			= 'B_PRP01EST.APW';
+				cDestination 	= 'divFuncionarios';
+				Quadrimestre	= document.form.SelQuadrimestre.value;
+				datainicial 	= Quadrimestre.substring(0,10);
+				dataFinal 		= Quadrimestre.substring(14,24);
+			}else if (nPageType == 2 ) {
+				var aguarde 	= '<div style="text-align: left; vertical-align: middle; width: 400px;"><img src="imagens-rh/ajax-loader.gif"><br><span class="TituloMenor">Aguarde...</span></div>';
+				
+				cURL 			= 'B_PRP01EST.APW';
+				cDestination 	= 'divFuncionarios';
+				Quadrimestre	= document.form.SelQuadrimestre.value;
+				datainicial 	= Quadrimestre.substring(0,10);
+				dataFinal 		= Quadrimestre.substring(14,24);
+				
+				document.getElementById(cDestination).innerHTML= aguarde;
+			}
+			
+			var oParams = {};
+		
+			if (cEmployeeFilial != null)
+				oParams.EmployeeFilial = cEmployeeFilial;
+
+			if (cRegistration != null)
+				oParams.Registration = cRegistration;
+
+			if (nPage != null)
+				oParams.Page = nPage;
+		
+			if (cFilterField != null)
+				oParams.FilterField = cFilterField;
+		
+			if (cFilterValue != null)
+				oParams.FilterValue = cFilterValue;	
+
+			if (datainicial != null)
+				oParams.dDataIni = datainicial;	
+
+			if (dataFinal != null)
+				oParams.dDataFim = dataFinal;		
+				
+			new Ajax.Updater(	cDestination, 
+								cURL,
+									{
+										method: 'get',     
+										evalScripts: true,
+										parameters: oParams
+									}
+								);
+			return false;
+		}
+
+		function MontaQuadrimestre(){
+			var SelQuadrimestre = '';
+			var oDate 	= new Date();
+			var Data 	= oDate.getDate();
+			var Mes  	= oDate.getMonth()+1;
+			var AnoAtu  = oDate.getFullYear();
+			var AnoAnt1  = oDate.getFullYear()-1;
+			var AnoAnt2  = oDate.getFullYear()-2;
+			
+			SelQuadrimestre += '<select name="SelQuadrimestre" id="SelQuadrimestre" onChange="GoToPage(null, 2);">';
+			
+			if (Mes >= 1 && Mes <= 4){ 
+				//SelQuadrimestre += '<option value="16/12/'+AnoAnt1+' -- 15/04/'+AnoAnt1+'">16/12/'+AnoAnt1+' -- 15/04/'+AnoAnt1+'</option>';
+				SelQuadrimestre += '<option value="16/08/'+AnoAnt1+' -- 15/12/'+AnoAnt1+'">16/08/'+AnoAnt1+' -- 15/12/'+AnoAnt1+'</option>';
+				SelQuadrimestre += '<option value="16/04/'+AnoAnt1+' -- 15/08/'+AnoAnt1+'">16/04/'+AnoAnt1+' -- 15/08/'+AnoAnt1+'</option>';
+				SelQuadrimestre += '<option value="16/12/'+AnoAnt2+' -- 15/04/'+AnoAnt1+'">16/12/'+AnoAnt2+' -- 15/04/'+AnoAnt1+'</option>';
+			}else if (Mes >= 5 && Mes <= 8){
+				SelQuadrimestre += '<option value="16/12/'+AnoAnt1+' -- 15/04/'+AnoAtu+'">16/12/'+AnoAnt1+' -- 15/04/'+AnoAtu+'</option>';
+				SelQuadrimestre += '<option value="16/08/'+AnoAnt1+' -- 15/12/'+AnoAnt1+'">16/08/'+AnoAnt1+' -- 15/12/'+AnoAnt1+'</option>';
+				SelQuadrimestre += '<option value="16/04/'+AnoAnt1+' -- 15/08/'+AnoAnt1+'">16/04/'+AnoAnt1+' -- 15/08/'+AnoAnt1+'</option>';					
+			}else if (Mes >= 9 && Mes <= 12){
+				SelQuadrimestre += '<option value="16/08/'+AnoAtu+' -- 15/12/'+AnoAtu+'">16/08/'+AnoAtu+' -- 15/12/'+AnoAtu+'</option>';
+				SelQuadrimestre += '<option value="16/04/'+AnoAtu+' -- 15/08/'+AnoAtu+'">16/04/'+AnoAtu+' -- 15/08/'+AnoAtu+'</option>';
+				SelQuadrimestre += '<option value="16/12/'+AnoAnt1+' -- 15/04/'+AnoAtu+'">16/12/'+AnoAnt1+' -- 15/04/'+AnoAtu+'</option>';
+				SelQuadrimestre += '<option value="16/08/'+AnoAnt1+' -- 15/12/'+AnoAnt1+'">16/08/'+AnoAnt1+' -- 15/12/'+AnoAnt1+'</option>';		
+			}
+			
+			SelQuadrimestre += '</select>';
+			
+			document.getElementById("Quadrimestre").innerHTML= SelQuadrimestre;
+
+		}
+		
+	//-->
+	</script>
+	
+<body>
+	<h2><%=cTitulo%></h2>
+	<p><%=cObjetivo%></p>
+	<br>	
+	<form name="form" role="form">
+	<table width="100%" style="border-width:0px;border:solid;background: #f9f9f9;">
+		<tbody>
+		<tr>
+			<th width="100%" align='left'>Quadrimestres</th>
+		</tr>
+		<tr>					
+			<td style="border-width:1px;border:solid;background: #f9f9f9;">
+				<table width="100%" border='0'>
+					<tbody>
+					<tr>
+						<td align='left' width="250px"><b>Apresentar saldo do Quadrimestre de:</b></td>
+						<td align='left' width="50px">
+							<div id="Quadrimestre" name="Quadrimestre">
+								<select name="SelQuadrimestre" id="SelQuadrimestre" onChange="GoToPage(null, 2);">
+								<% For nReg := 1 to Len(HttpSession->aQuadrimestre)%>
+									<% If nReg == 1 %>
+										<option value="<%=HttpSession->aQuadrimestre[nReg]%>" selected><%=HttpSession->aQuadrimestre[nReg]%></option>
+									<% Else  %>
+										<option value="<%=HttpSession->aQuadrimestre[nReg]%>"><%=HttpSession->aQuadrimestre[nReg]%></option>
+									<% EndIf  %>																											
+								<% Next nReg %>
+								</select>														
+							</div>																						
+						</td>
+						<td align='left'>
+							<div id="BancoHoras" name="BancoHoras">					
+							</div>						
+						</td>
+					</tr>					
+					</tbody>
+				</table>														
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	</form>			
+	<br>
+	<div id="divFuncionarios" name="divFuncionarios">
+		<div style="text-align: center; vertical-align: middle; width: 600px;">
+			<img src="imagens-rh/ajax-loader.gif"><br>
+			<span class="TituloMenor">Aguarde</span>
+		</div>
+		<script language="Javascript">
+		<!-- 
+			GoToPage(null, 1);
+		-->
+		</script>
+	</div>
+</body>
+</html>

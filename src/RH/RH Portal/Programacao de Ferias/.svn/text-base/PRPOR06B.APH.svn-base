@@ -1,0 +1,152 @@
+<%
+	Local nCnta          := 0
+	Local nCntb          := 0
+	Local nInicio       	:= 1
+	Local cEmployeeFilial:= Iif(Valtype(HttpGet->EmployeeFilial) == "U", "", HttpGet->EmployeeFilial)
+	Local cRegistration  := Iif(Valtype(HttpGet->Registration) == "U", "", HttpGet->Registration)
+	Local cTitulo			:= ''
+%>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body>
+	<% if (HttpSession->cParticipantID == HttpSession->aStrucFerias[nInicio][1]:cParticipantID) %>
+		<h3>Minhas Programa&ccedil;&otilde;es</h3>
+		<table width="100%">
+			<tbody>
+			<tr>
+				<th>Matricula</th>
+				<th width='150px'>Nome</th>
+				<th>Admiss&atilde;o</th>
+				<th>Depart.</th>
+				<th>Situa&ccedil;&atilde;o</th>
+				<th>Per&iacute;odo Aquisitivo</th>
+				<th>Dias Vencidos</th>	
+				<th>Dias a Vencer</th>					
+				<th>In&iacute;cio Programado</th>
+				<th>Dias Programado</th>
+				<th>Dias Abono</th>
+				<th width="3%" >&nbsp;</th>	
+			</tr>
+				<%If Len(HttpSession->aStrucFerias[nInicio][2]) > 0 %>
+					<% For nCntb := 1 to Len(HttpSession->aStrucFerias[nInicio][2]) %>
+						<tr class="Texto" bgcolor="#F2F2F2" height="23">
+							<td><%=HttpSession->aStrucFerias[nInicio][1]:cRegistration%></td>	
+							<td><%=HttpSession->aStrucFerias[nInicio][1]:cName%></td>
+							<td><%=HttpSession->aStrucFerias[nInicio][1]:cAdmissionDate%></td>
+							<td><%=HttpSession->aStrucFerias[nInicio][1]:cDescrDepartment%></td>
+							<td><%=Iif(Empty(HttpSession->aStrucFerias[nInicio][1]:cDescSituacao),HttpSession->aStrucFerias[nInicio][1]:cSituacao,HttpSession->aStrucFerias[nInicio][1]:cDescSituacao)%></td>				
+							<td><%=HttpSession->aStrucFerias[nInicio][2][nCntb]:CINITIALDATE +" - "+ HttpSession->aStrucFerias[nInicio][2][nCntb]:CFINALDATE %></td>
+							<td><%=HttpSession->aStrucFerias[nInicio][2][nCntb]:nCloseDays%></td>
+							<td><%=HttpSession->aStrucFerias[nInicio][2][nCntb]:nOpenDays%></td>
+							<td><%=HttpSession->aStrucFerias[nInicio][2][nCntb]:cStartVacDate%></td>
+							<td><%=HttpSession->aStrucFerias[nInicio][2][nCntb]:nVacationDays%></td>
+							<td><%=HttpSession->aStrucFerias[nInicio][2][nCntb]:nAllowDays%></td>
+							<% IF (HttpSession->aStrucFerias[nInicio][1]:lPossuiEquipe) %>
+			    			<td>
+							 	<a href="#" onclick="javascript:GoToPage(null,1,null,null,null,null,'<%=HttpSession->aStrucFerias[nInicio][1]:cEmployeeFilial%>','<%=HttpSession->aStrucFerias[nInicio][1]:cRegistration%>')">
+			    					<img id="img_equipe" name="img_equipe" src='imagens-rh/icone_equipe.gif' width="20" height="20" border='0'>
+			    				</a>
+			    			</td>
+			 		    	<% ELSE  %>
+			    				<td>&nbsp;</td>   			
+			    			<% EndIf  %>								
+						</tr>                       
+					<%	Next nCntb %>				
+				<% Else %> 
+					<tr bgcolor="#F2F2F2" class="Texto">
+						<td colspan="12"><span class="TituloMenor"><strong><center>N&atilde;o existem registros para exibi&ccedil;&atilde;o</center></strong></span></td>
+					</tr>				
+				<% EndIf %>						
+			</tbody>
+		</table>
+	<% EndIf %>
+		<h3>Programa&ccedil;&otilde;es da Minha equipe</h3>
+		<fieldset>
+			<select name="ddlcodigo" id="ddlcodigo">
+				<option value="1" <%=IIF(HttpGet->FilterField == "1", "selected", '')%>>Matricula</option>
+				<option value="2" <%=IIF(HttpGet->FilterField == "2", "selected", '')%>>Nome</option>
+			</select>
+			<input name="txtfiltro" type="text" id="txtfiltro" size="50" maxlength="50" class="Texto" value="<%=HttpGet->FilterValue%>">
+			<input type="submit" name="btnfiltro" id="btnfiltro" value="Filtrar" class="Botoes" onClick="GoToPage(event, 1, 1, <%=nPageTotal%>, $('ddlcodigo').value, $('txtfiltro').value, '<%=cEmployeeFilial%>', '<%=cRegistration%>');">
+		</fieldset>		
+		<table width="100%">
+			<tbody>
+			<tr>
+				<th>Matricula</th>
+				<th width='150px'>Nome</th> 
+				<th>Admiss&atilde;o</th>
+				<th>Depart.</th>
+				<th>Situa&ccedil;&atilde;o</th>
+				<th>Per&iacute;odo Aquisitivo</th>
+				<th>Dias Vencidos</th>
+				<th>Dias a Vencer</th>
+				<th>In&iacute;cio Programado</th>
+				<th>Dias Programado</th>
+				<th>Dias Abono</th>
+				<th width="3%" >&nbsp;</th>	
+			</tr>
+			
+			<% nInicio++ %>
+			<%If Len(HttpSession->aStrucFerias) > 1 %>
+				<% For nCnta := nInicio to Len(HttpSession->aStrucFerias)%>	
+					<%If Len(HttpSession->aStrucFerias[nCnta][2]) > 0 %>
+						<% For nCntb := 1 to Len(HttpSession->aStrucFerias[nCnta][2]) %>
+							<tr class="Texto" bgcolor="#F2F2F2" height="23">
+								<td><%=HttpSession->aStrucFerias[nCnta][1]:cRegistration%></td>	
+								<td><%=HttpSession->aStrucFerias[nCnta][1]:cName%></td>
+								<td><%=HttpSession->aStrucFerias[nCnta][1]:cAdmissionDate%></td>
+								<td><%=HttpSession->aStrucFerias[nCnta][1]:cDescrDepartment%></td>
+								<td><%=Iif(Empty(HttpSession->aStrucFerias[nCnta][1]:cDescSituacao),HttpSession->aStrucFerias[nCnta][1]:cSituacao,HttpSession->aStrucFerias[nCnta][1]:cDescSituacao)%></td>				
+								<td><%=HttpSession->aStrucFerias[nCnta][2][nCntb]:CINITIALDATE +" - "+ HttpSession->aStrucFerias[nCnta][2][nCntb]:CFINALDATE %></td>
+								<td><%=HttpSession->aStrucFerias[nCnta][2][nCntb]:nCloseDays%></td>
+								<td><%=HttpSession->aStrucFerias[nCnta][2][nCntb]:nOpenDays%></td>
+								<td><%=HttpSession->aStrucFerias[nCnta][2][nCntb]:cStartVacDate%></td>
+								<td><%=HttpSession->aStrucFerias[nCnta][2][nCntb]:nVacationDays%></td>
+								<td><%=HttpSession->aStrucFerias[nCnta][2][nCntb]:nAllowDays%></td>
+								<% IF (HttpSession->aStrucFerias[nCnta][1]:lPossuiEquipe) %>
+				    			<td>
+								 	<a href="#" onclick="javascript:GoToPage(null,1,null,null,null,null,'<%=HttpSession->aStrucFerias[nCnta][1]:cEmployeeFilial%>','<%=HttpSession->aStrucFerias[nInicio][1]:cRegistration%>')">
+				    					<img id="img_equipe" name="img_equipe" src='imagens-rh/icone_equipe.gif' width="20" height="20" border='0'>
+				    				</a>
+				    			</td>
+				 		    	<% ELSE  %>
+				    				<td>&nbsp;</td>   			
+				    			<% EndIf  %>									
+							</tr> 					                       
+						<%	Next nCntb %>
+					<% Else %>
+							<tr class="Texto" bgcolor="#F2F2F2" height="23">
+								<td><%=HttpSession->aStrucFerias[nCnta][1]:cRegistration%></td>	
+								<td><%=HttpSession->aStrucFerias[nCnta][1]:cName%></td>
+								<td><%=HttpSession->aStrucFerias[nCnta][1]:cAdmissionDate%></td>
+								<td><%=HttpSession->aStrucFerias[nCnta][1]:cDescrDepartment%></td>
+								<td><%=Iif(Empty(HttpSession->aStrucFerias[nCnta][1]:cDescSituacao),HttpSession->aStrucFerias[nCnta][1]:cSituacao,HttpSession->aStrucFerias[nCnta][1]:cDescSituacao)%></td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<% IF (HttpSession->aStrucFerias[nCnta][1]:lPossuiEquipe) %>
+				    			<td>
+								 	<a href="#" onclick="javascript:GoToPage(null,1,null,null,null,null,'<%=HttpSession->aStrucFerias[nCnta][1]:cEmployeeFilial%>','<%=HttpSession->aStrucFerias[nCnta][1]:cRegistration%>')">
+				    					<img id="img_equipe" name="img_equipe" src='imagens-rh/icone_equipe.gif' width="20" height="20" border='0'>
+				    				</a>
+				    			</td>
+				 		    	<% ELSE  %>
+				    				<td>&nbsp;</td>   			
+				    			<% EndIf  %>	
+							</tr> 					                       				
+					<% EndIf %>
+				<% Next nCnta %>
+			<% Else %> 
+				<tr bgcolor="#F2F2F2" class="Texto">
+					<td colspan="12"><span class="TituloMenor"><strong><center>N&atilde;o existem registros para exibi&ccedil;&atilde;o</center></strong></span></td>
+				</tr>
+			<% EndIf %>			
+			</tbody>
+		</table>									
+</body>
+</html>

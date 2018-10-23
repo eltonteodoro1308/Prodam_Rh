@@ -1,0 +1,317 @@
+<%
+	Local nCount		:= 0
+	Local nPosPipe	:= at("|",oPaymentReceipt:cFunctionDescription)
+	Local cDsFuncao	:= SUBSTR(oPaymentReceipt:cFunctionDescription,1,nPosPipe-1)
+	Local cDsCargo	:= SUBSTR(oPaymentReceipt:cFunctionDescription,nPosPipe+1,len(oPaymentReceipt:cFunctionDescription))
+%>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!doctype html public "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Demonstrativo de Pagamento Mensal</title>
+<style type="text/css">
+	body {
+		background-color: #FFFFFF;
+	}
+            
+	.TitleRow, .Title {
+		height: 120px;
+	}
+	
+	.Title {
+		font-weight: bold;
+		font-size: 16px;
+		float: left;
+		padding-right: 200px;
+		line-height: 120px;
+		width: 368px;
+		text-transform: uppercase;		
+		text-align:center;
+	}
+
+	.Birthday {
+		font-weight: bold;
+		font-size: 20px;
+		text-transform: uppercase;		
+		text-align:center;
+	}
+	
+	.Logo {
+		float: left;
+		width: 200px;
+		height: 110px;
+	}
+	
+	.Row, .TitleRow {
+		width: 768px;
+		overflow:auto;
+		display: block;
+		border: solid 1px #000000;
+		border-bottom: none;
+		margin: 0px;
+		border-collapse:collapse;		
+	}
+
+	.Cell {
+		border-left: none;
+		border-top: none;
+		border-bottom: none;
+		border-right: solid 1px #000000;
+		float: left;
+		overflow: hidden;
+	}
+
+	.Header, .Label {
+		font-weight:bold;
+		display: block;
+		font-size: 12px;
+	}
+
+	.Header {
+		padding-top: 5px;
+		padding-bottom: 5px;	
+		text-align: center;
+	}
+	
+	
+	.Label {
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+
+	.TextValue {
+		padding-left: 15px;
+	}
+
+	.NumericValue{
+		text-align: right;
+		padding-right: 5px;		
+	}
+	
+	.LawMessage {	
+		width: 99%; 
+		border-right: none; 
+		height: 50px; 
+		line-height: 40px;
+		overflow: hidden;
+	}	
+</style>
+</head>
+<body>
+	<div class="TitleRow">
+		<div class="Cell" style="border-right: none;">
+			<img src="<%=oPaymentReceipt:cLogo%>" class="Logo">
+			<div class="Title">DEMONSTRATIVO DE PAGAMENTO MENSAL</div>
+	  </div>
+	</div>
+	<div class="Row">
+		<div class="Cell" style="width: 70%;">
+			<div class="Label">Razão Social</div><!-- -->
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cCompanyName)%></div>
+		</div>
+		<div class="Cell" style="border-right: none;">
+			<div class="Label">CNPJ</div>
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cCNPJ)%></div>
+		</div>
+	</div>
+	<div class="Row">
+		<div class="Cell" style="width: 20%;">
+			<div class="Label">Matricula</div>
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cEmployeeRegistration)%></div>
+		</div>
+		<div class="Cell" style="border-right: none;">
+			<div class="Label">Nome do Funcionário</div>
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cEmployeeName)%></div>
+		</div>
+	</div>
+	<div class="Row">
+		<div class="Cell">
+			<div class="Label">Data de Admissão</div>
+			<div class="TextValue"><%=oPaymentReceipt:dAdmissionDate%></div>
+		</div>
+		<div class="Cell" style="border-right: none;">
+			<div class="Label">Cargo</div>
+			<div class="TextValue"><%=HtmlBlank(cDsCargo)%></div>
+		</div>
+	</div>	
+	<div class="Row">
+		<div class="Cell" style="border-right: none;">
+			<div class="Label">Especialização</div>
+			<div class="TextValue"><%=HtmlBlank(cDsFuncao)%></div>
+		</div>
+	</div> 	 
+	<!--
+	<div class="Row">
+		<div class="Cell" style="width: 35%;">
+			<div class="Label">Bairro</div>
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cDistrict)%></div>
+		</div>
+		<div class="Cell" style="width: 20%;">
+			<div class="Label">CEP</div>
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cZipCode)%></div>
+		</div>
+		<div class="Cell" style="width: 35%;">
+			<div class="Label">Cidade</div>
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cCity)%></div>
+		</div>	
+		<div class="Cell" style="border-right: none;">
+			<div class="Label">UF</div>
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cState)%></div>
+		</div>
+	</div>
+	-->
+	<div class="Row">
+		<div class="Cell" style="width: 17%;">
+			<div class="Label">PIS</div>
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cPIS)%></div>
+		</div>
+		<div class="Cell" style="width: 17%;">
+			<div class="Label">CPF</div>
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cCPF)%></div>
+		</div>
+		<div class="Cell" style="width: 17%;">
+			<div class="Label">Identidade</div>
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cIdentity)%></div>
+		</div>
+		<div class="Cell" style="width: 17%;">
+			<div class="Label">Competência</div>
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cCompetence)%></div>
+		</div>
+		<div class="Cell" style="width: 17%;">
+			<div class="Label">Dep. Sal. Família</div>
+			<div class="TextValue"><%=oPaymentReceipt:nFamilyAllowanceDependents%></div>
+		</div>
+		<div class="Cell" style="border-right: none;">
+			<div class="Label">Dep. IRRF</div>
+			<div class="TextValue"><%=oPaymentReceipt:nIRRFDependents%></div>
+		</div>
+	</div>
+	<div class="Row">
+		<div class="Cell" style="width: 15%;">
+			<div class="Label">Sal. Fixo</div>
+			<div class="NumericValue"><%=Transform(oPaymentReceipt:nFixedSalary, "@E 999,999,999,999.99")%></div>
+		</div>
+		<div class="Cell" style="width: 15%;">
+			<div class="Label">Data Pagto</div>
+			<div class="TextValue"><%=oPaymentReceipt:dPaymentDate%></div>
+		</div>
+		<div class="Cell" style="width: 40%;">
+			<div class="Label">Banco</div>
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cBankName)%></div>
+		</div>
+		<div class="Cell" style="width: 15%;">
+			<div class="Label">Agência</div>
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cBankAgency)%></div>
+		</div>
+		<div class="Cell" style="border-right: none;">
+			<div class="Label">Conta</div>
+			<div class="TextValue"><%=HtmlBlank(oPaymentReceipt:cBankAccount)%></div>
+		</div>
+	</div>
+	<div class="Row" style="background-color: #CCCCCC">
+   		<div class="Cell" style="width: 10%;">
+			<div class="Header">Código</div>
+		</div>
+   		<div class="Cell" style="width: 40%;">        
+			<div class="Header">Descrição</div>
+		</div>
+   		<div class="Cell" style="width: 10%;">
+			<div class="Header">Referência</div>
+		</div>
+   		<div class="Cell" style="width: 20%;">
+			<div class="Header">Provento</div>
+		</div>
+		<div class="Cell" style="width: 19%; border-right: none;">
+			<div class="Header">Desconto</div>
+		</div>
+	</div>
+<%	for nCount:= 1 To Len(aLancamentos)	%>	
+	<div class="Row">
+   		<div class="Cell" style="width: 10%;">
+			<div class="TextValue"><%=HtmlBlank(aLancamentos[nCount]:cCode)%></div>
+		</div>
+   		<div class="Cell" style="width: 40%;">        
+			<div class="TextValue"><%=HtmlBlank(aLancamentos[nCount]:cDescription)%></div>
+		</div>
+   		<div class="Cell" style="width: 10%;">
+			<div class="NumericValue"><%=Transform(aLancamentos[nCount]:nReference, "@E 999,999,999,999.99")%></div>
+		</div>
+   		<div class="Cell" style="width: 20%;">
+			<div class="NumericValue"><%=IIF(aLancamentos[nCount]:nRevenue > 0, Transform(aLancamentos[nCount]:nRevenue, "@E 999,999,999,999.99"), '&nbsp;')%></div>
+		</div>
+		<div class="Cell" style="width: 19%; border-right: none;">
+			<div class="NumericValue"><%=IIF(aLancamentos[nCount]:nDiscount > 0, Transform(aLancamentos[nCount]:nDiscount, "@E 999,999,999,999.99"), '&nbsp;')%></div>
+		</div>
+	</div>		
+<%	Next	%>	
+<%	For nCount:= nCount To 25	%>	
+   	<div class="Row">
+   		<div class="Cell" style="width: 10%;">
+			<div class="TextValue">&nbsp;</div>
+		</div>
+   		<div class="Cell" style="width: 40%;">        
+			<div class="TextValue">&nbsp;</div>
+		</div>
+   		<div class="Cell" style="width: 10%;">
+			<div class="NumericValue">&nbsp;</div>
+		</div>
+   		<div class="Cell" style="width: 20%;">
+			 <div class="NumericValue">&nbsp;</div>
+		</div>
+		<div class="Cell" style="width: 19%; border-right: none;">
+			<div class="NumericValue">&nbsp;</div>
+		</div>
+	</div>
+<%	Next	%>		
+	<div class="Row">
+		<div class="LawMessage">
+			<div class="Header">"Valido como Comprovante Mensal de Rendimentos" - ( Artigo no. 41 e 464 da CLT, Portaria MTPS/GM 3.626 de 13/11/1991 )</div>
+		</div>
+	</div>
+	<div class="Row">
+		<div class="Cell" style="width: 33%;">
+			<div class="Label">Base para FGTS</div>
+			<div class="NumericValue"><%=Transform(oPaymentReceipt:nFGTSBase, "@E 999,999,999,999.99")%></div>
+		</div>
+		<div class="Cell" style="width: 33%;">
+			<div class="Label">FGTS do Mês</div>
+			<div class="NumericValue"><%=Transform(oPaymentReceipt:nMontlyFGTS, "@E 999,999,999,999.99")%></div>
+		</div>
+		<div class="Cell" style="width: 33%; border-right: none;">
+			<div class="Label">Total de Proventos</div>
+			<div class="NumericValue"><%=Transform(oPaymentReceipt:nRevenueTotal, "@E 999,999,999,999.99")%></div>
+		</div>
+	</div>
+	<div class="Row">
+		<div class="Cell" style="width: 33%;">
+			<div class="Label">Base Cálc. IRRF</div>
+			<div class="NumericValue"><%=Transform(oPaymentReceipt:nIRRFCalculationBasis, "@E 999,999,999,999.99")%></div>
+		</div>
+		<div class="Cell" style="width: 33%;">
+			<div class="Label">Pensão Alimentícia Judicial</div>
+			<div class="NumericValue"><%=Transform(oPaymentReceipt:nAlimony, "@E 999,999,999,999.99")%></div>
+		</div>
+		<div class="Cell" style="width: 33%; border-right: none;">
+			<div class="Label">Total de Descontos</div>
+			<div class="NumericValue"><%=Transform(oPaymentReceipt:nDiscountTotal, "@E 999,999,999,999.99")%></div>
+		</div>
+	</div>
+	<div class="Row" style="border-bottom: solid 1px #000000;">
+		<div class="Cell" style="width: 33%;">
+			<div class="Label">Sal. Contribuição. INSS</div>
+			<div class="NumericValue"><%=Transform(oPaymentReceipt:nINSSSalaryContribution, "@E 999,999,999,999.99")%></div>
+		</div>
+		<div class="Cell" style="width: 33%;">
+			<div class="Label">&nbsp;</div>
+            <div class="NumericValue">&nbsp;</div>
+		</div>
+		<div class="Cell" style="width: 33%; border-right: none;">
+			<div class="Label">Líquido a Receber</div>
+			<div class="NumericValue"><%=Transform(oPaymentReceipt:nReceivableNetValue, "@E 999,999,999,999.99")%></div>
+		</div>
+	</div>
+		<br/>
+	<br/>
+</body>
+</html>

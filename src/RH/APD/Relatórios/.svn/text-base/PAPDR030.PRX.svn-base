@@ -1,0 +1,348 @@
+#INCLUDE "APDR030.CH"
+#INCLUDE "Protheus.ch"
+#DEFINE CHRCOMP If(aReturn[4]==1,15,18)
+
+/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÚÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄ¿±±
+±±³Programa  ³ APDR030  ³ Autor ³ Eduardo Ju.           ³ Data ³ 21.07.06 ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±±
+±±³Descri‡…o ³Ranking Performance por Avaliado                            ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+±±³Retorno   ³Nenhum                                                      ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+±±³Parametros³                                                            ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+±±³   DATA   ³ Programador   ³Manutencao efetuada                         ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+±±³Cecilia C.³04/07/14³TPZWHD³Incluido o fonte da 11 para a 12 e efetuada ³±±
+±±³          ³        ³      ³a limpeza.                                  ³±±
+±±ÀÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß*/
+User Function PAPDR030()
+
+Local oReport
+Local aArea := GetArea()
+
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Verifica as perguntas selecionadas                           ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+pergunte("APD30R",.F.)
+oReport := ReportDef()
+oReport:PrintDialog()	
+RestArea( aArea )
+
+Return
+
+/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÚÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄ¿±±
+±±³Fun‡…o    ³ReportDef() ³ Autor ³ Eduardo Ju          ³ Data ³ 19.07.06 ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±±
+±±³Descri‡…o ³Definicao do Componente de Impressao do Relatorio           ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+±±³Parametros³                                                            ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+±±³ Uso      ³                                                            ³±±
+±±ÀÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß*/
+Static Function ReportDef()
+
+Local oReport
+Local oSection1
+Local oSection2
+Local cAliasCC	:= "CTT"  
+Local cCpoCC	:= "CTT_DESC01"
+
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³Criacao do componente de impressao                                      ³
+//³TReport():New                                                           ³
+//³ExpC1 : Nome do relatorio                                               ³
+//³ExpC2 : Titulo                                                          ³
+//³ExpC3 : Pergunte                                                        ³
+//³ExpB4 : Bloco de codigo que sera executado na confirmacao da impressao  ³
+//³ExpC5 : Descricao                                                       ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+oReport:=TReport():New("PAPDR030",STR0001,"APD30R",{|oReport| PrintReport(oReport,cAliasCC,cCpoCC)},STR0001+" "+STR0012)	//"Ranking Performance por Avaliado"#"Será impresso de acordo com os parametros solicitados pelo usuario"
+Pergunte("APD30R",.F.) 
+oReport:SetTotalInLine(.F.) //Totaliza em linha
+
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³Criacao da celulas da secao do relatorio                                ³
+//³TRCell():New                                                            ³
+//³ExpO1 : Objeto TSection que a secao pertence                            ³
+//³ExpC2 : Nome da celula do relatório. O SX3 será consultado              ³
+//³ExpC3 : Nome da tabela de referencia da celula                          ³
+//³ExpC4 : Titulo da celula                                                ³
+//³        Default : X3Titulo()                                            ³
+//³ExpC5 : Picture                                                         ³
+//³        Default : X3_PICTURE                                            ³
+//³ExpC6 : Tamanho                                                         ³
+//³        Default : X3_TAMANHO                                            ³
+//³ExpL7 : Informe se o tamanho esta em pixel                              ³
+//³        Default : False                                                 ³
+//³ExpB8 : Bloco de código para impressao.                                 ³
+//³        Default : ExpC2                                                 ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Criacao da Primeira Secao: Avaliacao ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ 
+oSection1 := TRSection():New(oReport,STR0004,{"RDD","RDB","RD6","RD5"},/*aOrdem*/,/*Campos do SX3*/,/*Campos do SIX*/)	//"Avaliacao"
+oSection1:SetTotalInLine(.F.)
+TRCell():New(oSection1,"RDD_CODAVA","RDD",STR0004)		//Codigo da Avaliacao
+TRCell():New(oSection1,"RD6_DESC","RD6",,,40)		//Descricao da Avaliacao
+TRCell():New(oSection1,"RDD_CODTIP","RDD","Tipo")		//Codigo do Tipo da Avaliacao
+TRCell():New(oSection1,"RD5_DESC","RD5",,,40)		//Descricao do Tipo da Avaliacao
+TRCell():New(oSection1,"RDB_CODMOD","RDB",STR0014)		//Codigo do Modelo de Avaliacao
+TRCell():New(oSection1,"RD3_DESC","RD3",,,40)		//Descricao do Modelo de Avaliacao  
+
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Criacao da Segunda Secao: Avaliado ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+oSection2 := TRSection():New(oSection1,STR0008,{"RDD","RDB","RD0","SRA","SQ3"},/*aOrdem*/,/*Campos do SX3*/,/*Campos do SIX*/)	//"Avaliado"	
+oSection2:SetTotalInLine(.F.) 
+TRCell():New(oSection2,"RDD_CODADO","RDD")			//Codigo do Avaliado
+TRCell():New(oSection2,"RD0_NOME","RD0",)		//Nome do Avaliado  
+TRCell():New(oSection2,"RA_CARGO","SRA",,,,,{|| EntGetInfo("SRA","RA_CARGO",RD0->RD0_CODIGO) })	//Cargo do Avaliado
+TRCell():New(oSection2,"Q3_DESCSUM","SQ3",,,,,{|| FDesc("SQ3",EntGetInfo("SRA","RA_CARGO",RD0->RD0_CODIGO),"Q3_DESCSUM")})		//Descricao do Cargo do Avaliado
+TRCell():New(oSection2,"RA_CC","SRA",,,,,{|| EntGetInfo("SRA","RA_CC",RD0->RD0_CODIGO) })	//Centro de Custo do Avaliado
+TRCell():New(oSection2,"CTT_DESC01","CTT",,,,,{|| FDesc(cAliasCC,EntGetInfo("SRA","RA_CC",RD0->RD0_CODIGO),cCpoCC)})	//Descricao do Centro de Custo
+TRCell():New(oSection2,"RDB_RESOBT","RDB","Result.Prodam",,,,{|| TRB->TR_RESULT})  //Resultado da Questao
+
+Return oReport
+
+/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÚÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄ¿±±
+±±³Fun‡…o    ³ReportDef() ³ Autor ³ Eduardo Ju          ³ Data ³ 19.07.06 ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±±
+±±³Descri‡…o ³Impressao do Relatorio (Resultado Global)                   ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+±±³Parametros³                                                            ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+±±³ Uso      ³                                                            ³±±
+±±ÀÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß*/
+Static Function PrintReport(oReport,cAliasCC,cCpoCC)
+
+Local oSection1 := oReport:Section(1)
+Local oSection2 := oReport:Section(1):Section(1)  
+Local cFiltro 	:= ""
+Local aArqTmp  	:= {}
+Local cArqTemp 	:= ""
+Local cChave   	:= ""
+Local cArqIndx1	:= ""
+Local cFilTrb	:= ""
+Local cAvaTrb 	:= ""
+Local cFil 		:= ""
+Local cCodAva	:= ""
+Local cCodTip 	:= ""
+Local cCodMod 	:= ""
+Local cCodAdo	:= ""
+Local nResObt  	:= 0
+Local nPtoMax     := 0
+
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Variaveis utilizadas para parametros                         ³
+//³ mv_par01        //  Filial                                   ³
+//³ mv_par02        //  Avaliacao                                ³
+//³ mv_par03        //  Avaliado                                 ³
+//³ mv_par04        //  Competencia                              ³
+//³ mv_par05        //  Item de Competencia                      ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Transforma parametros Range em expressao (intervalo) ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+MakeAdvplExpr("APD30R")	                                  
+
+If !Empty(mv_par01)	//RDD_FILIAL
+	cFiltro	  += Iif(!Empty(cFiltro)," .AND. ","")
+	cFiltro	  += mv_par01 
+EndIf  
+	
+If !Empty(mv_par02)	//RDD_CODAVA
+	cFiltro	 += Iif(!Empty(cFiltro)," .AND. ","")
+	cFiltro  += mv_par02 
+EndIf  
+
+If !Empty(mv_par03)	//RDD_CODADO
+	cFiltro	+= Iif(!Empty(cFiltro)," .AND. ","")
+	cFiltro += mv_par03
+EndIf  
+	
+If !Empty(mv_par04)	//RDD_CODCOM
+	cFiltro	  += Iif(!Empty(cFiltro)," .AND. ","")
+	cFiltro += mv_par04
+EndIf  
+
+If !Empty(mv_par05)	//RDD_ITECOM
+	cFiltro	+= Iif(!Empty(cFiltro)," .AND. ","")
+	cFiltro += mv_par05
+EndIf     
+
+oSection1:SetFilter(cFiltro) 
+
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Caso ja exista arquivo temporario, o mesmo deve ser excluido e gerado um novo arquivo ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+If File( "APR030"+GetDBExtension() )
+	Ferase("APR030"+GetDBExtension())
+EndIf
+
+If File( "APR030"+OrdBagExt() )
+	Ferase("APR030"+OrdBagExt())
+EndIf
+
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Criacao do Arquivo Temporario ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+aadd(aArqTmp,{"TR_FILIAL" ,"C",02,0}) //Filial
+aadd(aArqTmp,{"TR_CODAVA" ,"C",06,0}) //Codigo da Avaliacao
+aadd(aArqTmp,{"TR_CODADO" ,"C",06,0}) //Codigo do Avaliado
+aadd(aArqTmp,{"TR_CCUSTO" ,"C",09,0}) //Codigo do Centro de Custo do Avaliado
+aadd(aArqTmp,{"TR_CCARGO" ,"C",05,0}) //Codigo do Cargo do Avaliado
+aadd(aArqTmp,{"TR_CODTIP" ,"C",06,0}) //Codigo do Tipo da Avaliacao
+aadd(aArqTmp,{"TR_RESULT" ,"N",11,2}) //Resultado Obtido do Item de Competencia (RDD) 
+aadd(aArqTmp,{"TR_CODMOD" ,"C",06,0}) //Codigo do Modelo de Avaliacao
+
+cArqTemp:=CriaTrab(aArqTmp)
+dbUseArea(.T.,,cArqTemp,'TRB',.T.,.F.)
+
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Cria Indice do Arquivo de Trabalho 										 ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+cArqIndx1:=CriaTrab(NIL,.F.)
+cChave:="TR_FILIAL+DESCEND(STR(TR_RESULT,11,2))" 
+IndRegua('TRB',cArqIndx1,cChave,,,OemToAnsi(STR0011)) //'Criando Indice...' 
+dbClearIndex() 
+
+dbSetIndex(cArqIndx1 + OrdBagExt()) 
+DbSetOrder(1)
+
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Arquivo Principal: Resultado das Avaliacoes ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+dbSelectArea("RDD")	
+oReport:SetMeter(RecCount())
+
+RDD->(dbSetOrder(1))
+
+While !(RDD->(Eof())) 
+	
+	IncProc(OemToAnsi(STR0004)+": "+RDD->RDD_CODAVA)	//"Avaliacao" 
+	
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³Tipo de Avaliador   ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+	If RDD->RDD_TIPOAV != "3" 	//Considero "Consenso"
+		RDD->( dbSkip() )
+	   	Loop  
+	EndIf
+	
+	RDB->(dbSetOrder(1))
+	RDB->(MsSeek(xFilial("RDB")+RDD->RDD_CODAVA+RDD->RDD_CODADO))
+	
+	cFil 	:= RDD->RDD_FILIAL		 
+	cCodAva	:= RDD->RDD_CODAVA    
+	cCodTip := RDD->RDD_CODTIP	
+	cCodMod := RDB->RDB_CODMOD
+	cCodAdo	:= RDB->RDB_CODADO     
+
+	nResObt:= 0
+	nPtoMax:= 0
+		
+	While !(RDD->(Eof())) .And. RDD->RDD_CODAVA+RDD->RDD_CODADO  == cCodAva+cCodAdo 
+	
+		//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+		//³Resultado Obtido de Cada Item de Competencia eh igual a ³
+		//³Somatoria de Cada Resultado Obtido por Questao          ³
+		//³Somente considero quando existe Consenso                ³
+		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ			
+        
+		If RDD->RDD_TIPOAV == "3"
+			nResObt+= RDD->RDD_RESOBT
+			nPtoMax += RDD->RDD_PTOMAX	  
+		EndIf       
+		
+		RDD->( DbSkip() ) 
+			
+	EndDo
+
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³Considera-se somente informacoes referentes as Avaliacoes ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ		
+	If RecLock("TRB",.T.)
+		TRB->TR_FILIAL := cFil
+		TRB->TR_CODAVA := cCodava
+		TRB->TR_CODTIP := cCodTip
+		TRB->TR_CODMOD := cCodMod
+		TRB->TR_CODADO := cCodAdo
+		TRB->TR_RESULT := (nResObt/nPtoMax)*10  
+		
+		//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+		//³Informacoes do Funcionario ³
+		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+		RD0->( DbSetOrder(1) )		   
+		If RD0->(dbSeek(xFilial("RD0")+cCodAdo))
+			TRB->TR_CCUSTO := EntGetInfo("SRA","RA_CC",RD0->RD0_CODIGO)  					
+			TRB->TR_CCARGO := EntGetInfo("SRA","RA_CARGO",RD0->RD0_CODIGO)
+		EndIf
+			
+		TRB->( MsUnlock() )
+	EndIf
+EndDo
+
+dbSelectArea("TRB")
+dbGotop()
+
+TRPosition():New(oSection1,"RDD",1,{|| xFilial("RDD") + TRB->TR_CODAVA+TRB->TR_CODADO}) 
+TRPosition():New(oSection1,"RD6",1,{|| xFilial("RD6") + TRB->TR_CODAVA+TRB->TR_CODTIP}) 
+TRPosition():New(oSection1,"RDB",1,{|| xFilial("RDB") + TRB->TR_CODAVA+TRB->TR_CODADO}) 
+TRPosition():New(oSection1,"RD5",1,{|| xFilial("RD5") + TRB->TR_CODTIP}) 
+TRPosition():New(oSection1,"RD3",1,{|| xFilial("RD3") + TRB->TR_CODMOD})
+
+TRPosition():New(oSection2,"RDD",1,{|| xFilial("RDD") + TRB->TR_CODAVA+TRB->TR_CODADO})
+TRPosition():New(oSection2,"RD0",1,{|| xFilial("RD0") + TRB->TR_CODADO})
+TRPosition():New(oSection2,"SQ3",1,{|| xFilial("SQ3") + TRB->TR_CCARGO})
+TRPosition():New(oSection2,cAliasCC,1,{|| xFilial(cAliasCC) + TRB->TR_CCUSTO})
+
+While TRB->( !Eof() ) 
+	
+	oReport:IncMeter()
+	
+	If oReport:Cancel()
+		Exit
+	EndIf
+	   
+	cFilTrb	:= TRB->TR_FILIAL	
+	cAvaTrb := TRB->TR_CODAVA
+		
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³ Impressao da Primeira Secao: Curso ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+	oSection1:Init()
+	oSection1:PrintLine()
+				
+	oSection2:Init()
+		
+	Do While ! Eof() .And. TRB->TR_FILIAL+TRB->TR_CODAVA == cFilTrb+cAvaTrb
+		//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+		//³ Impressao da Segunda Secao: Funcionarios ³
+		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ 
+		oSection2:PrintLine()  
+		dbSelectArea("TRB")
+		dbSkip()
+	EndDo
+	
+	oSection2:Finish()
+	oSection1:Finish()
+
+EndDo
+
+dbSelectArea("TRB")
+dbCloseArea()
+	
+Return Nil

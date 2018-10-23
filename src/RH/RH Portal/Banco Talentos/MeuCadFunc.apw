@@ -1,0 +1,280 @@
+#INCLUDE "PROTHEUS.CH" 
+#INCLUDE "TBICONN.CH"
+#INCLUDE "APWEBEX.CH"
+#INCLUDE "APWEBSRV.CH"
+#INCLUDE "AP5MAIL.CH"
+
+/*************************************************************/
+/* Banco de Talentos - Tela Inicial			    		 */
+/*************************************************************/
+WebUser Function MeuCadFunc()
+
+Local cHtml   			:= ""
+
+HttpSession->xNomeFun	:= HttpGet->xNomeFun
+HttpSession->xMatricula := HttpGet->Matricula
+
+HttpCTType("text/html; charset=ISO-8859-1")
+
+If Valtype(HttpGet->Matricula) == 'U'
+	If Valtype(HttpSession->aMats) <> 'U'
+		HttpGet->titulo				:= "Banco de Talentos"
+	Else
+		HttpSession->_HTMLERRO  := { "Erro", "Sessão Expirada", "W_PWSA000.APW","top" }	//"Erro"
+		Return W_PWSA000()//ExecInPage("PWSA000" )				
+	EndIf
+Else
+	If Valtype(HttpSession->xNomeFun) <> 'U'
+		HttpGet->titulo				:= "Banco de Talentos"
+	Else
+		HttpSession->_HTMLERRO  := { "Erro", "Sessão Expirada", "W_PWSA000.APW","top" }	//"Erro"
+		Return W_PWSA000()//ExecInPage("PWSA000" )					
+	EndIf
+EndIf
+	
+//HttpGet->objetivo			:= "Consulta de Cadastro do Funcionário"	//"Disponibiliza para consulta as informações dos afastamentos registrados para o funcionário. Permite também a visualização dos afastamentos dos membros de sua equipe."
+HttpGet->objetivo			:= ""
+
+HttpCTType("text/html; charset=ISO-8859-1")	
+
+WEB EXTENDED INIT cHtml START "InSite"
+
+	fGetInfRotina("B_MeuCadFunc.APW")
+	GetMat()
+		    
+	cHtml := ExecInPage("MeuCadFunc")	
+WEB EXTENDED END
+	
+Return cHtml
+
+/********************************************************************/
+/* Banco de Talentos - Montagem dos conhecimentos do Funcionário	*/
+/********************************************************************/
+WebUser Function AMeuCadFunc()	//RH - Banco de Talentos -> Meu Cadastro
+
+Local cHtml   	  	:= ""
+Local oMeuCad		
+
+HttpSession->aCapacs	:= {}
+HttpSession->aForms		:= {}
+HttpSession->aCertifs	:= {}
+HttpSession->aConhecs	:= {}
+HttpSession->aAtivFuncs	:= {}
+HttpSession->aDadosCad	:= {}
+
+HttpCTType("text/html; charset=ISO-8859-1")
+
+WEB EXTENDED INIT cHtml START "InSite"
+	
+	//Preparo WebService de Consulta de Cursos
+	oMeuCad := WSWS_MEUCADFUNC():New()
+	WsChgURL(@oMeuCad,"WS_MEUCADFUNC.APW")
+	
+	If ValType(HttpSession->xMatricula) == "U"
+		If Valtype(HttpSession->RHMat) <> 'U'
+			oMeuCad:cMatricula  := HttpSession->RHMat
+		Else
+			HttpSession->aCursos  := {}
+			HttpSession->_HTMLERRO  := { "Erro", "Sessão Expirada", "W_PWSA000.APW","top" }	//"Erro"
+			Return W_PWSA000()//ExecInPage("PWSA000" )			
+		EndIf
+	Else
+		If Valtype(HttpSession->xMatricula) <> 'U'
+			oMeuCad:cMatricula  := HttpSession->xMatricula
+		Else
+			HttpSession->_HTMLERRO  := { "Erro", "Sessão Expirada", "W_PWSA000.APW","top" }	//"Erro"
+			Return W_PWSA000()//ExecInPage("PWSA000" )						
+		EndIf
+	EndIf
+	
+	If oMeuCad:GetCursos()
+		
+		HttpSession->aCapacs	:= aClone(oMeuCad:oWSGetCursosResult:oWSCapacitacoes:oWSRA4Stru)
+		HttpSession->aForms		:= aClone(oMeuCad:oWSGetCursosResult:oWSFormacoes:oWSRA4Stru)
+		HttpSession->aCertifs	:= aClone(oMeuCad:oWSGetCursosResult:oWSCertificacoes:oWSRA4Stru)
+		HttpSession->aConhecs	:= aClone(oMeuCad:oWSGetCursosResult:oWSConhecimentos:oWSConhecimento)
+		HttpSession->aAtivFuncs	:= aClone(oMeuCad:oWSGetCursosResult:oWSFuncionais:oWSFuncional)
+		HttpSession->aDadosCad	:= aClone(oMeuCad:oWSGetCursosResult:oWSCadastrais:oWSCadastro)
+		cHtml := ExecInPage( "AMeuCadFunc" )
+		
+	Else
+		HttpSession->aCursos  := {}
+		HttpSession->_HTMLERRO  := { "Erro", PWSGetWSError(), "W_PWSA000.APW","top" }	//"Erro"
+		ExecInPage("PWSAMSG" )
+	EndIf
+	
+WEB EXTENDED END
+			
+Return cHtml
+
+/********************************************************************/
+/* Banco de Talentos - Alteração/Exclusão dos conhecimentos do Funcionário	*/
+/********************************************************************/
+WebUser Function BMeuCadFunc()	//RH - Banco de Talentos -> Meu Cadastro
+
+Local cHtml   	  	:= ""
+Local oWSConhec 
+
+HttpCTType("text/html; charset=ISO-8859-1")
+
+WEB EXTENDED INIT cHtml START "InSite"
+
+	oWSConhec := WSMANRHKNOW():New()
+	WsChgURL(@oWSConhec,"MANRHKNOW.APW")
+		
+	oWSConhec:cMatricula 				:= HttpPost->RHId
+	oWSConhec:oWSKnowStru:cArea 		:= HttpPost->AreaCode
+	oWSConhec:oWSKnowStru:cCategoria 	:= HttpPost->CategoryCode
+	oWSConhec:oWSKnowStru:cCodConhec 	:= HttpPost->KnowCode
+	oWSConhec:oWSKnowStru:cNivel 		:= HttpPost->Level
+	oWSConhec:oWSKnowStru:cOper  		:= HttpPost->nOperation
+	oWSConhec:oWSKnowStru:cIndice 		:= HttpPost->nIndice	
+	
+	If oWSConhec:WSMANKNOW()
+		cHtml := B_AMeuCadFunc()
+	Else
+		HttpSession->_HTMLERRO  := { "Erro", PWSGetWSError(), "W_PWSA000.APW","top" }	//"Erro"
+		Return ExecInPage("PWSAMSG" )		
+	EndIf
+
+
+WEB EXTENDED END
+		
+Return cHtml
+
+/********************************************************************/
+/* Banco de Talentos - Inclusão dos conhecimentos do Funcionário	*/
+/********************************************************************/
+
+WebUser Function CMeuCadFunc()	//RH - Banco de Talentos -> Meu Cadastro
+
+Local cHtml   	  	:= ""
+Local oWSConhec 
+
+HttpCTType("text/html; charset=ISO-8859-1")
+
+WEB EXTENDED INIT cHtml START "InSite"
+
+	oWSConhec := WSMANRHKNOW():New()
+	WsChgURL(@oWSConhec,"MANRHKNOW.APW")
+		
+	oWSConhec:cMatricula 				:= HttpPost->RHIdInc
+	oWSConhec:oWSKnowStru:cArea 		:= HttpPost->AreaCode
+	oWSConhec:oWSKnowStru:cCategoria 	:= HttpPost->CategoryCode
+	oWSConhec:oWSKnowStru:cCodConhec 	:= HttpPost->KnowCode
+	oWSConhec:oWSKnowStru:cNivel 		:= HttpPost->Level
+	oWSConhec:oWSKnowStru:cOper  		:= "3"
+	oWSConhec:oWSKnowStru:cIndice 		:= "1"	
+	
+	If oWSConhec:WSMANKNOW()
+		cHtml := B_AMeuCadFunc()
+	Else
+		HttpSession->_HTMLERRO  := { "Erro", PWSGetWSError(), "W_PWSA000.APW","top" }	//"Erro"
+		Return ExecInPage("PWSAMSG" )		
+	EndIf
+
+WEB EXTENDED END
+
+Return cHtml
+
+/********************************************************************/
+/* Banco de Talentos - Inclusão dos conhecimentos do Funcionário	*/
+/********************************************************************/
+
+
+WebUser Function DMeuCadFunc()	//RH - Banco de Talentos -> Meu Cadastro
+
+Local cHtml   	  	:= ""
+Local oWSCateg 		:= Nil
+Local aArea	  		:= {}
+Local nX
+
+HttpCTType("text/html; charset=ISO-8859-1")
+
+WEB EXTENDED INIT cHtml START "InSite"
+
+	oWSCateg := WSGETZ6Z7Z8():New()
+	WsChgURL(@oWSCateg,"GETZ6Z7Z8.APW")
+
+	oWSCateg:cOper := "2"
+	oWSCateg:cArea := HttpGet->tipoval
+
+	If oWSCateg:GETINFO()
+		For nX := 1 To Len(oWSCateg:oWSGETINFORESULT:cSTRING)
+			If nX != Len(oWSCateg:oWSGETINFORESULT:cSTRING)
+				cHtml += oWSCateg:oWSGETINFORESULT:cSTRING[nX] +"*"
+			Else
+				cHtml += oWSCateg:oWSGETINFORESULT:cSTRING[nX] 
+			EndIf
+		Next nX			
+	Else
+		HttpSession->_HTMLERRO  := { "Erro", PWSGetWSError(), "W_PWSA000.APW","top" }	//"Erro"
+		Return ExecInPage("PWSAMSG" )		
+	EndIf
+	
+WEB EXTENDED END	
+		
+Return cHtml
+
+/********************************************************************/
+/* Banco de Talentos - Inclusão dos conhecimentos do Funcionário	*/
+/********************************************************************/
+
+WebUser Function EMeuCadFunc()	//RH - Banco de Talentos -> Meu Cadastro
+
+Local cHtml   	  	:= ""
+Local oWSConhec 	:= Nil
+Local aArea	  		:= {}
+Local nX
+
+HttpCTType("text/html; charset=ISO-8859-1")
+
+WEB EXTENDED INIT cHtml START "InSite"
+
+	oWSConhec := WSGETZ6Z7Z8():New()
+	WsChgURL(@oWSConhec,"GETZ6Z7Z8.APW")
+
+	oWSConhec:cOper 		:= "3"
+	oWSConhec:cArea 		:= HttpGet->tipoval
+	oWSConhec:cCategoria 	:= HttpGet->categ
+	
+
+	If oWSConhec:GETINFO()
+		For nX := 1 To Len(oWSConhec:oWSGETINFORESULT:cSTRING)
+			If nX != Len(oWSConhec:oWSGETINFORESULT:cSTRING)
+				cHtml += oWSConhec:oWSGETINFORESULT:cSTRING[nX] +"*"
+			Else
+				cHtml += oWSConhec:oWSGETINFORESULT:cSTRING[nX] 
+			EndIf
+		Next nX			
+	Else
+		HttpSession->_HTMLERRO  := { "Erro", PWSGetWSError(), "W_PWSA000.APW","top" }	//"Erro"
+		Return ExecInPage("PWSAMSG" )		
+	EndIf
+	
+WEB EXTENDED END	
+		
+Return cHtml
+
+/********************************************************************/
+/* Banco de Talentos - Inclusão dos conhecimentos do Funcionário	*/
+
+User Function GetArea()
+
+Local oWSArea := WSGETZ6Z7Z8():New()
+Local aArea	  := {}
+Local nX
+
+WsChgURL(@oWSArea,"GETZ6Z7Z8.APW")
+oWSArea:cOper := "1"
+
+If oWSArea:GETINFO()
+	For nX := 1 To Len(oWSArea:oWSGETINFORESULT:cSTRING)
+		aADD( aArea , oWSArea:oWSGETINFORESULT:cSTRING[nX])
+	Next nX
+Else
+	
+EndIf
+
+Return aArea
+/********************************************************************/

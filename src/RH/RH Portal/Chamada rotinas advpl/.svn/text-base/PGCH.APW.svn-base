@@ -1,0 +1,434 @@
+#INCLUDE "PROTHEUS.CH"
+#INCLUDE "APWEBEX.CH"
+
+#DEFINE CODUSUARIO "MSALPHA"
+/*
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³ PGCH_AHO   ºAutor  ³ Marcos Pereira    º Data ³  07/01/16  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³ Customizações no Portal GCH                                º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ AP                                                         º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+*/
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//  Funcao de Alteracao de Horario, chamando a U_PGCH para executar a PONA160 (troca de turno) //
+/////////////////////////////////////////////////////////////////////////////////////////////////
+WebUser Function PGCH_AHO()
+
+Local cHttp    := ''
+Local cHtml	   := ''
+Local cUsuLink := '' 
+Local cPswLink := ''
+Local cEmpLink := '' 
+Local cFilLink := '' 
+Local cString  := ''
+Local cChave   := 'e8a97zb3' //Chave para identificar a rotina
+
+Private cArqLink
+
+WEB EXTENDED INIT cHtml                                  
+
+If valtype(HttpSession->_aMenu) == 'U'
+	Return("Sessão expirada. Faça o login novamente.")
+EndIf
+
+fGetInfRotina("B_PGCH_AHO.APW")
+
+oParam := wscfgdictionary():new()
+wschgurl(@oParam,"CFGDICTIONARY.APW")
+
+If oParam:GetParam(CODUSUARIO,"MV_IPSHTML")		//Busca link do smartclient html
+	cHttp := alltrim(oParam:cGETPARAMRESULT)
+EndIf
+If oParam:GetParam(CODUSUARIO,"MV_LINKUSR")		//Busca o usuario padrao para login no smartclient html
+	cUsuLink := alltrim(oParam:cGETPARAMRESULT)
+EndIf
+If oParam:GetParam(CODUSUARIO,"MV_LINKPSW")
+	cPswLink := alltrim(oParam:cGETPARAMRESULT)	//Busca a senha do usuario padrao para o login
+EndIf
+
+MontaEquipe("1") // Busca a equipe direta do usuario logado no portal //
+
+cHtml += '<html><head><title></title>'
+cHtml += '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">'
+cHtml += '<link href="styles/consulta.css" rel="stylesheet" type="text/css">'
+cHtml += '<link href="styles/estilo.css" rel="stylesheet" type="text/css">'
+cHtml += '</head><body>'
+cHtml += '<h2>Alteração de Horário</h2>
+cHtml += '<tr>'
+
+//Monta empresa + filial + usuario + senha
+cEmpLink := if(type('HttpSession->aMats[1]:cEmployeeemp')=='U','01',HttpSession->aMats[1]:cEmployeeemp)
+cFilLink := HttpSession->aUser[02]
+cString := cEmpLink+"|"+cFilLink+"|"+cUsuLink+"|"+cPswLink+"|"  // parametros de conexao
+cString := Embaralha(cString,0)
+
+//Monta parametros para passar no link  p0=dados para ambiente, p1=identificado da rotina, p2=nome do arquivo txt da equipe
+cHttp += "&p0="+cString+"&p1="+cChave+"&p2="+cArqLink
+
+//Link final para executar o smartclient html, chamando a U_PGCH e passando os parametros
+cHtml += '<a href=' + cHttp + ' >Clique aqui e aguarde para visualizar o processo</a>'
+
+cHtml += '</tr></body></html>'               
+
+WEB EXTENDED END
+
+Return(cHtml)
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+//  Funcao de Autorização de Horas Extra, chamando a U_PGCH para executar a PONA300 //
+//////////////////////////////////////////////////////////////////////////////////////
+WebUser Function PGCH_AHE()
+
+Local cHttp    := ''
+Local cHtml	   := ''
+Local cUsuLink := '' 
+Local cPswLink := ''
+Local cEmpLink := '' 
+Local cFilLink := '' 
+Local cString  := ''
+Local cChave   := '64fo2vy7' //Chave para identificar a rotina
+
+Private cArqLink
+
+WEB EXTENDED INIT cHtml                                  
+
+If valtype(HttpSession->_aMenu) == 'U'
+	Return("Sessão expirada. Faça o login novamente.")
+EndIf
+
+fGetInfRotina("B_PGCH_AHE.APW")
+
+oParam := wscfgdictionary():new()
+wschgurl(@oParam,"CFGDICTIONARY.APW")
+
+If oParam:GetParam(CODUSUARIO,"MV_IPSHTML")		//Busca link do smartclient html
+	cHttp := alltrim(oParam:cGETPARAMRESULT)
+EndIf
+If oParam:GetParam(CODUSUARIO,"MV_LINKUSR")		//Busca o usuario padrao para login no smartclient html
+	cUsuLink := alltrim(oParam:cGETPARAMRESULT)
+EndIf
+If oParam:GetParam(CODUSUARIO,"MV_LINKPSW")
+	cPswLink := alltrim(oParam:cGETPARAMRESULT)	//Busca a senha do usuario padrao para o login
+EndIf
+
+MontaEquipe("1") // Busca a equipe direta do usuario logado no portal //
+
+cHtml += '<html><head><title></title>'
+cHtml += '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">'
+cHtml += '<link href="styles/consulta.css" rel="stylesheet" type="text/css">'
+cHtml += '<link href="styles/estilo.css" rel="stylesheet" type="text/css">'
+cHtml += '</head><body>'
+cHtml += '<h2>Autorização Horas Extras</h2>
+cHtml += '<tr>'
+
+//Monta empresa + filial + usuario + senha
+cEmpLink := if(type('HttpSession->aMats[1]:cEmployeeemp')=='U','01',HttpSession->aMats[1]:cEmployeeemp)
+cFilLink := HttpSession->aUser[02]
+cString := cEmpLink+"|"+cFilLink+"|"+cUsuLink+"|"+cPswLink+"|"  // parametros de conexao
+cString := Embaralha(cString,0)
+
+//Monta parametros para passar no link  p0=dados para ambiente, p1=identificado da rotina, p2=nome do arquivo txt da equipe
+cHttp += "&p0="+cString+"&p1="+cChave+"&p2="+cArqLink
+
+//Link final para executar o smartclient html, chamando a U_PGCH e passando os parametros
+cHtml += '<a href=' + cHttp + ' >Clique aqui e aguarde para visualizar o processo</a>'
+
+cHtml += '</tr></body></html>'               
+
+WEB EXTENDED END
+
+Return(cHtml)
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//  Funcao de consulta dos EPIs do funcionario, chamando a U_PGCH para executar a MDTA395 //
+////////////////////////////////////////////////////////////////////////////////////////////
+WebUser Function PGCH_EPI()
+
+Local cHttp    := ''
+Local cHtml	   := ''
+Local cFil_	   := ''
+Local cMat_	   := ''
+Local cUsuLink := '' 
+Local cPswLink := ''
+Local cEmpLink := '' 
+Local cFilLink := '' 
+Local cString  := ''
+Local cChave   := 'u466w78i' //Chave para identificar a rotina
+
+Private cArqLink
+
+WEB EXTENDED INIT cHtml                                  
+
+If valtype(HttpSession->_aMenu) == 'U'
+	Return("Sessão expirada. Faça o login novamente.")
+EndIf
+
+//fGetInfRotina("B_PGCH_EPI.APW")
+
+oParam := wscfgdictionary():new()
+wschgurl(@oParam,"CFGDICTIONARY.APW")
+
+If oParam:GetParam(CODUSUARIO,"MV_IPSHTML")		//Busca link do smartclient html
+	cHttp := alltrim(oParam:cGETPARAMRESULT)
+EndIf
+If oParam:GetParam(CODUSUARIO,"MV_LINKUSR")		//Busca o usuario padrao para login no smartclient html
+	cUsuLink := alltrim(oParam:cGETPARAMRESULT)
+EndIf
+If oParam:GetParam(CODUSUARIO,"MV_LINKPSW")
+	cPswLink := alltrim(oParam:cGETPARAMRESULT)	//Busca a senha do usuario padrao para o login
+EndIf
+
+//MontaEquipe() // Busca a equipe direta do usuario logado no portal //
+
+cFil_	:= HttpSession->aUser[02]
+cMat_	:= HttpSession->aUser[03]
+
+cArqLink := "Q1W2E3R4T5" + cFil_ + "A6S7D8F9G0" + cMat_
+cArqLink := strtran(cArqLink," ","_")
+cArqLink := embaralha(cArqLink,0)
+
+cHtml += '<html><head><title></title>'
+cHtml += '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">'
+cHtml += '<link href="styles/consulta.css" rel="stylesheet" type="text/css">'
+cHtml += '<link href="styles/estilo.css" rel="stylesheet" type="text/css">'
+cHtml += '</head><body>'
+cHtml += '<h2>Consulta de EPIs</h2>
+cHtml += '<tr>'
+
+//Monta empresa + filial + usuario + senha
+cEmpLink := if(type('HttpSession->aMats[1]:cEmployeeemp')=='U','01',HttpSession->aMats[1]:cEmployeeemp)
+cFilLink := HttpSession->aUser[02]
+cString := cEmpLink+"|"+cFilLink+"|"+cUsuLink+"|"+cPswLink+"|"  // parametros de conexao
+cString := Embaralha(cString,0)
+
+//Monta parametros para passar no link  p0=dados para ambiente, p1=identificado da rotina, p2=nome do arquivo txt da equipe
+cHttp += "&p0="+cString+"&p1="+cChave+"&p2="+cArqLink
+
+//Link final para executar o smartclient html, chamando a U_PGCH e passando os parametros
+cHtml += '<a href=' + cHttp + ' >Clique aqui e aguarde para visualizar o processo</a>'
+
+cHtml += '</tr></body></html>'               
+
+WEB EXTENDED END
+
+Return(cHtml)
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+//  Funcao de Metas individuais da equipe, chamando a U_PGCH para executar a U_APD001 //
+////////////////////////////////////////////////////////////////////////////////////////
+WebUser Function PGCH_ME1()
+
+Local cHttp    := ''
+Local cHtml	   := ''
+Local cUsuLink := '' 
+Local cPswLink := ''
+Local cEmpLink := '' 
+Local cFilLink := '' 
+Local cString  := ''
+Local cChave   := 'z649fg2u' //Chave para identificar a rotina
+
+Private cArqLink
+
+WEB EXTENDED INIT cHtml                                  
+
+If valtype(HttpSession->_aMenu) == 'U'
+	Return("Sessão expirada. Faça o login novamente.")
+EndIf
+
+fGetInfRotina("B_PGCH_META.APW")
+
+oParam := wscfgdictionary():new()
+wschgurl(@oParam,"CFGDICTIONARY.APW")
+
+If oParam:GetParam(CODUSUARIO,"MV_IPSHTML")		//Busca link do smartclient html
+	cHttp := alltrim(oParam:cGETPARAMRESULT)
+EndIf
+If oParam:GetParam(CODUSUARIO,"MV_LINKUSR")		//Busca o usuario padrao para login no smartclient html
+	cUsuLink := alltrim(oParam:cGETPARAMRESULT)
+EndIf
+If oParam:GetParam(CODUSUARIO,"MV_LINKPSW")
+	cPswLink := alltrim(oParam:cGETPARAMRESULT)	//Busca a senha do usuario padrao para o login
+EndIf
+
+MontaEquipe("1") // Busca a equipe direta do usuario logado no portal //
+
+cHtml += '<html><head><title></title>'
+cHtml += '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">'
+cHtml += '<link href="styles/consulta.css" rel="stylesheet" type="text/css">'
+cHtml += '<link href="styles/estilo.css" rel="stylesheet" type="text/css">'
+cHtml += '</head><body>'
+cHtml += '<h2>Metas individuais da equipe</h2>
+cHtml += '<tr>'
+
+//Monta empresa + filial + usuario + senha
+cEmpLink := if(type('HttpSession->aMats[1]:cEmployeeemp')=='U','99',HttpSession->aMats[1]:cEmployeeemp)
+cFilLink := HttpSession->aUser[02]
+cString := cEmpLink+"|"+cFilLink+"|"+cUsuLink+"|"+cPswLink+"|"  // parametros de conexao
+cString := Embaralha(cString,0)
+
+//Monta parametros para passar no link  p0=dados para ambiente, p1=identificado da rotina, p2=nome do arquivo txt da equipe
+cHttp += "&p0="+cString+"&p1="+cChave+"&p2="+cArqLink
+
+//Link final para executar o smartclient html, chamando a U_PGCH e passando os parametros
+cHtml += '<a href=' + cHttp + ' >Clique aqui e aguarde para visualizar o processo</a>'
+
+cHtml += '</tr></body></html>'               
+
+WEB EXTENDED END
+
+Return(cHtml)
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+//  Funcao de Metas individuais (usuario logado), chamando a U_PGCH para executar a U_APD001 //
+///////////////////////////////////////////////////////////////////////////////////////////////
+WebUser Function PGCH_ME2()
+
+Local cHttp    := ''
+Local cHtml	   := ''
+Local cFil_	   := ''
+Local cMat_	   := ''
+Local cUsuLink := '' 
+Local cPswLink := ''
+Local cEmpLink := '' 
+Local cFilLink := '' 
+Local cString  := ''
+Local cChave   := 'z649fg2v' //Chave para identificar a rotina
+
+Private cArqLink
+
+WEB EXTENDED INIT cHtml                                  
+
+If valtype(HttpSession->_aMenu) == 'U'
+	Return("Sessão expirada. Faça o login novamente.")
+EndIf
+
+oParam := wscfgdictionary():new()
+wschgurl(@oParam,"CFGDICTIONARY.APW")
+
+If oParam:GetParam(CODUSUARIO,"MV_IPSHTML")		//Busca link do smartclient html
+	cHttp := alltrim(oParam:cGETPARAMRESULT)
+EndIf
+If oParam:GetParam(CODUSUARIO,"MV_LINKUSR")		//Busca o usuario padrao para login no smartclient html
+	cUsuLink := alltrim(oParam:cGETPARAMRESULT)
+EndIf
+If oParam:GetParam(CODUSUARIO,"MV_LINKPSW")
+	cPswLink := alltrim(oParam:cGETPARAMRESULT)	//Busca a senha do usuario padrao para o login
+EndIf
+
+cFil_	:= HttpSession->aUser[02]
+cMat_	:= HttpSession->aUser[03]
+
+cArqLink := "Q1W2E3R4T5" + cFil_ + "A6S7D8F9G0" + cMat_
+cArqLink := strtran(cArqLink," ","_")
+cArqLink := embaralha(cArqLink,0)
+
+cHtml += '<html><head><title></title>'
+cHtml += '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">'
+cHtml += '<link href="styles/consulta.css" rel="stylesheet" type="text/css">'
+cHtml += '<link href="styles/estilo.css" rel="stylesheet" type="text/css">'
+cHtml += '</head><body>'
+cHtml += '<h2>Metas individuais</h2>
+cHtml += '<tr>'
+
+//Monta empresa + filial + usuario + senha
+cEmpLink := if(type('HttpSession->aMats[1]:cEmployeeemp')=='U','99',HttpSession->aMats[1]:cEmployeeemp)
+cFilLink := HttpSession->aUser[02]
+cString := cEmpLink+"|"+cFilLink+"|"+cUsuLink+"|"+cPswLink+"|"  // parametros de conexao
+cString := Embaralha(cString,0)
+
+//Monta parametros para passar no link  p0=dados para ambiente, p1=identificado da rotina, p2=nome do arquivo txt da equipe
+cHttp += "&p0="+cString+"&p1="+cChave+"&p2="+cArqLink
+
+//Link final para executar o smartclient html, chamando a U_PGCH e passando os parametros
+cHtml += '<a href=' + cHttp + ' >Clique aqui e aguarde para visualizar o processo</a>'
+
+cHtml += '</tr></body></html>'               
+
+WEB EXTENDED END
+
+Return(cHtml)
+
+
+////////////////////////////////////////////////////////////////////
+// Funcao para montar a equipe direta do usuario logado no portal //
+////////////////////////////////////////////////////////////////////
+Static Function MontaEquipe(cTipo)
+
+Local cFil_	:= HttpSession->aUser[02]
+Local cMat_	:= HttpSession->aUser[03]
+Local oOrg 
+Local nPageTotal := 1
+Local aStructure := {}
+Local nHdl, nX, nY 
+Local cPatch	:= "\temp\"
+
+Default cTipo := "0" //0=Usuario logado e sua equipe  1=Somente sua equipe 
+
+//VarInfo("cFil_",cFil_)
+//VarInfo("cMat_",cMat_)
+//VarInfo("HttpSession->aInfRotina",HttpSession->aInfRotina)
+
+oOrg := WSORGSTRUCTURE():New()
+WsChgURL(@oOrg,"ORGSTRUCTURE.APW",,,)  
+                               
+oOrg:cEmployeeFil   := cFil_
+oOrg:cRegistration  := cMat_
+oOrg:cVision        := HttpSession->aInfRotina:cVisao
+oOrg:nPage         	:= 1
+
+//Arquivo temporario onde constarao filial/matricula da equipe direta do usuario logado no portal
+cArqLink := "Q1W2E3R4T5" + cFil_ + "A6S7D8F9G0" + cMat_
+cArqLink := strtran(cArqLink," ","_")
+cArqLink := embaralha(cArqLink,0)
+
+//varinfo("cArqLink->",cArqLink)
+ 
+If File(cPatch+cArqLink)
+	fErase(cPatch+cArqLink)
+EndIf 
+nHdl := fCreate(cPatch+cArqLink)
+
+//Executa While para buscar toda a equipe. Por padrao a GetStructure retorna de 10 em 10
+While oOrg:nPage <= nPageTotal
+                                
+	IF oOrg:GetStructure()
+		aadd(aStructure,aClone(oOrg:oWSGetStructureResult:oWSLISTOFEMPLOYEE:OWSDATAEMPLOYEE))
+	    nPageTotal 		       := oOrg:oWSGetStructureResult:nPagesTotal
+//	    varinfo('Estrutura-> ', aStructure) 
+	EndIF
+	
+//	varinfo('aStructure[1][1]:CEMPLOYEEFILIAL-> ', aStructure[1][1]:CEMPLOYEEFILIAL) 
+//	varinfo('aStructure[1][1]:CREGISTRATION-> ', aStructure[1][1]:CREGISTRATION) 
+//	VarInfo("oOrg:nPage",oOrg:nPage)
+//	VarInfo("nPageTotal",nPageTotal)
+	oOrg:nPage += 1
+	                               
+EndDo
+                               
+If Len(aStructure) > 0
+	For nX := 1 to len(aStructure)
+		For nY := 1 to len(aStructure[nX])
+			If cTipo == '0' .or. (cTipo == '1' .and. !(aStructure[nX][nY]:CEMPLOYEEFILIAL == cFil_ .and. aStructure[nX][nY]:CREGISTRATION == cMat_))  //Despreza o proprio usuario logado quando cTipo = 1
+				//Grava no arquivo texto a filial e matricula de cada funcionario da equipe direta
+				FWrite( nHdl, aStructure[nX][nY]:CEMPLOYEEFILIAL + aStructure[nX][nY]:CREGISTRATION + Chr(13)+Chr(10) )
+			EndIf
+		Next nY
+	Next nX
+EndIf
+        
+fClose(nHdl)
+
+Return()
+

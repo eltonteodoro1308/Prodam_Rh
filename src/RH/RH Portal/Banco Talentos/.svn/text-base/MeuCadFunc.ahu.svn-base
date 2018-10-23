@@ -1,0 +1,344 @@
+<%
+#INCLUDE "PROTHEUS.CH"  
+#INCLUDE "APWEBEX.CH"
+
+Local cTitulo 	:= HttpGet->titulo
+Local cObjetivo := HttpGet->objetivo
+Local msg     	:= HttpGet->msg
+
+%>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!doctype html public "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<link href="styles/consulta.css" rel="stylesheet" type="text/css">
+		<link href="styles/estilo.css" rel="stylesheet" type="text/css">		
+		<script src="scripts/ajax.js" language="JavaScript" type="text/javascript"></script>
+		<script src="scripts/prototype.js" language="JavaScript" type="text/javascript"></script>
+		<script src="scripts/scriptaculous.js" language="JavaScript" type="text/javascript"></script>
+	</head>
+	
+	<script language="Javascript">
+
+        function carregaCateg(area) {
+
+			if (area != ""){
+			         
+        	new Ajax.Request( "B_DMEUCADFUNC.APW",
+                     	{
+                                method: 'get',
+                                asynchronous: false,
+                                parameters: {tipoVal: area },
+                                onFailure: function() { alert('Erro ao carregar categorias!'); return; },
+                                onSuccess: function(transport) 
+                                        { var response = transport.responseText || "";															 	                                  
+                                                                var resultado = response.split('*');                                                               
+																var _select  = document.getElementById('CatInc');
+																var _select2 = document.getElementById('ConInc');
+																var i = 0
+																	
+                                                                    for(i=_select.options.length-1;i>=1;i--)
+    	                                                            {
+        	    	                                                  _select.remove(i);
+    			                                                    }	
+
+                                                                    for(i=_select2.options.length-1;i>=1;i--)
+    	                                                            {
+        	    	                                                  _select2.remove(i);
+    			                                                    }	
+		
+																	for (i = 0; i < resultado.length; i++){
+																		 																		
+      																	var valor = resultado[i].substring(0,3);
+																		var desc  = resultado[i];
+      																	var op = new Option(desc, valor, false, false);
+																		_select.options[i+1] = op;      																      												
+        															}															
+
+                                        						document.getElementById('CatInc').disabled = false;
+																transport = null;
+                                        }
+                     }
+               );
+
+			}
+			else
+			{
+				var _select = document.getElementById('CatInc');
+                for(i=_select.options.length-1;i>=1;i--)
+    	        {
+        	    	_select.remove(i);
+    			}
+				document.getElementById('CatInc').disabled = true;
+
+				var _select2 = document.getElementById('ConInc');
+                for(i=_select2.options.length-1;i>=1;i--)
+    	        {
+        	    	_select2.remove(i);
+    			}			
+				document.getElementById('ConInc').disabled = true;
+
+			}
+
+        }
+
+
+        function Conhecs(categ) {
+
+			var area = document.getElementById('AreaInc').value;
+
+			if (categ != "" && area != "") {
+			         
+        	new Ajax.Request( "B_EMeuCadFunc.APW",
+                     	{
+                                method: 'get',
+                                asynchronous: false,
+                                parameters: {tipoVal: area , categ: categ},
+                                onFailure: function() { alert('Erro ao carregar conhecimentos!'); return; },
+                                onSuccess: function(transport) 
+                                        { var response = transport.responseText || "";															 	                                  
+                                                                var resultado = response.split('*');                                                               
+																var _select = document.getElementById('ConInc');
+																var i = 0
+																	
+                                                                    for(i=_select.options.length-1;i >= 1;i--)
+    	                                                            {
+        	    	                                                  _select.remove(i);
+    			                                                    }	
+		
+																	for (i = 0; i < resultado.length; i++){
+																		 																		
+      																	var valor = resultado[i].substring(0,3);
+																		var desc  = resultado[i];
+      																	var op = new Option(desc, valor, false, false);
+																		_select.options[i+1] = op;      																      												
+        															}
+																
+													
+                                        						document.getElementById('ConInc').disabled = false;
+                                        }
+                     }
+               );
+
+			}
+			else
+			{
+				var _select = document.getElementById('ConInc');
+                for(i=_select.options.length-1;i>=1;i--)
+    	        {
+        	    	_select.remove(i);
+    			}	
+				document.getElementById('ConInc').disabled = true;
+			}
+
+        }
+
+
+		function Exclui(infoWS){	
+			var aInfo = infoWS.split(";")		
+				if( confirm('<%="Deseja realmente excluir o conhecimento selecionado"%>?') ){ //Deseja realmente excluir o item selecionado	
+					formCon.RHId.value 			= aInfo[0];
+					formCon.AreaCode.value 		= aInfo[1];
+					formCon.CategoryCode.value 	= aInfo[2];
+					formCon.KnowCode.value 		= aInfo[3];
+					formCon.Level.value 		= aInfo[4];
+					formCon.nOperation.value 	= aInfo[5];
+					formCon.nIndice.value		= aInfo[6];
+					formCon.action 				= "B_BMeuCadFunc.APW"; 
+					formCon.submit();
+				}
+		}
+
+		function Imprime(text){
+			text=document
+			print(text)
+		}
+
+		function Altera(infoWS){	
+			var aInfo = infoWS.split(";")
+			var valNivel	= document.getElementById(aInfo[7]).value;
+			
+			if( confirm('<%="Deseja realmente confirmar a alteração do conhecimento selecionado"%>?') ){ //Deseja realmente excluir o item selecionado	
+				formCon.RHId.value 			= aInfo[0];
+				formCon.AreaCode.value 		= aInfo[1];
+				formCon.CategoryCode.value 	= aInfo[2];
+				formCon.KnowCode.value 		= aInfo[3];
+				formCon.Level.value 		= valNivel
+				formCon.nOperation.value 	= aInfo[5];
+				formCon.nIndice.value		= aInfo[6];
+				formCon.action 				= "B_BMeuCadFunc.APW"; 
+				formCon.submit();
+
+				alert('Registro atualizado com sucesso.')
+
+			}		 
+		}
+
+		function incluir(opcao){
+			if ( opcao == "adiciona" ) {
+				tabIncluir.style.display = '';
+				formCon.cancela.style.display = '';
+				formCon.adiciona.style.display = "none";
+				document.getElementById("acao").innerHTML = "<%='Incluir Conhecimento'%>";
+			}
+			else {
+				tabIncluir.style.display = 'none';
+				formCon.cancela.style.display = 'none';
+				formCon.adiciona.style.display = '';
+				formCon.inclui.style.display = '';
+				document.getElementById("acao").innerHTML = "";
+				//ZERA OS CAMPOS
+				//Area
+				formCon.AreaInc.disabled = false;			
+				formCon.AreaInc.value = '';			
+				//formCon.cAreaDescInc.style.display = 'none';
+				//Categoria
+				formCon.CatInc.disabled = false;			
+				formCon.CatInc.value = '';				
+				//formCon.cCatDescInc.style.display = 'none';
+				//Conhecimento
+				formCon.ConInc.disabled = false;				
+				formCon.ConInc.value = '';			
+				//formCon.cConDescInc.style.display = 'none';
+				//Nível
+				formCon.LevelInc.value = '';
+			}	
+		}
+
+		function fSubmit()
+		{
+
+			var AreaSub = document.getElementById("AreaInc").value
+			var CatSub  = document.getElementById("CatInc").value
+			var ConSub  = document.getElementById("ConInc").value
+			
+ 
+			if( formCon.AreaInc.value == '' )
+			{
+				alert('<%="Selecione a Área"%>.'); //Selecione o idioma
+				formCon.AreaInc.focus();
+				return;		
+			}
+
+			
+			if( formCon.CatInc.value == '' )
+			{
+				alert('<%="Selecione a Categoria"%>.'); //Selecione o idioma
+				formCon.CatInc.focus();
+				return;		
+			}
+
+			
+			if( formCon.ConInc.value == '' )
+			{
+				alert('<%="Selecione o Conhecimento"%>.'); //Selecione o idioma
+				formCon.ConInc.focus();
+				return;		
+			}
+
+			var tabl = document.getElementById('tab_conhecimentos');
+			var l 	 = tabl.rows.length;
+			var i    = 0;			
+		
+			if (l > 1){
+				for ( var i = 1; i < l; i++ )
+				{
+					var AreaCad	= document.getElementById('Area'+i).innerText;			
+					var CatCad  = document.getElementById('Cat'+i).innerText;
+					var ConCad	= document.getElementById('Con'+i).innerText;
+	
+					if ( AreaCad+CatCad+ConCad == AreaSub+CatSub+ConSub )
+					{
+						alert('<%="Conhecimento já cadastrado"%>.');
+						return;
+					}
+
+				}
+			}
+   
+			formCon.AreaCode.value 		= AreaSub
+			formCon.CategoryCode.value 	= CatSub
+			formCon.KnowCode.value 		= ConSub
+			formCon.Level.value 		= document.getElementById("NivelInc").value
+
+			formCon.action = "B_CMeuCadFunc.APW";
+			formCon.submit();
+	
+		}
+
+
+
+		function GoToPage(ev, nPageType, nPage, nTotalPage, cFilterField, cFilterValue, cEmployeeFilial, cRegistration) {
+			var cURL
+			var cDestination
+		
+			if (ev) {
+				if (ev.type == "keypress") {
+					var keyCode = window.event ? ev.keyCode : ev.which;
+				
+					if (keyCode != 13)
+						return true;
+				
+					if (nPage > nTotalPage) {
+						alert('<%="Pagina Invalida"%>'); <!-- Pagina Invalida -->
+						return false;
+					}
+				}
+			}
+		
+			if (nPageType == 1) {
+				cURL = 'B_AMEUCADFUNC.APW'
+				cDestination = 'divFuncionarios';
+			}
+			
+			var oParams = {};
+		
+			if (cEmployeeFilial != null)
+				oParams.EmployeeFilial = cEmployeeFilial;
+
+			if (cRegistration != null)
+				oParams.Registration = cRegistration;
+
+			if (nPage != null)
+				oParams.Page = nPage;
+		
+			if (cFilterField != null)
+				oParams.FilterField = cFilterField;
+		
+			if (cFilterValue != null)
+				oParams.FilterValue = cFilterValue;		
+				
+			new Ajax.Updater(	cDestination, 
+								cURL,
+									{
+										method: 'get',     
+										evalScripts: true,
+										parameters: oParams
+									}
+								);
+			return false;
+
+			
+		}
+		
+		<%	If(valtype(msg) != "U") %>
+				alert('<%=msg%>');
+		<%	EndIf %>
+	</script>
+<body>
+	<h2><%=cTitulo%></h2>
+	<p><%=cObjetivo%></p>		
+	<br>
+	<div id="divFuncionarios" name="divFuncionarios">
+		<div>
+			<img src="imagens-rh/ajax-loader.gif"><br>
+			<p><%="Aguarde"%></p><!-- Aguarde -->
+		</div>
+		<script language="Javascript">
+			GoToPage(null, 1)
+		</script>
+	</div>
+</body>
+</html>

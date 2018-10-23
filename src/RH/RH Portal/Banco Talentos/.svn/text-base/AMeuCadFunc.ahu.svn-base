@@ -1,0 +1,601 @@
+<%
+#INCLUDE "PROTHEUS.CH"
+#INCLUDE "APWEBEX.CH"
+
+Local m 		:= 1
+Local cLinkAlt 	:= ""
+Local cLinkDel 	:= ""
+Local cInfoWS	:= ""
+Local nX
+
+Local aArea		:= U_GetArea()
+
+%>	
+<html>
+<head> 
+<title></title>
+<META HTTP-EQUIV="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="styles/consulta.css" rel="stylesheet" type="text/css">
+<link href="styles/estilo.css" rel="stylesheet" type="text/css">		
+<script src="pplanguage.js" type="text/javascript"></script>
+<script src="scripts/prototype.js" language="JavaScript" type="text/javascript"></script>
+<script src="scripts/scriptaculous.js" language="JavaScript" type="text/javascript"></script>
+<script src="criaobj.js" type="text/javascript"></script>
+<script src="scripts/ajax.js" language="JavaScript" type="text/javascript"></script>
+</head>
+<script language="Javascript">
+
+        function carregaCateg(area) {
+
+			if (area != ""){
+			         
+        	new Ajax.Request( "B_DMEUCADFUNC.APW",
+                     	{
+                                method: 'get',
+                                asynchronous: false,
+                                parameters: {tipoVal: area },
+                                onFailure: function() { alert('Erro ao carregar categorias!'); return; },
+                                onSuccess: function(transport) 
+                                        { var response = transport.responseText || "";															 	                                  
+                                                                var resultado = response.split('*');                                                               
+																var _select  = document.getElementById('CatInc');
+																var _select2 = document.getElementById('ConInc');
+																var i = 0
+																	
+                                                                    for(i=_select.options.length-1;i>=1;i--)
+    	                                                            {
+        	    	                                                  _select.remove(i);
+    			                                                    }	
+
+                                                                    for(i=_select2.options.length-1;i>=1;i--)
+    	                                                            {
+        	    	                                                  _select2.remove(i);
+    			                                                    }	
+		
+																	for (i = 0; i < resultado.length; i++){
+																		 																		
+      																	var valor = resultado[i].substring(0,3);
+																		var desc  = resultado[i];
+      																	var op = new Option(desc, valor, false, false);
+																		_select.options[i+1] = op;      																      												
+        															}															
+																//_select.innerHTML = response; 
+																//for (i = 1; i <= _select.options.length; i++){																	
+																	//document.getElementById('Copcoes'+i).style.display  = "";
+																//}	  
+                                        						document.getElementById('CatInc').disabled = false;
+                                        }
+                     }
+               );
+
+			}
+			else
+			{
+				var _select = document.getElementById('CatInc');
+                for(i=_select.options.length-1;i>=1;i--)
+    	        {
+        	    	_select.remove(i);
+    			}
+				document.getElementById('CatInc').disabled = true;
+
+				var _select2 = document.getElementById('ConInc');
+                for(i=_select2.options.length-1;i>=1;i--)
+    	        {
+        	    	_select2.remove(i);
+    			}			
+				document.getElementById('ConInc').disabled = true;
+
+			}
+
+        }
+
+
+        function Conhecs(categ) {
+
+			var area = document.getElementById('AreaInc').value;
+
+			if (categ != "" && area != "") {
+			         
+        	new Ajax.Request( "B_EMeuCadFunc.APW",
+                     	{
+                                method: 'get',
+                                asynchronous: false,
+                                parameters: {tipoVal: area , categ: categ},
+                                onFailure: function() { alert('Erro ao carregar conhecimentos!'); return; },
+                                onSuccess: function(transport) 
+                                        { var response = transport.responseText || "";															 	                                  
+                                                                var resultado = response.split('*');                                                               
+																var _select = document.getElementById('ConInc');
+																var i = 0
+																	
+                                                                    for(i=_select.options.length-1;i >= 1;i--)
+    	                                                            {
+        	    	                                                  _select.remove(i);
+    			                                                    }	
+		
+																	for (i = 0; i < resultado.length; i++){
+																		 																		
+      																	var valor = resultado[i].substring(0,3);
+																		var desc  = resultado[i];
+      																	var op = new Option(desc, valor, false, false);
+																		_select.options[i+1] = op;      																      												
+        															}
+																
+													
+                                        						document.getElementById('ConInc').disabled = false;
+																transport = null;  
+                                        }
+                     }
+               );
+
+			}
+			else
+			{
+				var _select = document.getElementById('ConInc');
+                for(i=_select.options.length-1;i>=1;i--)
+    	        {
+        	    	_select.remove(i);
+    			}	
+				document.getElementById('ConInc').disabled = true;
+			}
+
+        }
+
+	function Imprime(text){
+		text=document
+		print(text)
+	}
+	
+	function Exclui(infoWS){	
+		var aInfo = infoWS.split(";")		
+			if( confirm('<%="Deseja realmente excluir o conhecimento selecionado"%>?') ){ //Deseja realmente excluir o item selecionado	
+				formCon.RHId.value 			= aInfo[0];
+				formCon.AreaCode.value 		= aInfo[1];
+				formCon.CategoryCode.value 	= aInfo[2];
+				formCon.KnowCode.value 		= aInfo[3];
+				formCon.Level.value 		= aInfo[4];
+				formCon.nOperation.value 	= aInfo[5];
+				formCon.nIndice.value		= aInfo[6];
+				formCon.action 				= "B_BMeuCadFunc.APW"; 
+				formCon.submit();
+			}
+	}
+	
+	function Altera(infoWS){	
+		var aInfo 		= infoWS.split(";")
+		var valNivel	= document.getElementById(aInfo[7]).value;
+	
+		if( confirm('<%="Deseja realmente confirmar a alteração do conhecimento selecionado"%>?') ){ //Deseja realmente excluir o item selecionado	
+				formCon.RHId.value 			= aInfo[0];
+				formCon.AreaCode.value 		= aInfo[1];
+				formCon.CategoryCode.value 	= aInfo[2];
+				formCon.KnowCode.value 		= aInfo[3];
+				formCon.Level.value 		= valNivel
+				formCon.nOperation.value 	= aInfo[5];
+				formCon.nIndice.value		= aInfo[6];
+				formCon.action 				= "B_BMeuCadFunc.APW"; 
+				formCon.submit();
+			
+				alert('Registro atualizado com sucesso.')
+		}		 
+	}
+
+	function incluir(opcao){
+		if ( opcao == "adiciona" ) {
+			tabIncluir.style.display = '';
+			formCon.cancela.style.display = '';
+			formCon.adiciona.style.display = "none";
+			document.getElementById("acao").innerHTML = "<%='Incluir Conhecimento'%>";
+		}
+		else {
+			tabIncluir.style.display = 'none';
+			formCon.cancela.style.display = 'none';
+			formCon.adiciona.style.display = '';
+			formCon.inclui.style.display = '';
+			document.getElementById("acao").innerHTML = "";
+			//ZERA OS CAMPOS
+			//Area
+			formCon.AreaInc.disabled = false;			
+			formCon.AreaInc.value = '';			
+			//Categoria
+			formCon.CatInc.disabled = false;			
+			formCon.CatInc.value = '';
+			//Conhecimento
+			formCon.ConInc.disabled = false;		
+			formCon.ConInc.value = '';		
+			//Nível
+			formCon.LevelInc.value = '';
+		}	
+	}
+
+		function fSubmit()
+		{
+
+			var AreaSub = document.getElementById("AreaInc").value
+			var CatSub  = document.getElementById("CatInc").value
+			var ConSub  = document.getElementById("ConInc").value
+			
+ 
+			if( formCon.AreaInc.value == '' )
+			{
+				alert('<%="Selecione a Área"%>.'); //Selecione o idioma
+				formCon.AreaInc.focus();
+				return;		
+			}
+
+			
+			if( formCon.CatInc.value == '' )
+			{
+				alert('<%="Selecione a Categoria"%>.'); //Selecione o idioma
+				formCon.CatInc.focus();
+				return;		
+			}
+
+			
+			if( formCon.ConInc.value == '' )
+			{
+				alert('<%="Selecione o Conhecimento"%>.'); //Selecione o idioma
+				formCon.ConInc.focus();
+				return;		
+			}
+
+			var tabl = document.getElementById('tab_conhecimentos');
+			var l 	 = tabl.rows.length;
+			var i    = 0;			
+		
+			if (l > 1){
+				for ( var i = 1; i < l; i++ )
+				{
+					var AreaCad	= document.getElementById('Area'+i).innerText;			
+					var CatCad  = document.getElementById('Cat'+i).innerText;
+					var ConCad	= document.getElementById('Con'+i).innerText;
+	
+					if ( AreaCad+CatCad+ConCad == AreaSub+CatSub+ConSub )
+					{
+						alert('<%="Conhecimento já cadastrado"%>.');
+						return;
+					}
+
+				}
+			}
+   
+			formCon.AreaCode.value 		= AreaSub
+			formCon.CategoryCode.value 	= CatSub
+			formCon.KnowCode.value 		= ConSub
+			formCon.Level.value 		= document.getElementById("NivelInc").value
+
+			formCon.action = "B_CMeuCadFunc.APW";
+			formCon.submit();
+	
+		}
+</script>
+<style type='text/css'>
+#alinhaBotao {
+	position: absolute; 
+	left: 38%;   
+	transform: translateX(-38%);
+}
+</style>
+<body>
+	<p></p>
+	<div id="divCabecalho" name="divCabecalho">
+		<fieldset>                   
+			<div class="container-cabec">
+				<div class="div-titulo">MATRÍCULA:</div><!--Matricula:-->
+				<div class="div-conteudo"><%=HttpSession->aDadosCad[1]:cMATRICULA%></div>
+			</div>
+			<div class="container-cabec">
+				<div class="div-titulo">NOME:</div><!--Nome:-->
+				<div class="div-conteudo"><%=HttpSession->aDadosCad[1]:cNOME%></div>
+			</div>
+			<div class="container-cabec">
+				<div class="div-titulo">ADMISSÃO:</div><!--Admissao:-->
+				<div class="div-conteudo"><%=HttpSession->aDadosCad[1]:cADMISSAO%></div>
+			</div>
+			<div class="container-cabec">
+				<div class="div-titulo">CARGO:</div><!--Cargo:-->
+				<div class="div-conteudo"><%=HttpSession->aDadosCad[1]:cCARGO%></div>
+			</div>
+			<div class="container-cabec">
+				<div class="div-titulo">ESPECIALIZAÇÃO:</div><!--Especialização:-->
+				<div class="div-conteudo"><%=HttpSession->aDadosCad[1]:cESPECIALIZ%></div>
+			</div>
+			<div class="container-cabec">
+				<div class="div-titulo">DEPARTAMENTO:</div> <!-- Departamento -->
+				<div class="div-conteudo"><%=HttpSession->aDadosCad[1]:cDESCDEPTO%></div>
+			</div>
+		<hr align="left">	
+		</fieldset>
+
+	</div> 
+
+	<div id="divMeuCadastro" name="divMeuCadastro">
+	
+		<h2><%="Formações"%></h2>			
+		<table width="800"> <!-- Formações -->
+			<tr>
+				<th width="30%"><%="Categoria"    %></th>		<!-- Desc. Categoria	-->
+				<th width="30%"><%="Curso"        %></th>		<!-- Cod. Curso			-->
+				<th width="20%"><%="Entidade"     %></th>		<!-- Desc. Entidade		-->
+				<th width="10%"><%="Conclusão"    %></th>		<!-- Conclusão      	-->
+				<th width="10%"><%="Duração"	  %></th>		<!-- Duracao			-->																		
+			</tr>
+			<% If Len(HttpSession->aForms) > 0 %>  
+				<% For m := 1 To Len(HttpSession->aForms) %>
+						<tr>
+						<td class="info-esq"><%=HttpSession->aForms[m]:CDESCCAT%></td>				<!-- Desc. Categoria	-->
+						<td class="info-esq"><%=HttpSession->aForms[m]:CDESCCUR%></td>				<!-- Desc. do Curso		-->
+						<td class="info-esq"><%=HttpSession->aForms[m]:CDESCENTIDA%></td>			<!-- Desc. da Entidade	-->
+						<td class="info-esq"><%=HttpSession->aForms[m]:CDATAFIM%></td>				<!-- Conclusão	 		-->
+						<td class="info-esq"><%=HttpSession->aForms[m]:CDURACAO%></td>				<!-- Duracao    		-->
+						</tr>					
+				<% Next m %> 
+			<% Else %>
+				<tr>
+					<td class="info-cent" colspan='4'><%= "" %></td>
+				</tr>
+			<% EndIf %>
+		</table>
+			
+		<h2><%="Capacitações"%></h2>			
+		<table width="800"> <!-- Capacitações -->
+			<tr>
+				<th width="30%"><%="Categoria"    %></th>		<!-- Desc. Categoria	-->
+				<th width="30%"><%="Curso"        %></th>		<!-- Cod. Curso			-->
+				<th width="20%"><%="Entidade"     %></th>		<!-- Desc. Entidade		-->
+				<th width="10%"><%="Conclusão"    %></th>		<!-- Conclusão      	-->
+				<th width="10%"><%="Duração"	  %></th>		<!-- Duracao			-->																		
+			</tr>
+			<% If Len(HttpSession->aCapacs) > 0 %>  
+				<% For m := 1 To Len(HttpSession->aCapacs) %>
+						<tr>
+						<td class="info-esq"><%=HttpSession->aCapacs[m]:CDESCCAT%></td>				<!-- Desc. Categoria	-->
+						<td class="info-esq"><%=HttpSession->aCapacs[m]:CDESCCUR%></td>				<!-- Desc. do Curso		-->
+						<td class="info-esq"><%=HttpSession->aCapacs[m]:CDESCENTIDA%></td>			<!-- Desc. da Entidade	-->
+						<td class="info-esq"><%=HttpSession->aCapacs[m]:CDATAFIM%></td>				<!-- Conclusão	 		-->
+						<td class="info-esq"><%=HttpSession->aCapacs[m]:CDURACAO%></td>				<!-- Duracao    		-->
+						</tr>					
+				<% Next m %> 
+			<% Else %>
+				<tr>
+					<td class="info-cent" colspan='4'><%= "" %></td>
+				</tr>
+			<% EndIf %>
+		</table>		
+			
+		<h2><%="Certificações"%></h2>
+					
+		<table width="800"> <!-- Certificações -->
+			<tr>
+				<th width="30%"><%="Categoria"    %></th>		<!-- Desc. Categoria	-->
+				<th width="30%"><%="Curso"        %></th>		<!-- Cod. Curso			-->
+				<th width="20%"><%="Entidade"     %></th>		<!-- Desc. Entidade		-->
+				<th width="10%"><%="Conclusão"    %></th>		<!-- Conclusão      	-->
+				<th width="10%"><%="Duração"	  %></th>		<!-- Duracao			-->																		
+			</tr>
+			<% If Len(HttpSession->aCertifs) > 0 %>  
+				<% For m := 1 To Len(HttpSession->aCertifs) %>
+						<tr>
+						<td class="info-esq"><%=HttpSession->aCertifs[m]:CDESCCAT%></td>				<!-- Desc. Categoria	-->
+						<td class="info-esq"><%=HttpSession->aCertifs[m]:CDESCCUR%></td>				<!-- Desc. do Curso		-->
+						<td class="info-esq"><%=HttpSession->aCertifs[m]:CDESCENTIDA%></td>				<!-- Desc. da Entidade	-->
+						<td class="info-esq"><%=HttpSession->aCertifs[m]:CDATAFIM%></td>				<!-- Conclusão	 		-->
+						<td class="info-esq"><%=HttpSession->aCertifs[m]:CDURACAO%></td>				<!-- Duracao    		-->
+						</tr>					
+				<% Next m %> 
+			<% Else %>
+				<tr>
+					<td class="info-cent" colspan='4'><%=""%></td>
+				</tr>
+			<% EndIf %>
+		</table>
+		<br /> 				
+		<h2><%="Conhecimentos"%></h2>
+		<form name="formCon" action="" method="post">			
+			<table width="800" id="tab_conhecimentos"> <!-- Conhecimentos -->
+				<tbody>
+				<tr>
+					<th width="10%"><%="Cod. Área"%></th>			<!-- Cod. Area			-->
+					<th width="15%"><%="Desc. Área"%></th>			<!-- Desc. Area			-->
+					<th width="10%"><%="Cod. Categoria"%></th>		<!-- Cod. Categoria		-->
+					<th width="15%"><%="Desc. Categoria"%></th>		<!-- Desc. Categoria	-->					
+					<th width="10%"><%="Cod. Conhecimento"%></th>	<!-- Cod. Conhecimento	-->
+					<th width="20%"><%="Desc. Conhecimento"%></th>	<!-- Desc. Conhecimento	-->
+					<th width="10%"><%="Nível"%></th>				<!-- Nivel				-->
+					<% If ValType(HttpSession->xMatricula) == 'U'%>
+						<th width="5%"><%="Salvar"%></th>				<!-- Alterar			-->
+						<th width="5%"><%="Excluir"%></th>				<!-- Excluir			-->
+					<% EndIf %>
+				</tr>
+				<% If Len(HttpSession->aConhecs) > 0 %>  
+					<% For m := 1 To Len(HttpSession->aConhecs) %>
+							<% If !Empty(HttpSession->aConhecs[m]:CAREA) %>
+								<tr>
+								<td class='info-cent' id="<%='Area'+CvalToChar(m)%>"><%=HttpSession->aConhecs[m]:CAREA%></td>				<!-- Cod. Area			-->
+								<td class="info-esq"><%=HttpSession->aConhecs[m]:CDESCAREA%></td>											<!-- Desc. Area			-->
+								<td class="info-esq"  id="<%='Cat'+CvalToChar(m)%>"><%=HttpSession->aConhecs[m]:CCATEGORIA%></td>			<!-- Cod. Categoria		-->
+								<td class="info-esq"><%=HttpSession->aConhecs[m]:CDESCCAT%></td>											<!-- Desc. Categoria	-->
+								<td class="info-esq"  id="<%='Con'+CvalToChar(m)%>"><%=HttpSession->aConhecs[m]:CCODCONHEC%></td>			<!-- Cod. Conhecimento	-->
+								<td class="info-esq"><%=HttpSession->aConhecs[m]:CDESCCON%></td>											<!-- Desc. Conhecimento	-->
+							
+								<td class="info-esq">
+								<% If ValType(HttpSession->xMatricula) == 'U'%>
+									<select id="<%='linha'+CvalToChar(m)%>">
+								<% Else %>
+									<select id="<%='linha'+CvalToChar(m)%>" disabled>
+								<% EndIf %>
+	
+									 	<% If HttpSession->aConhecs[m]:CNIVEL = "1" %>
+									 		<option value="1" selected><%="Teórico"%></option>
+									 	<% Else %>
+									 		<option value="1"><%="Teórico"%></option>
+									 	<% EndIf %>						 	
+									 	<% If HttpSession->aConhecs[m]:CNIVEL = "2" %>
+									 		<option value="2" selected><%="Regular"%></option>
+									 	<% Else %>
+									 		<option value="2"><%="Regular"%></option>
+									 	<% EndIf %>
+									 	
+									 	<% If HttpSession->aConhecs[m]:CNIVEL = "3" %>
+									 		<option value="3" selected><%="Bom"%></option>
+									 	<% Else %>
+									 		<option value="3"><%="Bom"%></option>
+									 	<% EndIf %>
+								 	
+									 	<% If HttpSession->aConhecs[m]:CNIVEL = "4" %>
+									 		<option value="4" selected><%="Ótimo"%></option>
+									 	<% Else %>
+									 		<option value="4"><%="Ótimo"%></option>
+									 	<% EndIf %>						 							 
+									</select>
+								</td>
+								
+								<% If ValType(HttpSession->xMatricula) == 'U'%>
+								
+									<!-- //Link Alteração -->
+									<% 							
+							 		cInfoWS := HttpSession->RhMat	   				+";" 	
+							 		cInfoWS += HttpSession->aConhecs[m]:CAREA 		+";" 
+							 		cInfoWS += HttpSession->aConhecs[m]:CCATEGORIA 	+";" 	
+							 		cInfoWS += HttpSession->aConhecs[m]:CCODCONHEC 	+";"
+							 		cInfoWS += "" 									+";" 									 							
+							 		cInfoWS += "4"  								+";"			
+							 		cInfoWS += "1"									+";"
+									cInfoWS += "linha"+CvalToChar(m)		 																					
+									%>
+																				
+									<td><a href="#" class="links" onClick="Altera('<%=cInfoWS%>')"><img title="Salvar a alteração do Nível do Conhecimento" src="imagens-rh/ok.gif"></a></td> <!-- Alterar Verdinho -->
+												
+									<!-- //Link Exclusão -->												
+									<% 	
+						 			cInfoWS := HttpSession->RhMat	   				+";" 	
+						 			cInfoWS += HttpSession->aConhecs[m]:CAREA 		+";" 
+						 			cInfoWS += HttpSession->aConhecs[m]:CCATEGORIA 	+";" 	
+						 			cInfoWS += HttpSession->aConhecs[m]:CCODCONHEC 	+";"
+						 			cInfoWS += HttpSession->aConhecs[m]:CNIVEL 		+";" 									 							
+						 			cInfoWS += "5"  								+";"			
+						 			cInfoWS += "1" 																	
+									%>
+																			
+									<td><a href="#" class="links" onClick="Exclui('<%=cInfoWS%>')"><img title="Excluir o Conhecimento" src="imagens-rh/cancela.gif"></a></td> <!-- Excluir Vermelho -->
+									
+								<% EndIf %>
+																	
+								</tr>
+							<% EndIf %>													
+					<% Next m %> 
+				<% EndIf %>
+				<tbody>
+			</table>
+			
+			<% If ValType(HttpSession->xMatricula) == 'U'%>
+				<input name="adiciona" id="adiciona" style="display:inherit;" type="button" class="botoes" onClick="incluir(this.id);" value="<%='Incluir Conhecimento'%>">
+          		<input name="cancela"  id="cancelar"  style="display:none;"   type="button" class="botoes" onClick="incluir(this.id);" value="<%='Minimizar'%>">
+          	<% EndIf %>
+          	
+          	<br />
+          	
+      		<div id="tabIncluir" style="display:none;">
+      		<h3 id="acao"></h3>
+      		<fieldset class="field-com-borda">
+          		<legend><strong><%="Conhecimento"%></strong></legend><!-- Conhecimento -->
+          		<br />
+				
+				<label><%="Área"%>:</label><!-- Area -->
+				<select id="AreaInc" onChange="carregaCateg(this.value)">
+				<option value=""><%="Selecione a Área..."%></option>
+				<% For nX := 1 To Len(aArea) %>
+					<option value="<%=SubStr(aArea[nX],1,3)%>"><%=RTrim(aArea[nX])%></option>			
+				<% Next nX %>
+				</select>				 
+				<br/>				
+				<label><%="Categoria"%>:</label><!-- Categoria -->
+				<select id="CatInc" disabled onChange="Conhecs(this.value)">
+				<option value=""><%="Selecione a Categoria..."%></option>
+				</select>
+				<br/>				
+				<label><%="Conhecimento"%>:</label><!-- Conhecimento -->
+				<select id="ConInc" disabled>
+				<option value=""><%="Selecione o Conhecimento..."%></option>
+				</select>
+				<br/>
+				<label><%="Nível"%>:</label><!-- Nível do Conhecimento -->
+				<select id="NivelInc">	
+				 		<option value="1"><%="Teórico"%></option>
+				 		<option value="2"><%="Regular"%></option>
+				 		<option value="3"><%="Bom"%></option>
+				 	 	<option value="4"><%="Ótimo"%></option>				 						 							 
+				</select>						
+				<input type="hidden" name="LevelInc" value="">				           
+								           
+				<br />
+              	<input style="display:inherit;" name="inclui" id="inclui" type="button" class="botoes" onClick="fSubmit();" value="<%='Incluir'%>">              
+              	
+				<input type="hidden" name="RHId" 	  		value="">
+				<input type="hidden" name="RHIdInc" 	  	value="<%=HttpSession->RhMat%>">
+				<input type="hidden" name="AreaCode" 		value="">
+				<input type="hidden" name="CategoryCode" 	value="">
+				<input type="hidden" name="KnowCode" 		value="">
+				<input type="hidden" name="Level" 			value="">
+				<input type="hidden" name="nOperation" 		value="">
+				<input type="hidden" name="nIndice" 		value="">
+				<br/>
+				
+              	 		  	 				
+			</fieldset>
+		</div>
+          		         			  	  								
+		</form>
+		
+		<br />
+						
+		<h2><%="Atividades Funcionais"%></h2>			
+		<table width="800"> <!-- Atividades Funcionais -->
+			<tr>
+				<th width="10%"><%="Área/Depto"%></th>			<!-- Área/Depto			-->
+				<th width="15%"><%="Função"%></th>				<!-- Função				-->
+				<th width="15%"><%="Atividades"%></th>			<!-- Atividades			-->
+				<th width="15%"><%="Projeto"%></th>				<!-- Projeto			-->					
+				<th width="15%"><%="Sub-Projeto"%></th>			<!-- Sub-Projeto		-->
+				<th width="10%"><%="Data início"%></th>			<!-- Data início		-->
+				<th width="10%"><%="Data final"%></th>			<!-- Data final			-->
+				<th width="10%"><%="Ultima Alteração"%></th>	<!-- Ultima Alteração	-->																																																							
+			</tr>
+			<% If Len(HttpSession->aAtivFuncs) > 0 %>  
+				<% For m := 1 To Len(HttpSession->aAtivFuncs) %>
+						<tr>
+						<td class='info-cent'><%=HttpSession->aAtivFuncs[m]:CAREADEPTO%></td>		<!-- Área/Depto			-->
+						<td class="info-esq"><%=HttpSession->aAtivFuncs[m]:CFUNCAO%>	</td>		<!-- Função				-->
+						<td class="info-esq"><%=HttpSession->aAtivFuncs[m]:CATIVIDADES%></td>		<!-- Atividades			-->
+						<td class="info-esq"><%=HttpSession->aAtivFuncs[m]:CPROJETO%></td>			<!-- Projeto			-->
+						<td class="info-esq"><%=HttpSession->aAtivFuncs[m]:CSUBPROJETO%></td>		<!-- Sub-Projeto		-->
+						<td class="info-esq"><%=HttpSession->aAtivFuncs[m]:DDTINICIO%></td>			<!-- Data início		-->
+						<td class="info-esq"><%=HttpSession->aAtivFuncs[m]:DDTFIM%></td>			<!-- Data final			-->
+						<td class="info-esq"><%=HttpSession->aAtivFuncs[m]:DDTALT%></td>			<!-- Ultima Alteração	-->																										
+						</tr>					
+				<% Next m %> 
+			<% Else %>
+				<tr>
+					<td class="info-cent" colspan='9'><%= "" %></td>
+				</tr>
+			<% EndIf %>					
+		</table>
+		
+		<br/>
+		<br/>
+		
+		<div id="alinhaBotao">
+			<input name='bimprimir' id='bimprimir' type='button' value='imprimir' class='button Botoes' onclick='Imprime()'/>
+		</div>
+		
+		<%
+			HttpSession->xMatricula := Nil
+			HttpSession->xNomeFun  	:= Nil
+		%>
+		
+		<br/>
+		
+						
+	</div>
+</body>
+</html>

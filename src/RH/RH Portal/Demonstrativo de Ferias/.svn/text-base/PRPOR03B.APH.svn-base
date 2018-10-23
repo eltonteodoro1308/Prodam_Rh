@@ -1,0 +1,78 @@
+<%
+	local nI
+%>
+
+	<fieldset>
+			<select name="ddlFiltroDemonstrativo" id="ddlFiltroDemonstrativo" class="Texto" onchange="javascript:MudaPlace();">
+				<option value="RC_DATA"  <%=IIF(HttpGet->FilterField == "RC_DATA", "selected", '')%>>Período</option>
+				<option value="RC_SEMANA "<%=IIF(HttpGet->FilterField == "RC_SEMANA", "selected", '')%>>Semana</option>
+			</select>
+			<input name="txtFiltroDemonstrativo" id="txtFiltroDemonstrativo" type="text" size="45" maxlength="50" class="Texto" value="<%=HttpGet->FilterValue%>" placeholder="AAAAMM" onKeyPress="return GoToPage(event, 1, <%=nPageTotal%>, $('ddlFiltroDemonstrativo').value, this.value);">
+	        <input name="btnFiltraDemonstrativo" id="btnFiltraDemonstrativo" type="submit" value="Filtrar" class="Botoes" onClick="GoToPage(event, 1, <%=nPageTotal%>, $('ddlFiltroDemonstrativo').value, $('txtFiltroDemonstrativo').value);"> 
+	        <input name="btnLimpaFiltroDemonstr" id="btnLimpaFiltroDemonstr" type="submit" value="Limpar Filtro" class="Botoes" onClick="GoToPage(event, 1, <%=nPageTotal%>, '', '' );">    
+		
+	<fieldset>
+	<table width="800">
+	<tr>
+		<th>Período Aquisitivo</th>
+		<th>Período de Gozo das Férias</th>
+		<th>Dias de Abono</th>
+	</tr>
+<%
+	If Empty(aVacationReceipts)
+%>
+	<tr>
+		<td class='info-cent'>Não há recibo de férias disponíveis</td>
+	</tr>
+<%
+	Else
+		For nI := 1 To Len(aVacationReceipts)
+			cLink:= "B_PRP03REL.APW?AcquisitiveStartDate=" + DTOC(aVacationReceipts[nI]:dAcquisitiveStartDate) + ;
+							 	"&EnjoymentStartDate=" + DTOC(aVacationReceipts[nI]:dEnjoymentStartDate)
+%>
+	<tr>
+		<td class='info-cent'>
+			<a href="<%=cLink%>" target="_blank" class="links">
+				<%="De " + DTOC(aVacationReceipts[nI]:dAcquisitiveStartDate) + " a " + DTOC(aVacationReceipts[nI]:dAcquisitiveEndDate)%>
+			</a>				
+		</td>
+		<td class='info-cent'>
+			<a href="<%=cLink%>" target="_blank" class="links">
+				<%="De " + DTOC(aVacationReceipts[nI]:dEnjoymentStartDate) + " a " + DTOC(aVacationReceipts[nI]:dEnjoymentEndDate)%>
+			</a>				
+		</td>
+		<td class="info-dir">
+			<a href="<%=cLink%>" target="_blank" class="links">
+				<%=aVacationReceipts[nI]:nPecuniaryAllowance%>
+			</a>				
+		</td>	
+	</tr>
+<%
+		Next nI
+	EndIf
+	if (nPageTotal > 1)
+%>
+	   <div class='container-pagin'>
+			<div class="pagin-esq">
+					Pagina:
+					<input id="txtPagina" name="txtPagina" type="text" style="text-align:right" value="<%=nCurrentPage%>" size="3" maxlength="3" onKeyPress="return GoToPage(event, this.value, <%=nPageTotal%>);">&nbsp;/&nbsp;<%=nPageTotal%>&nbsp;
+				</div>
+			<div class="pagin-dir">
+<%		IF (nCurrentPage > 1) %>
+				<a href="#" onclick="GoToPage(event, 1, <%=nPageTotal%>)" class="ButtonFirst"></a>
+			 	<a href="#" onclick="GoToPage(event, <%=nCurrentPage-1%>), <%=nPageTotal%>" class="ButtonPrevious"></a>
+<%		Else	%>						
+				<a href="#" class="ButtonFirstDisabled"></a>
+				<a href="#" class="ButtonPreviousDisabled"></a>
+<%		EndIf	%>
+<%		IF (nCurrentPage != nPageTotal) %>
+				<a href="#" onclick="GoToPage(event, <%=nCurrentPage+1%>, <%=nPageTotal%>)" class="ButtonNext"></a>
+				<a href="#" onclick="GoToPage(event, <%=nPageTotal%>, <%=nPageTotal%>)" class="ButtonLast"></a>
+<%		Else	%>						
+				<a href="#" class="ButtonNextDisabled"></a>
+				<a href="#" class="ButtonLastDisabled"></a>
+<%		EndIf	%>
+				</div>
+		</div>
+<%	EndIf		%>  
+</table>   

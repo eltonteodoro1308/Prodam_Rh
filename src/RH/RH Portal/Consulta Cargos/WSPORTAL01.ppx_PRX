@@ -1,0 +1,2749 @@
+#line 1 "T:\WorkSpace\include\WSPORTAL01.ch"
+#line 2 "T:\WorkSpace\PRODAM\RH\Portal RH\Consulta Cargos\WSPORTAL01.PRX"
+#line 1 "T:\WorkSpace\include\APWEBSRV.CH"
+#line 3 "T:\WorkSpace\PRODAM\RH\Portal RH\Consulta Cargos\WSPORTAL01.PRX"
+#line 1 "T:\WorkSpace\include\PROTHEUS.CH"
+#line 1 "T:\WorkSpace\include\Dialog.ch"
+#line 28 "PROTHEUS.CH"
+#line 1 "T:\WorkSpace\include\Font.ch"
+#line 29 "PROTHEUS.CH"
+#line 1 "T:\WorkSpace\include\PTMenu.ch"
+#line 31 "PROTHEUS.CH"
+#line 1 "T:\WorkSpace\include\Print.ch"
+#line 33 "PROTHEUS.CH"
+#line 1 "T:\WorkSpace\include\Colors.ch"
+#line 35 "PROTHEUS.CH"
+#line 1 "T:\WorkSpace\include\Folder.ch"
+#line 37 "PROTHEUS.CH"
+#line 1 "T:\WorkSpace\include\msobject.ch"
+#line 38 "PROTHEUS.CH"
+#line 1 "T:\WorkSpace\include\VKey.ch"
+#line 42 "PROTHEUS.CH"
+#line 1 "T:\WorkSpace\include\WinApi.ch"
+#line 44 "PROTHEUS.CH"
+#line 1 "T:\WorkSpace\include\FWCommand.ch"
+#line 47 "PROTHEUS.CH"
+#line 1 "T:\WorkSpace\include\FWCSS.CH"
+#line 50 "PROTHEUS.CH"
+#line 5 "T:\WorkSpace\PRODAM\RH\Portal RH\Consulta Cargos\WSPORTAL01.PRX"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_ObjNewClass( SAmbiente , WSSTRUCT )
+	_ObjClassData( RpoRelease,String, , )
+	_ObjClassData( Versao,String, , )
+_ObjEndClass()
+
+
+
+_ObjNewClass( LoginUserStruct , WSSTRUCT )
+_ObjClassData( USERCODE,opt_String, , )
+_ObjClassData( USERLOGIN,String, , )
+_ObjClassData( USERPASSWORD,String, , )
+_ObjClassData( USEREMAIL,opt_String, , )
+_ObjClassData( USERWS,opt_String, , )
+_ObjClassData( USERNAME,String, , )
+_ObjClassData( USERROLES,Integer, , )
+_ObjClassData( USERACCESSES,opt_arrayof_LoginAccessesStruct, , )
+_ObjClassData( USERACCESSESHEADER,opt_arrayof_String, , )
+_ObjClassData( USERENTIRIES,opt_arrayof_LoginEntiryStruct, , )
+_ObjClassData( USERENTIRIESHEADER,opt_arrayof_String, , )
+_ObjClassData( USERSUPER,opt_String, , )
+_ObjClassData( USERSKIN,opt_String, , )
+_ObjClassData( USERGROUP,opt_String, , )
+_ObjClassData( USERLOGPLS,opt_LOGINVIEW, , )
+_ObjEndClass()
+
+
+
+
+_ObjNewClass( SAtalhos , WSSTRUCT )
+		_ObjClassData( CodMnu,opt_String, , )
+		_ObjClassData( Descri,opt_String, , )
+		_ObjClassData( Imagem,opt_String, , )
+		_ObjClassData( WebSrv,opt_String, , )
+		_ObjClassData( Rotina,opt_String, , )
+_ObjEndClass()
+
+
+
+_ObjNewClass( LOGINVIEW , WSSTRUCT )
+	_ObjClassData( UserLoginCode,opt_String, , )
+	_ObjClassData( UserEMail,opt_String, , )
+	_ObjClassData( IntDat,opt_Integer, , )
+	_ObjClassData( TipCar,opt_String, , )
+	_ObjClassData( Biometria,opt_String, , )
+	_ObjClassData( ModBio,opt_String, , )
+	_ObjClassData( TpPortal,Integer, , )
+	_ObjClassData( ListOfRDA,opt_arrayof_RDAView, , )
+	_ObjClassData( ListOfOPE,opt_arrayof_SOperadora, , )
+	_ObjClassData( ListOfAcs,opt_arrayof_SAtalhos, , )
+_ObjEndClass()
+
+_ObjNewClass( LoginEntiryStruct , WSSTRUCT )
+_ObjClassData( ENTIRY,String, , )
+_ObjClassData( ID_ENTIRY,String, , )
+_ObjClassData( NICKNAME,opt_String, , )
+_ObjClassData( NAME,opt_String, , )
+_ObjClassData( FederalID,opt_String, , )
+_ObjClassData( Skin,opt_String, , )
+_ObjEndClass()
+
+_ObjNewClass( LoginMenu , WSSTRUCT )
+_ObjClassData( CODE,String, , )
+_ObjClassData( Description,String, , )
+_ObjClassData( SuperiorCode,String, , )
+_ObjClassData( WebService,String, , )
+_ObjClassData( ProcedureCall,String, , )
+_ObjClassData( Order,Integer, , )
+_ObjClassData( MenuIsBlocked,opt_Boolean, , )
+_ObjClassData( ApvlVision,opt_String, , )
+_ObjClassData( ApvlInitLevel,opt_Integer, , )
+_ObjClassData( ApvlLevels,opt_Integer, , )
+_ObjEndClass()
+
+_ObjNewClass( LoginAccessesStruct , WSSTRUCT )
+_ObjClassData( WEBSRV,String, , )
+_ObjClassData( NAME,String, , )
+_ObjClassData( WKFAPV,String, , )
+_ObjEndClass()
+
+
+
+_ObjNewClass( UserPortal , WSSERVICE ); _ObjClassData( DESCRIPTION_UserPortal , string, , If(cPaisLoc$"ANG|PTG","Serviço de controlo e actualização dos utilizadores de portais","Serviço de controle e atualização dos usuários de portais") ); _ObjClassData( DESCRIPTION__NAMESPACE_UserPortal , string, , "http://webservices.microsiga.com.br/userportal.apw" )
+_ObjClassData( Header,arrayof_BrwHeader, , )
+_ObjClassData( HeaderType,String, , )
+_ObjClassData( USERCODE,String, , )
+_ObjClassData( USERLOGIN,String, , )
+_ObjClassData( USERPASSWORD,String, , )
+_ObjClassData( USEROLDPASSWORD,String, , )
+_ObjClassData( PORTALACCESS,opt_String, , )
+_ObjClassData( USERTYPE,opt_String, , )
+_ObjClassData( USERPCODE,LoginUserStruct, , )
+_ObjClassData( USERSGROUP,opt_arrayof_LoginUserStruct, , )
+_ObjClassData( USERLISTPORTAL,arrayof_GenericStruct, , )
+_ObjClassData( USERPORTALCODE,String, , )
+_ObjClassData( USERLISTMENU,arrayof_LoginMenu, , )
+_ObjClassData( OK,Integer, , )
+_ObjClassData( CLIENTS,arrayof_String, , )
+_ObjClassData( InfAmbiente,SAmbiente, , )
+
+_ObjClassMethod( PrtHeader, , ); _ObjClassData( DESCRIPTION_PrtHeader , string, , "Método que descreve as estruturas de retorno do serviço " )
+_ObjClassMethod( PrtLogin, , ); _ObjClassData( DESCRIPTION_PrtLogin , string, , If(cPaisLoc$"ANG|PTG","Método de validação do login do utilizador","Método de validação do Login do usuário") )
+_ObjClassMethod( PrtLogout, , ); _ObjClassData( DESCRIPTION_PrtLogout , string, , If(cPaisLoc$"ANG|PTG","Método de logout do utilizador","Método de logout do usuário") )
+_ObjClassMethod( PrtGetGroup, , ); _ObjClassData( DESCRIPTION_PrtGetGroup , string, , If(cPaisLoc$"ANG|PTG","Método de listagem dos grupos ou utilizadores vinculados ao utilizador 'administrador'","Método de listagem dos grupos ou usuários vinculados ao usuário 'Administrador'") )
+_ObjClassMethod( PrtPutUser, , ); _ObjClassData( DESCRIPTION_PrtPutUser , string, , If(cPaisLoc$"ANG|PTG","Método de actualização das informações do utilizador ou grupo do portal. <br><br><i>a manipulação dos direitos apenas pode ser feita pelo 'administrador'</i>","Método de atualização das informações do usuário ou grupo do portal. <br><br><i>A manipulação dos direitos somente pode ser feita pelo 'Administrador'</i>") )
+_ObjClassMethod( PrtPswUser, , ); _ObjClassData( DESCRIPTION_PrtPswUser , string, , If(cPaisLoc$"ANG|PTG","Método de actualização da palavra-passe do utilizador","Método de atualização da senha do usuário") )
+_ObjClassMethod( PrtListPortals, , ); _ObjClassData( DESCRIPTION_PrtListPortals , string, , If(cPaisLoc$"ANG|PTG","Método de listagem dos portais disponíveis. <br><br><i>este método não analisa os direitos de acesso aos portais.</i>","Método de listagem dos portais disponiveis. <br><br><i>Este método não analisa os direitos de acesso aos portais.</i>") )
+_ObjClassMethod( PrtListMenu, , ); _ObjClassData( DESCRIPTION_PrtListMenu , string, , If(cPaisLoc$"ANG|PTG","Método de listagem do menu dos portais. <br><br><i> este método mostra o menu do utilizador conforme os direitos de acesso aos web services públicados no sistema</i>","Método de listagem do menu dos portais. <br><br><i> Este método demonstra o menu do usuário conforme os direitos de acesso aos web services publicados no sistema</i>") )
+_ObjClassMethod( PrtGetClientsByUser, , ); _ObjClassData( DESCRIPTION_PrtGetClientsByUser , string, , "" )
+_ObjClassMethod( PrtAmbiente, , ); _ObjClassData( DESCRIPTION_PrtAmbiente , string, , "Retorna informação do ambiente" )
+_ObjEndClass()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Function ___UserPortal____PRTHEADER( HEADERTYPE,HEADER)
+
+Local nX := 0
+
+Self:HeaderType := Upper(Self:HeaderType)
+
+Do Case
+	Case Self:HeaderType == "LOGINMENU"
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("AI8_CODMNU")
+		Self:Header[nX]:HeaderField   := "CODE"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+
+
+
+
+
+
+
+				Self:Header[nX]:HeaderTitle   := RetTitle("AI8_TEXTO")
+
+
+
+		Self:Header[nX]:HeaderField   := "DESCRIPTION"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("AI8_CODPAI")
+		Self:Header[nX]:HeaderField   := "SUPERIORCODE"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("AI8_WEBSRV")
+		Self:Header[nX]:HeaderField   := "WEBSERVICE"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("AI8_ROTINA")
+		Self:Header[nX]:HeaderField   := "PROCEDURECALL"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+	Case Self:HeaderType == "LOGINUSERSTRUCT"
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("AI3_CODUSU")
+		Self:Header[nX]:HeaderField   := "USERCODE"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("AI3_LOGIN")
+		Self:Header[nX]:HeaderField   := "USERLOGIN"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("AI3_PSW")
+		Self:Header[nX]:HeaderField   := "USERPASSWORD"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("AI3_NOME")
+		Self:Header[nX]:HeaderField   := "USERNAME"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("AI3_ADMIN")
+		Self:Header[nX]:HeaderField   := "USERROLES"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("AI3_GRUPO")
+		Self:Header[nX]:HeaderField   := "USERGROUP"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("AI3_SKIN")
+		Self:Header[nX]:HeaderField   := "USERSKIN"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+	Case Self:HeaderType == "LOGINENTIRYSTRUCT"
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := "Entidade"
+		Self:Header[nX]:HeaderField   := "ENTIRY"
+		Self:Header[nX]:HeaderPicture := "@!"
+		Self:Header[nX]:HeaderSize    := 3
+		Self:Header[nX]:HeaderDec     := 0
+		Self:Header[nX]:HeaderType    := "C"
+		Self:Header[nX]:HeaderComboBox:= ""
+		Self:Header[nX]:HeaderOblig   := .F. 
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("A1_COD")
+		Self:Header[nX]:HeaderField   := "ID_ENTIRY"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("A1_COD")
+		Self:Header[nX]:HeaderField   := "ID_ENTIRY"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("A1_NREDUZ")
+		Self:Header[nX]:HeaderField   := "NICKNAME"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("A1_NOME")
+		Self:Header[nX]:HeaderField   := "NAME"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("A1_CGC")
+		Self:Header[nX]:HeaderField   := "FEDERALID"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+		aadd(Self:Header,WSClassNew("BrwHeader"))
+		nX++
+		Self:Header[nX]:HeaderTitle   := RetTitle("AI3_SKIN")
+		Self:Header[nX]:HeaderField   := "SKIN"
+		Self:Header[nX]:HeaderPicture := SX3->X3_PICTURE
+		Self:Header[nX]:HeaderSize    := SX3->X3_TAMANHO
+		Self:Header[nX]:HeaderDec     := SX3->X3_DECIMAL
+		Self:Header[nX]:HeaderType    := SX3->X3_TIPO
+		Self:Header[nX]:HeaderComboBox:= X3CBox()
+		Self:Header[nX]:HeaderOblig   := X3OBRIGAT(SX3->X3_CAMPO)
+
+EndCase
+Return( .T. )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Function ___UserPortal____PRTLOGIN( USERLOGIN,USERPASSWORD,USERTYPE,PORTALACCESS,USERPCODE)
+LOCAL cSeq
+LOCAL _nH
+LOCAL aArea     := GetArea()
+LOCAL aUser     := {}
+LOCAL lRetAtivo	:= .F. 
+LOCAL lRetorno  := .F. 
+LOCAL lRetRD0	:= .F. 
+LOCAL cPrimNome  			:= ""
+LOCAL aRetorno 			:= {}
+LOCAL cMsg		:= ""
+LOCAL cMsg2	:= ""
+LOCAL cCodAce	:= ""
+LOCAL cPrimNome := ""
+LOCAL nZ        := 0
+LOCAL nX        := 0
+LOCAL nY		:= 0
+LOCAL nI		:= 0
+LOCAL nW		:= 0
+LOCAL nTp		:= 1
+LOCAL aRetorno 	:= {}
+LOCAL aRetOpe	:= {}
+LOCAL aRetEmp	:= {}
+LOCAL aRetCon	:= {}
+LOCAL aRetSub	:= {}
+LOCAL aRetBen	:= {}
+Local aRetFun	:= {}
+Local lFuncSRA	:= .F. 
+Local nAtivSRA	:= 0
+
+Self:UserType := If( Self:UserType == nil, "1", Self:UserType ) ;
+Self:UserPCode := If( Self:UserPCode == nil, {}, Self:UserPCode ) ;
+
+
+
+
+Do Case
+	Case Self:UserType == "1"
+		dbSelectArea("AI3")
+		dbSetOrder(2)
+		If MsSeek(xFilial("AI3")+Self:USERLOGIN)
+			If AllTrim(Self:USERLOGIN) == AllTrim(AI3->AI3_LOGIN) .And.  ALLTrim(AI3->AI3_PSW) == ALLTrim(Self:USERPASSWORD)
+				PrtIniUser(AI3->AI3_CODUSU,Self:USERPCODE)
+
+
+
+
+
+
+
+
+
+
+
+				aUser := {Self:USERPCODE:USERCODE, Self:USERPCODE:USERLOGIN, Self:USERPCODE:USERPASSWORD, Self:USERPCODE:USERNAME, Self:USERPCODE:USERROLES, Self:USERPCODE:USERWS, Self:USERPCODE:USERSUPER, {}, AI3->AI3_USRSIS}
+				For nX := 1 To Len(Self:USERPCODE:USERENTIRIES)
+
+
+
+
+
+					aadd(aUser[8],{Self:USERPCODE:USERENTIRIES[nX]:ENTIRY, Self:USERPCODE:USERENTIRIES[nX]:ID_ENTIRY, Self:USERPCODE:USERENTIRIES[nX]:NAME, Self:USERPCODE:USERENTIRIES[nX]:NICKNAME, Self:USERPCODE:USERENTIRIES[nX]:FederalID, Self:USERPCODE:USERENTIRIES[nX]:Skin})
+				next
+
+				PutGlbVars("c"+AI3->AI3_CODUSU,aUser)
+
+				lRetorno := .T. 
+			Else
+				SetSoapFault(If( cPaisLoc $ "ANG|PTG", "Login Inválido", "LOGIN INVALIDO" ),If( cPaisLoc $ "ANG|PTG", "A palavra-passe introduzida esta incorreta", "A senha informada esta incorreta" ))
+				lRetorno := .F. 
+			EndIf
+		Else
+			SetSoapFault(If( cPaisLoc $ "ANG|PTG", "Login Inválido", "LOGIN INVALIDO" ),If( cPaisLoc $ "ANG|PTG", "O utilizador indicado esta incorrecto", "O usuario informado esta incorreto" ))
+			lRetorno := .F. 
+		EndIf
+	Case Self:UserType == "2"
+	 	fRHMenu()
+	 	dbSelectArea("RD0")
+
+
+
+
+		dbSetOrder(10)
+		If DbSeek( xFilial("RD0")+UPPER(AllTrim(Self:UserLogin)) )
+	 		lRetRD0 := .T. 
+ 			If RD0->RD0_MSBLQL == "2"
+				lRetAtivo := .T. 
+			EndIf
+		EndIf
+
+		If !(lRetRD0) .and.  (RD0->(FieldPos("RD0_DOCID")) > 0)
+
+
+
+			dbSetOrder(11)
+			If DbSeek( xFilial("RD0")+UPPER(AllTrim(Self:UserLogin)) )
+		 		lRetRD0 := .T. 
+ 					If RD0->RD0_MSBLQL == "2"
+					lRetAtivo := .T. 
+				EndIf
+			EndIf
+		EndIf
+
+		If !(lRetRD0)
+		 	If Self:PORTALACCESS == "1"
+				dbSetOrder(7)
+		 	Else
+				dbSetOrder(6)
+		 	EndIf
+
+			If MsSeek( xFilial("RD0")+UPPER(AllTrim(Self:UserLogin)) )
+
+
+		 		If !Self:PORTALACCESS == "1"
+				 	While RD0->( !Eof() .and.  RD0_FILIAL+RD0_CIC == xFilial("RD0")+UPPER(AllTrim(Self:UserLogin)) )
+	 			 		If RD0->RD0_MSBLQL == "2"
+					 						lRetRD0 		:= .T. 
+	 			 						lRetAtivo := .T. 
+	 			 						EXIT
+	 			 		EndIf
+		 			 	RD0->( dbSkip()	)
+		 			end
+		 		Else
+					While RD0->( !Eof() .and.  RD0_FILIAL + UPPER(AllTrim(RD0_EMAIL)) == xFilial("RD0") + UPPER(AllTrim(Self:UserLogin)) )
+						If RD0->RD0_MSBLQL == "2"
+							lRetRD0 	:= .T. 
+							lRetAtivo 	:= .T. 
+							Exit
+						EndIf
+						RD0->( dbSkip()	)
+					end
+				EndIf
+			EndIf
+		EndIf
+
+
+		If MatParticipant(AllTrim(Self:UserLogin), @aRetFun, .T. )
+			lFuncSRA := .T. 
+			aEval( aRetFun, { |x| If( x[9] $ "A*F* ", nAtivSRA++, Nil ) } )
+		EndIf
+
+		If lRetRD0
+			If ( !lFuncSRA .And.  ( lRetAtivo .Or.  RD0->RD0_MSBLQL == "2") ) .Or.  ( lFuncSRA .And.  lRetAtivo .And.  ( nAtivSRA > 0 .Or.  SuperGetMV("MV_TCFVREN", .F. , "N") <> "N" ) )
+				If Upper(AllTrim(Embaralha(RD0->RD0_SENHA,1))) == Upper(AllTrim(Self:USERPASSWORD))
+					dbSelectArea("AI3")
+					dbSetOrder(1)
+					If MsSeek(xFilial("AI3")+RD0->RD0_PORTAL)
+						PrtIniUser(RD0->RD0_PORTAL,Self:USERPCODE)
+
+
+
+
+						If Empty(RD0->RD0_LOGIN)
+							SetSoapFault("*Ret001*",If( cPaisLoc $ "ANG|PTG", "Informe novo login unificado de acesso.", "Informe novo login unificado de acesso!" ))
+							lRetorno := .F. 
+						Else
+							If !(Upper(Alltrim(Self:UserLogin)) == Upper(Alltrim(RD0->RD0_LOGIN)))
+								cPrimNome := ""
+								For nI=1 to 30
+									cPrimNome += SUBSTR(RD0->RD0_NOME, nI, 1)
+									If SUBSTR(RD0->RD0_NOME, nI, 1) == " "
+										exit
+									Endif
+								next
+
+								SetSoapFault("*Ret002*",cPrimNome+If( cPaisLoc $ "ANG|PTG", "Utilize seu novo login unificado de acesso.", "Utilize seu novo login unificado de acesso!" ))
+								lRetorno := .F. 
+							Else
+
+
+
+
+
+
+
+
+								aUser := {Self:USERPCODE:USERCODE, Self:USERPCODE:USERLOGIN, Self:USERPCODE:USERPASSWORD, Self:USERPCODE:USERNAME, Self:USERPCODE:USERROLES, Self:USERPCODE:USERWS, Self:USERPCODE:USERSUPER, {}, AI3->AI3_USRSIS}
+
+								For nX := 1 To Len(Self:USERPCODE:USERENTIRIES)
+
+
+
+
+
+									aadd(aUser[8],{Self:USERPCODE:USERENTIRIES[nX]:ENTIRY, Self:USERPCODE:USERENTIRIES[nX]:ID_ENTIRY, Self:USERPCODE:USERENTIRIES[nX]:NAME, Self:USERPCODE:USERENTIRIES[nX]:NICKNAME, Self:USERPCODE:USERENTIRIES[nX]:FederalID, Self:USERPCODE:USERENTIRIES[nX]:Skin})
+								next
+
+								PutGlbVars("c"+AI3->AI3_CODUSU,aUser)
+								lRetorno := .T. 
+							EndIf
+						EndIf
+					Else
+						SetSoapFault(If( cPaisLoc $ "ANG|PTG", "Login Inválido", "LOGIN INVALIDO" ),If( cPaisLoc $ "ANG|PTG", "Perfil do utilizador não localizado", "Perfil do usuario nao localizado" ))
+						lRetorno := .F. 
+					EndIf
+				Else
+					SetSoapFault(If( cPaisLoc $ "ANG|PTG", "Login Inválido", "LOGIN INVALIDO" ),If( cPaisLoc $ "ANG|PTG", "A palavra-passe introduzida esta incorreta", "A senha informada esta incorreta" ))
+					lRetorno := .F. 
+				EndIf
+			Else
+				SetSoapFault(If( cPaisLoc $ "ANG|PTG", "Login Inválido", "LOGIN INVALIDO" ),If( cPaisLoc $ "ANG|PTG", "Utilizador está inactivo no registo de pessoas", "Usuario esta Inativo no cadastro de pessoas" ))
+				lRetorno := .F. 
+			EndIf
+		Else
+			SetSoapFault(If( cPaisLoc $ "ANG|PTG", "Login Inválido", "LOGIN INVALIDO" ),If( cPaisLoc $ "ANG|PTG", "O utilizador indicado esta incorrecto", "O usuario informado esta incorreto" ))
+			lRetorno := .F. 
+		EndIf
+	Case Self:UserType == "3"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		PswOrder( 2 )
+
+		If PswSeek( Self:UserLogin )
+			If PswName( Self:UserPassword )
+				lRetorno := .T. 
+			Else
+				lRetorno := .F. 
+
+				SetSoapFault( If( cPaisLoc $ "ANG|PTG", "Login Inválido", "LOGIN INVALIDO" ), "A senha informada esta incorreta" )
+
+			Endif
+
+			If lRetorno
+				aRetUsr := PswRet()
+
+				If aRetUsr[1][17]
+					lRetorno := .F. 
+
+					SetSoapFault( If( cPaisLoc $ "ANG|PTG", "Login Inválido", "LOGIN INVALIDO" ), "Usuario bloqueado" )
+				Else
+					lRetorno := .T. 
+				Endif
+
+				If lRetorno
+					If SubStr( aRetUsr[2][5], 44, 1 ) == "S"
+						lRetorno := .T. 
+					Else
+						lRetorno := .F. 
+
+						SetSoapFault( If( cPaisLoc $ "ANG|PTG", "Login Inválido", "LOGIN INVALIDO" ), "Usuario sem acesso ao modulo do PMS" )
+					Endif
+
+					If lRetorno
+						DbSelectArea( "AI3" )
+						DbSetOrder( 2 )
+
+						If MsSeek( xFilial( "AI3" ) + "PMS000000" )
+							PrtIniUser( AI3->AI3_CODUSU, Self:UserPCode, Self:UserLogin, Self:UserPassword )
+
+
+
+
+
+
+
+
+
+
+
+
+							aUser := {	Self:UserPCode:UserCode		, Self:UserLogin					, Self:UserPassword				, Self:UserPCode:UserName		, Self:UserPCode:UserRoles		, Self:UserPCode:UserWS			, Self:UserPCode:UserSuper		, {}, AI3->AI3_USRSIS }
+
+							For nX := 1 To Len( Self:UserPCode:UserEntiries )
+
+
+
+
+
+								AAdd( aUser[8], {	Self:UserPCode:UserEntiries[nX]:Entiry		, Self:UserPCode:UserEntiries[nX]:ID_Entiry	, Self:UserPCode:UserEntiries[nX]:Name		, Self:UserPCode:UserEntiries[nX]:NickName	, Self:UserPCode:UserEntiries[nX]:FederalID	, Self:UserPCode:UserEntiries[nX]:Skin } )
+							next
+
+							PutGlbVars( "c" + AI3->AI3_CODUSU, aUser )
+
+							lRetorno := .T. 
+						Else
+							lRetorno := .F. 
+
+							SetSoapFault( If( cPaisLoc $ "ANG|PTG", "Login Inválido", "LOGIN INVALIDO" ), "Favor cadastrar um usuario com login PMS000000 no Portal, pelo menu do faturamento" )
+						EndIf
+					Endif
+				Endif
+			Endif
+		Else
+			lRetorno := .F. 
+
+			SetSoapFault( If( cPaisLoc $ "ANG|PTG", "Login Inválido", "LOGIN INVALIDO" ), If( cPaisLoc $ "ANG|PTG", "O utilizador indicado esta incorrecto", "O usuario informado esta incorreto" ) )
+		Endif
+
+
+
+	Case Self:UserType == "4"
+
+
+
+		DbSelectArea("AI3")
+
+
+
+		aRetorno := PLVLDUSRW( Self:UserLogin, Self:UserPassword )
+
+
+
+	  	nTp := Iif( Len(aRetorno) > 10, aRetorno[11], nTp )
+
+
+
+		If aRetorno[1]
+			AI3->(DbSetOrder(1))
+			If AI3->(MsSeek(xFilial("AI3")+aRetorno[4])	)
+
+
+
+				PrtIniUser(aRetorno[4],Self:USERPCODE)
+
+
+
+				Self:USERPCODE:USERLOGIN		:= Self:UserLogin
+				Self:USERPCODE:USERPASSWORD	:= Self:UserPassword
+
+
+
+
+
+
+
+
+
+
+
+				aUser := {	Self:USERPCODE:USERCODE, Self:USERPCODE:USERLOGIN, Self:USERPCODE:USERPASSWORD, Self:USERPCODE:USERNAME, Self:USERPCODE:USERROLES, Self:USERPCODE:USERWS, Self:USERPCODE:USERSUPER, {}, AI3->AI3_USRSIS}
+
+
+
+				For nX := 1 To Len(Self:USERPCODE:USERENTIRIES)
+
+
+
+
+
+					AaDd(aUser[8],{	Self:USERPCODE:USERENTIRIES[nX]:ENTIRY, Self:USERPCODE:USERENTIRIES[nX]:ID_ENTIRY, Self:USERPCODE:USERENTIRIES[nX]:NAME, Self:USERPCODE:USERENTIRIES[nX]:NICKNAME, Self:USERPCODE:USERENTIRIES[nX]:FederalID, Self:UserPCode:UserEntiries[nX]:Skin})
+				next
+
+
+
+				Self:USERPCODE:USERLOGPLS 					:= WsClassNew( "LoginView" )
+				Self:USERPCODE:USERLOGPLS:UserLoginCode 	:= aRetorno[2]
+				Self:USERPCODE:USERLOGPLS:UserEMail 		:= aRetorno[5]
+				Self:USERPCODE:USERLOGPLS:IntDat	 		:= aRetorno[7]
+				Self:USERPCODE:USERLOGPLS:TipCar	 		:= aRetorno[8]
+				Self:USERPCODE:USERLOGPLS:Biometria 		:= aRetorno[9]
+				Self:USERPCODE:USERLOGPLS:ModBio 			:= aRetorno[10]
+				Self:USERPCODE:USERLOGPLS:TpPortal			:= nTp
+
+
+
+				If Len(aRetorno) > 11
+
+	              If Len(aRetorno[12]) > 0
+
+	              	Self:USERPCODE:USERLOGPLS:LISTOFACS := {}
+
+	              	For nI := 1 To Len( aRetorno[12] )
+
+	              	     Aadd( Self:USERPCODE:USERLOGPLS:LISTOFACS, WsClassNew( "SAtalhos" ) )
+	              	     Self:USERPCODE:USERLOGPLS:LISTOFACS[nI]:CodMnu		:= AllTrim(aRetorno[12,nI,1])
+						     Self:USERPCODE:USERLOGPLS:LISTOFACS[nI]:Descri		:= AllTrim(aRetorno[12,nI,2])
+						     Self:USERPCODE:USERLOGPLS:LISTOFACS[nI]:Imagem   	:= AllTrim(aRetorno[12,nI,3])
+						     Self:USERPCODE:USERLOGPLS:LISTOFACS[nI]:WebSrv   	:= AllTrim(aRetorno[12,nI,4])
+						     Self:USERPCODE:USERLOGPLS:LISTOFACS[nI]:Rotina   	:= AllTrim(aRetorno[12,nI,5])
+
+	              	next
+
+	              EndIf
+
+	            Endif
+
+
+
+				If Len(aRetorno[6]) > 0
+
+					Do Case
+
+
+
+						Case nTp == 1
+
+							Self:USERPCODE:USERLOGPLS:LISTOFRDA := {}
+
+							For nI := 1 To Len( aRetorno[6] )
+
+								AaDd( Self:USERPCODE:USERLOGPLS:LISTOFRDA, WsClassNew( "RDAView" ) )
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:Code		:= aRetorno[6,nI,1]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:Name		:= aRetorno[6,nI,2]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:RegAtend	:= aRetorno[6,nI,3]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:TpPrest	:= aRetorno[6,nI,4]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:CnpfCpf	:= aRetorno[6,nI,5]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:Cnes		:= aRetorno[6,nI,6]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:TpLograd	:= aRetorno[6,nI,7]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:Address	:= aRetorno[6,nI,8]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:Numero		:= aRetorno[6,nI,9]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:Complen	:= aRetorno[6,nI,10]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:District	:= aRetorno[6,nI,11]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:Zone		:= aRetorno[6,nI,12]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:State		:= aRetorno[6,nI,13]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:IBGE		:= aRetorno[6,nI,14]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:Cep		:= aRetorno[6,nI,15]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:RegAns		:= aRetorno[6,nI,16]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:SigCr		:= aRetorno[6,nI,18]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:CodCr		:= aRetorno[6,nI,19]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:EstCr		:= aRetorno[6,nI,20]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:TipPE		:= aRetorno[6,nI,21]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:CodBB0		:= aRetorno[6,nI,22]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:CodOpe		:= aRetorno[6,nI,23]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:CodLoc		:= aRetorno[6,nI,24]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:DesLoc		:= aRetorno[6,nI,25]
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:CarSol		:= aRetorno[6,nI,28]
+
+								If Len(aRetorno[6,nI]) >=29
+									Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:TissVer	:= aRetorno[6,nI,29]
+								EndIf
+								If Len(aRetorno[6,nI]) >=30
+									Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:RdaRecno	:= aRetorno[6,nI,30]
+								EndIf
+
+
+
+								Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:MEspRda := {}
+								For nY := 1 To Len( aRetorno[6,nI,26] )
+									AaDd( Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:MEspRda, WsClassNew( "EspRda" ) )
+									Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:MEspRda[nY]:CodEsp	:= aRetorno[6,nI,26,nY,1]
+									Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:MEspRda[nY]:DesEsp 	:= aRetorno[6,nI,26,nY,2]
+									Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:MEspRda[nY]:CodCBOS	:= aRetorno[6,nI,26,nY,3]
+									Self:USERPCODE:USERLOGPLS:LISTOFRDA[nI]:MEspRda[nY]:DesCBOS	:= aRetorno[6,nI,26,nY,4]
+								next
+							next
+
+
+
+						Case nTp == 2 .Or.  nTp == 3
+
+							aRetOpe := aRetorno[6]
+
+							Self:USERPCODE:USERLOGPLS:LISTOFOPE := {}
+
+
+
+							For nI := 1 To Len( aRetOpe )
+
+								AaDd( Self:USERPCODE:USERLOGPLS:LISTOFOPE, WsClassNew( "SOperadora" ) )
+
+								aRetEmp := aRetOpe[nI,1]
+
+								Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:Code 		 := aRetOpe[nI,2]
+								Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:Description:= aRetOpe[nI,3]
+
+
+
+								Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA := {}
+								For nY := 1 To Len( aRetEmp )
+
+									AaDd( Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA , WsClassNew( "SEmpresa" ) )
+
+									aRetCon := aRetEmp[nY,1]
+									Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:Code 		 := aRetEmp[nY,2]
+									Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:Description:= aRetEmp[nY,3]
+
+
+
+									Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO := {}
+									For nX := 1 To Len( aRetCon )
+
+										AaDd( Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO , WsClassNew( "SContrato" ) )
+
+										aRetSub := aRetCon[nX,1]
+										Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:Code 		:= aRetCon[nX,2]
+										Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:Description 	:= aRetCon[nX,3]
+										Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:TipCon		:= aRetCon[nX,4]
+										Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:NumCon		:= aRetCon[nX,5]
+										Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:VerCon		:= aRetCon[nX,6]
+										Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:NomCon		:= aRetCon[nX,7]
+										Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:DatCon		:= aRetCon[nX,8]
+
+
+
+										Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO := {}
+										For nZ := 1 To Len( aRetSub )
+
+											AaDd( Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO , WsClassNew( "SSubContrato" ) )
+
+											aRetBen := aRetSub[nZ,1]
+											Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:Code 		:= aRetSub[nZ,2]
+											Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:Description := aRetSub[nZ,3]
+											Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:SubCon		:= aRetSub[nZ,4]
+											Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:VerSub		:= aRetSub[nZ,5]
+											Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:NomSub		:= aRetSub[nZ,6]
+											Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:DtVSub		:= aRetSub[nZ,7]
+
+
+
+											Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA := {}
+											For nW := 1 To Len( aRetBen )
+												AaDd( Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA , WsClassNew( "SFamilia" ) )
+
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:Code			:= aRetBen[nW,1]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:Description		:= aRetBen[nW,2]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:Benefi			:= aRetBen[nW,1]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:NomBen			:= aRetBen[nW,2]
+
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:Familia			:= aRetBen[nW,3]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:DatNas			:= aRetBen[nW,4]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:Idade 			:= aRetBen[nW,5]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:Sexo  			:= aRetBen[nW,6]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:TipUsu			:= aRetBen[nW,7]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:DesUsu			:= aRetBen[nW,8]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:EstCiv			:= aRetBen[nW,9]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:Graupa			:= aRetBen[nW,10]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:DatInc			:= aRetBen[nW,11]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:CodPla			:= aRetBen[nW,12]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:DesPla			:= aRetBen[nW,13]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:Verpla			:= aRetBen[nW,14]
+												Self:USERPCODE:USERLOGPLS:LISTOFOPE[nI]:EMPRESA[nY]:CONTRATO[nX]:SUBCONTRATO[nZ]:FAMILIA[nW]:DatCar			:= aRetBen[nW,15]
+											Next
+                                        Next
+									Next
+                                Next
+							Next
+
+						EndCase
+				EndIf
+
+
+
+				PutGlbVars("c"+AI3->AI3_CODUSU,aUser)
+
+
+
+				lRetorno := .T. 
+
+
+
+			    _nH  := PLSAbreSem("PLUPTENC.SMF")
+
+
+
+			    cSeq := PLBX1NEW()
+
+
+
+			    BX1->(RecLock("BX1", .T. ))
+				   BX1->BX1_FILIAL   := xFilial("BX1")
+				   BX1->BX1_SEQUEN   := cSeq
+				   BX1->BX1_ALIAS    := "BSW"
+				   BX1->BX1_RECNO    := StrZero(Recno(),Len(BX1->BX1_RECNO))
+		           BX1->BX1_TIPO     := "W"
+				   BX1->BX1_USUARI   := aRetorno[2]
+				   BX1->BX1_DATA     := Date()
+				   BX1->BX1_HORA     := Time()
+				   BX1->BX1_ESTTRB   := GetComputerName()
+				   BX1->BX1_ROTINA := "PRTLOGIN"
+				   BX1->BX1_CODUSR		:= aRetorno[2]
+				   BX1->BX1_QTACES		:= 0
+			   BX1->(MsUnLock())
+
+		       PLSFechaSem(_nH,"PLUPTENC.SMF")
+
+			Else
+			    IF len(aRetorno) > 12 .And.  aRetorno[13]
+
+
+
+
+
+
+
+
+							cMsg := "Tentativa de login ultrapassou o limite permitido, favor tentar após 5 minutos..."
+							cMsg2 := "LOGIN TEMPORARIAMENTE BLOQUEADO"
+
+
+					SetSoapFault(cMsg2,cMsg)
+					lRetorno := .F. 
+				Else
+					SetSoapFault(If( cPaisLoc $ "ANG|PTG", "Login Inválido", "LOGIN INVALIDO" ),aRetorno[3])
+				lRetorno := .F. 
+			EndIf
+			EndIf
+		Else
+		    IF len(aRetorno) > 12 .And.  aRetorno[13]
+
+
+
+
+
+
+
+
+						cMsg := "Tentativa de login ultrapassou o limite permitido, favor tentar após 5 minutos..."
+						cMsg2 := "LOGIN TEMPORARIAMENTE BLOQUEADO"
+
+
+				SetSoapFault(cMsg2,cMsg)
+				lRetorno := .F. 
+		Else
+			SetSoapFault(If( cPaisLoc $ "ANG|PTG", "Login Inválido", "LOGIN INVALIDO" ),aRetorno[3])
+			lRetorno := .F. 
+		EndIf
+		EndIf
+
+
+
+	OtherWise
+
+
+
+		If ExistBlock("GENVLD01")
+			aRet 		:= ExecBlock("GENVLD01", .F. , .F. ,{Self:USERLOGIN,Self:USERPASSWORD,Self:USERTYPE,Self:PORTALACCESS} )
+			lRetorno 	:= aRet[1]
+			cMsg		:= aRet[2]
+			cCodAce		:= aRet[3]
+
+
+
+			If lRetorno
+
+
+
+				PrtIniUser(cCodAce,Self:USERPCODE)
+
+
+
+				If ExistBlock("GENVUSER")
+					aUser := ExecBlock("GENVUSER", .F. , .F. ,{Self:USERPCODE,aRet[4]} )
+				Else
+
+
+
+
+
+
+
+
+
+
+
+					aUser := {	Self:USERPCODE:USERCODE, Self:USERPCODE:USERLOGIN, Self:USERPCODE:USERPASSWORD, Self:USERPCODE:USERNAME, Self:USERPCODE:USERROLES, Self:USERPCODE:USERWS, Self:USERPCODE:USERSUPER, {}, AI3->AI3_USRSIS}
+
+					For nX := 1 To Len(Self:USERPCODE:USERENTIRIES)
+
+
+
+
+
+						AaDd(aUser[8],{Self:USERPCODE:USERENTIRIES[nX]:ENTIRY, Self:USERPCODE:USERENTIRIES[nX]:ID_ENTIRY, Self:USERPCODE:USERENTIRIES[nX]:NAME, Self:USERPCODE:USERENTIRIES[nX]:NICKNAME, Self:USERPCODE:USERENTIRIES[nX]:FederalID, Self:USERPCODE:USERENTIRIES[nX]:Skin})
+					next
+				EndIf
+
+
+
+				PutGlbVars("c"+AI3->AI3_CODUSU,aUser)
+			Else
+				SetSoapFault(If( cPaisLoc $ "ANG|PTG", "Login Inválido", "LOGIN INVALIDO" ),cMsg)
+			EndIf
+		EndIf
+EndCase
+
+
+RestArea( aArea )
+
+Return lRetorno
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Function ___UserPortal____PRTLOGOUT( USERCODE,OK)
+
+Local aArea   := GetArea()
+Local cCodigo := Self:USERCODE
+
+dbSelectArea("AI3")
+dbSetOrder(1)
+If MsSeek(xFilial("AI3")+cCodigo)
+
+	PutGlbVars("c"+cCodigo,Nil)
+	Self:OK := 1
+Else
+	Self:OK := 0
+EndIf
+RestArea(aArea)
+Return( .T. )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Function ___UserPortal____PrtGetGroup( USERCODE,USERSGROUP)
+
+Local lRetorno  := .F. 
+Local aUser     := {}
+Local nX        := 0
+Local cAliasAI3 := "AI3"
+Local cCodigo   := Self:USERCODE
+Local oObj      := Nil
+
+
+
+If GetGlbVars("c"+cCodigo,aUser)
+	If !Empty(aUser) .And.  aUser[5]==1
+		lRetorno := .T. 
+		dbSelectArea("AI3")
+		dbSetOrder(3)
+		MsSeek(xFilial("AI3")+cCodigo)
+
+		While !Eof() .And.  xFilial("AI3") == AI3->AI3_FILIAL .And.  cCodigo == AI3->AI3_SUPER
+			If (cAliasAI3)->AI3_ADMIN <> "1"
+				oObj := WSClassNew("LoginUserStruct")
+				aadd(Self:USERSGROUP,oObj)
+				PrtIniUser(AI3->AI3_CODUSU,oObj)
+				nX++
+				Self:USERSGROUP[nX]:USERCODE     := oObj:USERCODE
+				Self:USERSGROUP[nX]:USERGROUP    := oObj:USERGROUP
+				Self:USERSGROUP[nX]:USERLOGIN    := oObj:USERLOGIN
+				Self:USERSGROUP[nX]:USERPASSWORD := oObj:USERPASSWORD
+				Self:USERSGROUP[nX]:USERWS       := oObj:USERWS
+				Self:USERSGROUP[nX]:USERNAME     := oObj:USERNAME
+				Self:USERSGROUP[nX]:USERROLES    := oObj:USERROLES
+				Self:USERSGROUP[nX]:USERACCESSES  := oObj:USERACCESSES
+				Self:USERSGROUP[nX]:USERENTIRIES := oObj:USERENTIRIES
+				Self:USERSGROUP[nX]:USERSUPER    := oObj:USERSUPER
+			EndIf
+			dbSelectArea("AI3")
+			dbSkip()
+		EndDo
+	Else
+		SetSoapFault("PRTGETGROUP",If( cPaisLoc $ "ANG|PTG", "Apenas um administrador pode realizar esta operação", "Somente um Administrador pode realizar esta operacao" ))
+		lRetorno := .F. 
+	EndIf
+Else
+	SetSoapFault("PRTGETGROUP",If( cPaisLoc $ "ANG|PTG", "Login não efectuado", "Login nao efetuado" ))
+	lRetorno := .F. 
+EndIf
+Return(lRetorno)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Function ___UserPortal____PrtPutUser( USERCODE,USERPCODE,OK)
+
+Local aArea    := GetArea()
+Local aRegAI4  := {}
+Local aRegAI5  := {}
+Local aRegAI6  := {}
+Local aUser    := {}
+Local lRetorno := .T. 
+Local nTpOper  := 0
+Local nX       := 0
+Local cCodigo  := AllTrim(Self:USERCODE)
+
+	Local cCursor  := "PrtPutUser"
+
+
+dbSelectArea("AI1")
+dbSelectArea("AI2")
+dbSelectArea("AI3")
+dbSelectArea("AI4")
+dbSelectArea("AI5")
+
+
+
+Self:OK := 0
+If GetGlbVars("c"+cCodigo,aUser)
+	If !Empty(aUser) .And.  aUser[5] == 1 .And.  PadR(aUser[1],Len(AI3->AI3_CODUSU)) <> PadR(Self:USERPCODE:USERCODE,Len(AI3->AI3_CODUSU))
+
+
+
+		Self:USERPCODE:USERCODE := PadR(Self:USERPCODE:USERCODE,Len(AI3->AI3_CODUSU))
+		If !Empty(Self:USERPCODE:USERCODE)
+			dbSelectArea("AI3")
+			dbSetOrder(1)
+			If MsSeek(xFilial("AI3")+Self:USERPCODE:USERCODE)
+				nTpOper := 2
+			Else
+				nTpOper := 1
+			EndIf
+		Else
+			nTpOper := 1
+		EndIf
+
+
+
+		Self:USERPCODE:USERLOGIN := PadR(Self:USERPCODE:USERLOGIN,Len(AI3->AI3_LOGIN))
+		dbSelectArea("AI3")
+		dbSetOrder(2)
+		If nTpOper == 1 .And.  MsSeek(xFilial("AI3")+Self:USERPCODE:USERLOGIN)
+			SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Já existe um utilizador com este código de login.", "Ja existe um usuario com este codigo de login." ))
+			lRetorno := .F. 
+		EndIf
+		If lRetorno
+			If Empty(Self:USERPCODE:USERPASSWORD)
+				SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Palavra-passe não introduzida", "Senha nao informada" ))
+				lRetorno := .F. 
+			EndIf
+		EndIf
+		If lRetorno
+			If Empty(Self:USERPCODE:USERNAME)
+				SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Nome do utilizador não indicado", "Nome do usuario nao informado" ))
+				lRetorno := .F. 
+			EndIf
+		EndIf
+		If lRetorno
+			If !(Self:USERPCODE:USERROLES == 2 .Or.  Self:USERPCODE:USERROLES == 3)
+				SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Não é possível efectuar um registo de um adminstrador pelo portal", "Nao e possivel efetuar um cadastramento de um adminstrador pelo portal" ))
+				lRetorno := .F. 
+			EndIf
+		EndIf
+		Self:USERPCODE:USERSUPER := PadR(Self:USERPCODE:USERSUPER,Len(AI3->AI3_SUPER))
+		If lRetorno
+			If Self:USERPCODE:USERSUPER == aUser[1]
+				SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Código do superior não deve ser indicado", "Codigo do superior nao deve ser informado" ))
+				lRetorno := .F. 
+			EndIf
+		EndIf
+		If lRetorno
+			For nX := 1 To Len(Self:USERPCODE:USERACCESSES)
+				If !Self:USERPCODE:USERACcESSES[nX]:WEBSRV $ aUser[6]
+					SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Apenas os direitos contidos no administrador podem ser utilizados", "Somente os direitos contidos no Administrador podem ser utilizados" ))
+					lRetorno := .F. 
+					Exit
+				EndIf
+			next
+		EndIf
+		If lRetorno
+			For nX := 1 To Len(Self:USERPCODE:USERENTIRIES)
+				If aScan(aUser[8],{|x| AllTrim(x[2]) == AllTrim(Self:USERPCODE:USERENTIRIES[nX]:ID_ENTIRY)})==0
+					SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Apenas as empresas contidos no administrador podem ser utilizadas", "Somente as empresas contidos no Administrador podem ser utilizadas" ))
+					lRetorno := .F. 
+					Exit
+				EndIf
+			next
+		EndIf
+		If lRetorno
+
+		EndIf
+		If lRetorno
+			Begin Sequence; BeginTran()
+				If nTpOper == 1 .Or.  SimpleLock("AI3")
+					RecLock("AI3",nTpOper==1)
+					AI3->AI3_FILIAL := xFilial("AI3")
+					AI3->AI3_CODUSU := IIf(nTpOper==1,GetSxeNum("AI3","AI3_CODUSU"),AI3->AI3_CODUSU)
+					AI3->AI3_LOGIN  := Self:USERPCODE:USERLOGIN
+					AI3->AI3_PSW    := Self:USERPCODE:USERPASSWORD
+					AI3->AI3_NOME   := Self:USERPCODE:USERNAME
+					AI3->AI3_ADMIN  := Str(Self:USERPCODE:USERROLES,1)
+					AI3->AI3_SUPER  := aUser[1]
+					AI3->AI3_GRUPO  := Self:USERPCODE:USERGROUP
+					AI3->AI3_SKIN   := Self:USERPCODE:USERSKIN
+					AI3->AI3_EMAIL   := Self:USERPCODE:USEREMAIL
+					If nTpOper <> 1
+
+
+
+
+							cQuery := "SELECT R_E_C_N_O_ RECNO "
+							cQuery += "FROM "+RetSqlName("AI4")+" AI4 "
+							cQuery += "WHERE AI4.AI4_FILIAL='"+xFilial("AI4")+"' AND "
+							cQuery += "AI4.AI4_CODUSU='"+AI3->AI3_CODUSU+"' AND "
+							cQuery += "AI4.D_E_L_E_T_=' ' "
+
+							cQuery := ChangeQuery(cQuery)
+
+							dbUseArea( .T. ,"TOPCONN",TcGenQry(,,cQuery),cCursor)
+							While !Eof()
+								aadd(aRegAI4,(cCursor)->RECNO)
+								dbSelectArea(cCursor)
+								dbSkip()
+							EndDo
+							dbSelectArea(cCursor)
+							dbCloseArea()
+							dbSelectArea("AI3")
+
+
+
+
+
+
+
+
+
+
+
+							cQuery := "SELECT R_E_C_N_O_ RECNO "
+							cQuery += "FROM "+RetSqlName("AI5")+" AI5 "
+							cQuery += "WHERE AI5.AI5_FILIAL='"+xFilial("AI5")+"' AND "
+							cQuery += "AI5.AI5_CODUSU='"+AI3->AI3_CODUSU+"' AND "
+							cQuery += "AI5.D_E_L_E_T_=' ' "
+
+							cQuery := ChangeQuery(cQuery)
+
+							dbUseArea( .T. ,"TOPCONN",TcGenQry(,,cQuery),cCursor)
+							While !Eof()
+								aadd(aRegAI5,(cCursor)->RECNO)
+								dbSelectArea(cCursor)
+								dbSkip()
+							EndDo
+							dbSelectArea(cCursor)
+							dbCloseArea()
+							dbSelectArea("AI3")
+
+
+
+
+
+
+
+
+
+
+
+							cQuery := "SELECT R_E_C_N_O_ RECNO "
+							cQuery += "FROM "+RetSqlName("AI6")+" AI6 "
+							cQuery += "WHERE AI6.AI6_FILIAL='"+xFilial("AI6")+"' AND "
+							cQuery += "AI6.AI6_CODUSU='"+AI3->AI3_CODUSU+"' AND "
+							cQuery += "AI6.D_E_L_E_T_=' ' "
+
+							cQuery := ChangeQuery(cQuery)
+
+							dbUseArea( .T. ,"TOPCONN",TcGenQry(,,cQuery),cCursor)
+							While !Eof()
+								aadd(aRegAI6,(cCursor)->RECNO)
+								dbSelectArea(cCursor)
+								dbSkip()
+							EndDo
+							dbSelectArea(cCursor)
+							dbCloseArea()
+							dbSelectArea("AI3")
+
+
+
+
+
+
+
+
+
+
+					EndIf
+
+
+
+
+		   	 		For nX := 1 To Len(aRegAI4)
+				 		AI4->(MsGoto(aRegAI4[nX]))
+				 		RecLock("AI4", .F. )
+				 		dbDelete()
+		 	 		next
+
+
+
+
+		 	   		For nX := 1 To Len(aRegAI5)
+		 	 			AI5->(MsGoto(aRegAI5[nX]))
+		 	  			RecLock("AI5", .F. )
+		 	 			dbDelete()
+		  	 	 	next
+
+
+
+
+
+					For nX := 1 To Len(Self:USERPCODE:USERENTIRIES)
+						If Self:USERPCODE:USERENTIRIES[nX]:ENTIRY == "SA1"
+							If nX > Len(aRegAI4)
+								RecLock("AI4", .T. )
+							Else
+								AI4->(MsGoto(aRegAI4[nX]))
+								RecLock("AI4", .T. )
+								aRegAI4[nX] := Nil
+							EndIf
+							AI4->AI4_FILIAL := xFilial("AI4")
+							AI4->AI4_CODUSU := AI3->AI3_CODUSU
+							AI4->AI4_CODCLI := Self:USERPCODE:USERENTIRIES[nX]:ID_ENTIRY
+							AI4->AI4_LOJCLI := SubStr(Self:USERPCODE:USERENTIRIES[nX]:ID_ENTIRY,Len(AI4->AI4_CODCLI)+1)
+							AI4->AI4_SKIN   := Self:USERPCODE:USERENTIRIES[nX]:Skin
+						Else
+							If nX > Len(aRegAI5)
+								RecLock("AI5", .T. )
+							Else
+								AI5->(MsGoto(aRegAI5[nX]))
+								RecLock("AI5", .T. )
+								aRegAI5[nX] := Nil
+							EndIf
+							AI5->AI5_FILIAL := xFilial("AI5")
+							AI5->AI5_CODUSU := AI3->AI3_CODUSU
+							AI5->AI5_CODFOR := Self:USERPCODE:USERENTIRIES[nX]:ID_ENTIRY
+							AI5->AI5_LOJFOR := SubStr(Self:USERPCODE:USERENTIRIES[nX]:ID_ENTIRY,Len(AI5->AI5_CODFOR)+1)
+							AI5->AI5_SKIN   := Self:USERPCODE:USERENTIRIES[nX]:Skin
+						EndIf
+					next
+
+
+
+
+					For nX := 1 To Len(aRegAI6)
+						AI6->(MsGoto(aRegAI6[nX]))
+						RecLock("AI6", .F. )
+						dbDelete()
+					next
+
+
+
+
+					For nX := 1 To Len(Self:USERPCODE:USERACCESSES)
+						If nX > Len(aRegAI6)
+							RecLock("AI6", .T. )
+						Else
+							AI6->(MsGoto(aRegAI6[nX]))
+							RecLock("AI6", .T. )
+							aRegAI6[nX] := Nil
+						EndIf
+						AI6->AI6_FILIAL := xFilial("AI6")
+						AI6->AI6_CODUSU := AI3->AI3_CODUSU
+						AI6->AI6_WEBSRV := Self:USERPCODE:USERACCESSES[nX]:WEBSRV
+					next
+
+
+
+					For nX := 1 To Len(aRegAI4)
+						If aRegAI4[nX] <> Nil
+							AI4->(MsGoto(aRegAI4[nX]))
+							RecLock("AI4", .F. )
+							dbDelete()
+						EndIf
+					next
+					For nX := 1 To Len(aRegAI5)
+						If aRegAI5[nX] <> Nil
+							AI5->(MsGoto(aRegAI5[nX]))
+							RecLock("AI5", .F. )
+							dbDelete()
+						EndIf
+					next
+					For nX := 1 To Len(aRegAI6)
+						If aRegAI6[nX] <> Nil
+							AI6->(MsGoto(aRegAI6[nX]))
+							RecLock("AI6", .F. )
+							dbDelete()
+						EndIf
+					next
+
+
+
+					If nTpOper == 2
+						dbSelectArea("AI4")
+						dbSetOrder(1)
+						dbSelectArea("AI5")
+						dbSetOrder(1)
+						dbSelectArea("AI6")
+						dbSetOrder(1)
+
+
+						If !((AI4->(MsSeek(xFilial("AI4")+AI3->AI3_CODUSU)) .Or.  AI5->(MsSeek(xFilial("AI5")+AI3->AI3_CODUSU))) .And.  AI6->(MsSeek(xFilial("AI6")+AI3->AI3_CODUSU)))
+
+
+								cQuery := "DELETE "
+								cQuery += "FROM "+RetSqlName("AI4")+" AI4 "
+								cQuery += "WHERE AI4.AI4_FILIAL='"+xFilial("AI4")+"' AND "
+								cQuery += "AI4.AI4_CODUSU='"+AI3->AI3_CODUSU+"' AND "
+								cQuery += "AI4.D_E_L_E_T_=' ' "
+
+								TcSqlExec(cQuery)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+								cQuery := "DELETE "
+								cQuery += "FROM "+RetSqlName("AI5")+" AI5 "
+								cQuery += "WHERE AI5.AI5_FILIAL='"+xFilial("AI5")+"' AND "
+								cQuery += "AI5.AI5_CODUSU='"+AI3->AI3_CODUSU+"' AND "
+								cQuery += "AI5.D_E_L_E_T_=' ' "
+
+								TcSqlExec(cQuery)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+								cQuery := "DELETE "
+								cQuery += "FROM "+RetSqlName("AI6")+" AI6 "
+								cQuery += "WHERE AI6.AI6_FILIAL='"+xFilial("AI6")+"' AND "
+								cQuery += "AI6.AI6_CODUSU='"+AI3->AI3_CODUSU+"' AND "
+								cQuery += "AI6.D_E_L_E_T_=' ' "
+
+								TcSqlExec(cQuery)
+
+
+
+
+
+
+
+
+
+
+
+
+
+							RecLock("AI3")
+							dbDelete()
+						EndIf
+					EndIf
+				EndIf
+				While __lSx8
+					ConfirmSx8()
+				EndDo
+				EvalTrigger()
+			EndTran(); end
+
+			Self:OK := 1
+
+		EndIf
+	Else
+		SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Apenas o administrador pode alterar um utilizador", "Somente o administrador pode alterar um usuario" ))
+		lRetorno := .F. 
+	EndIf
+Else
+	SetSoapFault("PRTPUTUSER","Logon nao efetuado")
+	lRetorno := .F. 
+EndIf
+RestArea(aArea)
+Return(lRetorno)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Function ___UserPortal____PrtPswUser( USERCODE,USEROLDPASSWORD,USERPASSWORD,UserType,OK)
+Local aArea	    := GetArea()
+Local aUser  	:= {}
+Local lRetAtivo	:= .F. 
+Local lRetorno 	:= .T. 
+Local cCodigo 	:= Self:USERCODE
+LOCAL lRetRD0	:= .F. 
+Local aRetFun	:= {}
+
+Self:UserType := If( Self:UserType == nil, "1", Self:UserType ) ;
+
+Self:OK := 0
+If Self:UserType=="1"
+	GetGlbVars("c"+cCodigo,aUser)
+	If !Empty(aUser) .And.  aUser[1] == AllTrim(Self:USERCODE)
+		Begin Sequence; BeginTran()
+			dbSelectArea("AI3")
+			dbSetOrder(1)
+			If MsSeek(xFilial("AI3")+aUser[1]) .And.  AllTrim(Self:UserOldPassWord)==AllTrim(AI3->AI3_PSW)
+				If RecLock("AI3")
+					If !Empty(Self:USERPASSWORD)
+						AI3->AI3_PSW := Self:USERPASSWORD
+						Self:OK := 1
+					Else
+						SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "A palavra-passe não foi introduzida", "A senha nao foi informada" ))
+						lRetorno := .F. 
+					EndIf
+				Else
+					lRetorno := .F. 
+					SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Operação não disponível neste momento", "Operacao nao disponivel neste momento" ))
+				EndIf
+			Else
+				lRetorno := .F. 
+				SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Senha inválida", "Senha invalida" ))
+			EndIf
+		EndTran(); end
+	Else
+		lRetorno := .F. 
+		SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Utilizador inválido", "Usuario invalido" ))
+	EndIf
+
+
+
+ElseIf Self:UserType == "4"
+	DbSelectArea("BSW")
+	DbSetOrder(5)
+	If MsSeek(xFilial("BSW")+Self:UserCode)
+		Begin Sequence; BeginTran()
+			If RecLock("BSW")
+				If !Empty(Self:USERPASSWORD)
+					BSW->BSW_PRIACE := .F. 
+					BSW->BSW_SENHA := PLSCRIDEC(1,AllTrim(Self:USERPASSWORD))
+					BSW->BSW_DTSEN := Date()
+   					BSW->(MsUnlock())
+					Self:OK := 1
+				Else
+					SetSoapFault("",If( cPaisLoc $ "ANG|PTG", "A palavra-passe não foi introduzida", "A senha nao foi informada" ))
+					lRetorno := .F. 
+				EndIf
+			Else
+				lRetorno := .F. 
+				SetSoapFault("",If( cPaisLoc $ "ANG|PTG", "Operação não disponível neste momento", "Operacao nao disponivel neste momento" ))
+			EndIf
+		EndTran(); end
+	Else
+		lRetorno := .F. 
+		SetSoapFault("",If( cPaisLoc $ "ANG|PTG", "Utilizador inválido", "Usuario invalido" ))
+	EndIf
+Else
+	dbSelectArea("RD0")
+
+ 	dbSetOrder(10)
+	If DbSeek( xFilial("RD0")+AllTrim(Self:UserCode) )
+ 		lRetRD0 := .T. 
+	EndIf
+
+	If !(lRetRD0)
+
+		dbSetOrder(11)
+		If DbSeek( xFilial("RD0")+AllTrim(Self:UserCode) )
+	 		lRetRD0 := .T. 
+		EndIf
+	EndIf
+
+	If RD0->RD0_MSBLQL == "2"
+		lRetAtivo	:= .T. 
+ 	EndIf
+
+	If !(lRetRD0)
+		dbSetOrder(6)
+
+		If MsSeek( xFilial("RD0")+UPPER(AllTrim(Self:UserCode)) )
+
+
+			While RD0->( !Eof() .and.  RD0_FILIAL+RD0_CIC == xFilial("RD0")+UPPER(AllTrim(Self:UserCode)) )
+	 			If RD0->RD0_MSBLQL == "2"
+		 			lRetRD0 	:= .T. 
+	 				lRetAtivo	:= .T. 
+	 				EXIT
+	 		 	EndIf
+	 		 	RD0->( dbSkip()	)
+			end
+		EndIf
+	EndIf
+
+
+	If lRetRD0
+		Begin Sequence; BeginTran()
+			If (lRetAtivo) .OR.  (SuperGetMV("MV_TCFVREN", .F. ,"N") <>  "N")
+				If Upper(AllTrim(Embaralha(RD0->RD0_SENHA,1))) == Upper(AllTrim(Self:USEROLDPASSWORD))
+					If RecLock("RD0")
+						If !Empty(Self:USERPASSWORD)
+							RD0->RD0_SENHA := Self:USERPASSWORD
+
+							If	MatParticipant(AllTrim(Self:UserCode), aRetFun)
+								DbSelectArea("SRA")
+								DbSetOrder(1)
+								If DbSeek( Alltrim(aRetFun[1][3]+aRetFun[1][1]) )
+									If SRA->( RecLock("SRA", .F. ) )
+										SRA->RA_SENHA := Self:USERPASSWORD
+									EndIf
+								EndIf
+							EndIf
+							Self:OK := 1
+						Else
+							SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "A palavra-passe não foi introduzida", "A senha nao foi informada" ))
+							lRetorno := .F. 
+						EndIf
+					Else
+						lRetorno := .F. 
+						SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Operação não disponível neste momento", "Operacao nao disponivel neste momento" ))
+					EndIf
+				Else
+					lRetorno := .F. 
+					SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Senha inválida", "Senha invalida" ))
+				EndIf
+			Else
+				lRetorno := .F. 
+				SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Utilizador está inactivo no registo de pessoas", "Usuario esta Inativo no cadastro de pessoas" ))
+			EndIf
+		EndTran(); end
+	Else
+		lRetorno := .F. 
+		SetSoapFault("PRTPUTUSER",If( cPaisLoc $ "ANG|PTG", "Utilizador inválido", "Usuario invalido" )+" - "+"Complete o cadastro do participante informando seu CPF!")
+	EndIf
+EndIf
+RestArea(aArea)
+Return(lRetorno)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Function ___UserPortal____PrtListPortals( NULLPARAM,USERLISTPORTAL)
+
+Local aArea  := GetArea()
+Local lQuery := .F. 
+Local cAlias := "AI9"
+Local nX     := 0
+
+Local cQuery := ""
+
+
+
+	cAlias := "PrtListPortals"
+	lQuery := .T. 
+
+	cQuery := "SELECT * "
+	cQuery += "FROM "+RetSqlName("AI9")+" AI9 "
+	cQuery += "WHERE AI9.AI9_FILIAL='"+xFilial("AI9")+"' AND "
+	cQuery += "AI9.D_E_L_E_T_=' ' "
+
+	cQuery := ChangeQuery(cQuery)
+
+	dbUseArea( .T. ,"TOPCONN",TcGenQry(,,cQuery),cAlias)
+
+
+
+
+
+While !Eof() .And.  (cAlias)->AI9_FILIAL=xFilial("AI9")
+
+	nX++
+	aadd(Self:UserListPortal,WsClassNew("GenericStruct"))
+
+	Self:UserListPorta[nX]:Code        := (cAlias)->AI9_PORTAL
+	Self:UserListPorta[nX]:Description := (cAlias)->AI9_DESCRI
+
+	dbSelectArea(cAlias)
+	dbSkip()
+EndDo
+If lQuery
+	dbSelectArea(cAlias)
+	dbCloseArea()
+	dbSelectArea("AI9")
+EndIf
+
+RestArea(aArea)
+Return( .T. )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Function ___UserPortal____PrtListMenu( UserPortalCode,UserCode,UserListMenu)
+
+Local aArea    := GetArea()
+Local aUser    := {}
+Local lQuery   := .F. 
+Local lRetorno := .T. 
+Local cAlias   := "AI8"
+Local cWEBSRV  := "''"
+Local nX       := 0
+Local cBSO 	 := ""
+Local cBAU 	 := ""
+Local cBC4 	 := ""
+Local dBloqueio	:=	FsDateConv(dDataBase,"YYYYMMDD")
+Local lMenu    := .F. 
+Local lOk		 := .T. 
+Local cAliasTrb:= ""
+
+Local cQuery   := ""
+
+
+Self:UserPortalCode := PadR(Self:UserPortalCode,Len(AI8->AI8_PORTAL))
+Self:UserCode := PadR(Self:UserCode,Len(AI3->AI3_CODUSU))
+
+If GetGlbVars("c"+Self:UserCode,aUser)
+
+		If UserPortalCode == "000008"
+
+		DbSelectArea("BC4")
+		IF BC4->(FieldPos("BC4_DTBLQ")) > 0
+
+				cBSW := BSW->(RetSQLName("BSW"))
+				cBSO := BSO->(RetSQLName("BSO"))
+				cBAU := BAU->(RetSQLName("BAU"))
+				cBC4 := BC4->(RetSQLName("BC4"))
+
+
+				cSql := "  SELECT DISTINCT BSO_CODUSR, BSO_CODIGO "
+				cSql += "  FROM "+cBSW+","+cBSO+","+cBAU+","+cBC4
+				cSql += "  WHERE "
+              cSql += "  BSW_FILIAL = '"+xFilial("BSW")+"' "
+              cSql += "  AND BSW_CODACE = '"+Self:UserCode+"' "
+              cSql += "  AND BSO_FILIAL = BSW_FILIAL AND BSO_CODUSR = BSW_CODUSR  "
+              cSql += "  AND BSO_FILIAL = BSW_FILIAL AND BSO_CODIGO = BAU_CODIGO AND BAU_CODBLO <> '' AND BAU_DATBLO <=  '"+dBloqueio + "'"
+              cSql += "  AND BC4_FILIAL = BAU_FILIAL AND BC4_CODCRE = BAU_CODIGO AND BC4_DTBLQ >  '"+ dBloqueio + "'"
+				cSql += "	 AND "+cBSW+".D_E_L_E_T_ = ' ' "
+				cSql += "  AND "+cBSO+".D_E_L_E_T_ = ' ' "
+				cSql += "	AND "+cBAU+".D_E_L_E_T_ = ' ' "
+				cSql += "	AND "+cBC4+".D_E_L_E_T_ = ' ' "
+
+
+
+
+				cSql := ChangeQuery(cSql)
+				cAliasTrb := GetNextAlias()
+				dbUseArea( .T. ,"TOPCONN",TCGENQRY(,,cSQL),cAliasTrb, .F. , .T. )
+
+
+
+				If !(cAliasTrb)->(Eof())
+					lMenu := .T. 
+				Else
+					lMenu := .F. 
+					lOk := .T. 
+				Endif
+
+		Else
+			lMenu := .F. 
+			lOk := .T. 
+		Endif
+
+	Endif
+
+		If (Select("BSW")>0) .AND.  !Empty(BSW->BSW_PERACE)
+			cAlias := "PrtListMenu"
+			lQuery := .T. 
+
+			cQuery := "SELECT * "
+			cQuery += "FROM " + RetSqlName("AI8") + " AI8 "
+			cQuery += "LEFT JOIN " + RetSqlName("B7J") + " B7J ON "
+			cQuery += "AI8.AI8_CODMNU = B7J.B7J_CODMNU AND "
+			cQuery += "B7J.B7J_FILIAL = '" + xFilial("B7J") + "' AND "
+			cQuery += "B7J.B7J_CODPER = '" + BSW->BSW_PERACE + "' AND "
+			cQuery += "B7J.B7J_PERACE = '1' AND "
+			cQuery += "B7J.D_E_L_E_T_=' ' "
+			cQuery += "WHERE AI8.AI8_FILIAL='" + xFilial("AI8") + "' AND "
+			If lMenu
+				cQuery += "AI8.AI8_PORTAL = '"+Self:UserPortalCode+ "' AND AI8.AI8_TEMP = '1' AND "
+			Else
+				cQuery += "AI8.AI8_PORTAL = '"+Self:UserPortalCode+ "' AND "
+			Endif
+			cQuery += "(AI8.AI8_CODPAI = '" + Space(6) + "' OR B7J.B7J_CODPER <> '" + Space(6) + "') AND "
+			cQuery += "AI8.AI8_WEBSRV IN('"+Space(Len(AI8->AI8_WEBSRV))+"',"+iIf(Len(aUser)>=6,aUser[6],"")+") AND "
+			cQuery += "AI8.D_E_L_E_T_=' ' "
+
+			cQuery := ChangeQuery(cQuery)
+
+			dbUseArea( .T. ,"TOPCONN",TcGenQry(,,cQuery),cAlias)
+		Else
+		cAlias := "PrtListMenu"
+		lQuery := .T. 
+
+		cQuery := "SELECT * "
+		cQuery += "FROM "+RetSqlName("AI8")+" AI8 "
+		cQuery += "WHERE AI8.AI8_FILIAL='"+xFilial("AI8")+"' AND "
+		If lMenu
+
+			cQuery += "AI8.AI8_PORTAL = "+Self:UserPortalCode+ " AND AI8.AI8_WEBSRV = '' OR AI8.AI8_TEMP = '1' and "
+		Else
+			cQuery += "AI8.AI8_PORTAL = "+Self:UserPortalCode+ " AND "
+		Endif
+			cQuery += "AI8.AI8_WEBSRV IN('"+Space(Len(AI8->AI8_WEBSRV))+"',"+iIf(len(aUser)>=6,aUser[6],"")+") AND "
+		cQuery += "AI8.D_E_L_E_T_=' ' "
+
+		cQuery := ChangeQuery(cQuery)
+
+		dbUseArea( .T. ,"TOPCONN",TcGenQry(,,cQuery),cAlias)
+		EndIf
+
+
+
+
+
+
+	While !Eof() .And.  (cAlias)->AI8_FILIAL=xFilial("AI8") .And.  (cAlias)->AI8_PORTAL == Self:UserPortalCode
+
+		If AllTrim((cAlias)->AI8_WEBSRV) $ aUser[6] .Or.  Empty((cAlias)->AI8_WEBSRV)
+
+			If AllTrim((cAlias)->AI8_ROTINA) $ "W_PWSA190.APW" .And.  cPaisLoc == "MEX"
+				dbSkip()
+				Loop
+			EndIf
+
+			nX++
+			aadd(Self:UserListMenu,WsClassNew("LoginMenu"))
+			Self:UserListMenu[nX]:Code          := (cAlias)->AI8_CODMNU
+
+
+
+
+
+
+
+					Self:UserListMenu[nX]:Description   := (cAlias)->AI8_TEXTO
+
+
+
+			Self:UserListMenu[nX]:SuperiorCode  := (cAlias)->AI8_CODPAI
+			Self:UserListMenu[nX]:WebService    := (cAlias)->AI8_WEBSRV
+			Self:UserListMenu[nX]:ProcedureCall := (cAlias)->AI8_ROTINA
+			Self:UserListMenu[nX]:Order         := (cAlias)->AI8_ORDEM
+			Self:UserListMenu[nX]:MenuIsBlocked 	:= ((cAlias)->AI8_MSBLQL == "1")
+			Self:UserListMenu[nX]:ApvlVision	 	:= (cAlias)->AI8_VISAPV
+			Self:UserListMenu[nX]:ApvlInitLevel	:= (cAlias)->AI8_INIAPV
+			Self:UserListMenu[nX]:ApvlLevels  		:= (cAlias)->AI8_APRVLV
+
+		EndIf
+		dbSelectArea(cAlias)
+		dbSkip()
+	EndDo
+	If lQuery
+		dbSelectArea(cAlias)
+		dbCloseArea()
+		dbSelectArea("AI8")
+	EndIf
+	If nX == 0
+		lRetorno := .f. 
+		SetSoapFault("PRTLISTMENU","Menu não encontrado")
+	EndIf
+Else
+	SetSoapFault("PRTLISTMENU",If( cPaisLoc $ "ANG|PTG", "Utilizador inválido", "Usuario invalido" ))
+	lRetorno := .F. 
+EndIf
+RestArea(aArea)
+Return(lRetorno)
+
+
+
+
+
+
+
+
+
+
+Function ___UserPortal____PrtGetClientsByUser( UserCode,Clients)
+	Local aArea    := GetArea()
+	Local aAreaAI4 := AI4->(GetArea())
+	Local lReturn  := .T. 
+
+
+	dbSelectArea("AI4")
+	dbSetOrder(1)
+
+	MsSeek(xFilial("AI4") + Self:UserCode)
+
+
+
+	While !AI4->(Eof()) .And.  AI4->AI4_FILIAL == xFilial("AI4") .And.  AI4->AI4_CODUSU == Self:UserCode
+
+		Aadd(Self:Clients, AI4->AI4_CODCLI)
+
+		AI4->(dbSkip())
+	EndDo
+
+	RestArea(aAreaAI4)
+	RestArea(aArea)
+Return lReturn
+
+
+
+
+
+
+
+
+
+
+Function ___UserPortal____PrtAmbiente( NULLPARAM,InfAmbiente)
+LOCAL aArea 	:= GetArea()
+LOCAL lReturn  	:= .T. 
+
+Self:InfAmbiente 				:= WsClassNew( "SAmbiente" )
+Self:InfAmbiente:RpoRelease	:= GetRpoRelease()
+Self:InfAmbiente:Versao		:= GetVersao( .F. )
+
+RestArea(aArea)
+
+
+
+Return lReturn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Function PrtChkUser(cCodigo,cIdWService,cMethod,cEntidade,cIdEntidade)
+
+Local lRetorno := .F. 
+Local aUser    := {}
+Local cJobName := GETWEBJOB()
+Local cUsrAudit:= ""
+
+cMethod := If( cMethod == nil, "", cMethod ) ;
+cEntidade := If( cEntidade == nil, "", cEntidade ) ;
+cIDEntidade := If( cIDEntidade == nil, "", cIDEntidade ) ;
+
+If "MSALPHA"==AllTrim(cCodigo)
+	lRetorno := .T. 
+Else
+	If GetGlbVars("c"+cCodigo,aUser)
+		If !Empty(aUser)
+			If (AllTrim(aUser[1]) == AllTrim(cCodigo) .And.  AllTrim(Upper(cIdWService))$AllTrim(Upper(aUser[6])))
+				lRetorno := .T. 
+			EndIf
+			If !Empty(aUser[9])
+				If !Empty(cEntidade)
+					If cEntidade <> "USER"
+						dbSelectArea(cEntidade)
+						dbSetOrder(1)
+						If !MsSeek(xFilial(cEntidade)+cIdEntidade)
+							lRetorno := .F. 
+							SetSoapFault("PRTCHKUSER",If( cPaisLoc $ "ANG|PTG", "Entidade inválida para este webservice - validação de utilizador interno", "Entidade invalida para este WebService - Validacao de usuario interno" ))
+						EndIf
+					EndIf
+				EndIf
+			Else
+				If !Empty(cEntidade)
+					If aScan(aUser[8],{|x| x[1]==cEntidade .And.  x[2]==cIdEntidade})==0
+						lRetorno := .F. 
+						SetSoapFault("PRTCHKUSER",If( cPaisLoc $ "ANG|PTG", "Entidade Inválida Para Este Webservice", "Entidade invalida para este WebService" ))
+					EndIf
+				EndIf
+			EndIf
+		EndIf
+	Else
+		lRetorno := .F. 
+	EndIf
+EndIf
+If !lRetorno
+	SetSoapFault("PRTCHKUSER",If( cPaisLoc $ "ANG|PTG", "Webservice inválido para este login", "WebService invalido para este login" ))
+Else
+
+
+	If cCodigo == "MSALPHA"
+		cUsrAudit := "MSALPHA"
+
+
+
+	Else
+		cUsrAudit := alltrim(aUser[2])
+		TCInternal(8,cUsrAudit)
+	EndIf
+EndIf
+
+Return(lRetorno)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Static Function PrtIniUser( cCodigo, oObj, cUserLogin, cUserPsw )
+Local aArea     := GetArea()
+Local cAliasAI4 := "AI4"
+Local cAliasAI5 := "AI5"
+Local cAliasAI6 := "AI6"
+Local lQuery    := .F. 
+Local lRetorno  := .T. 
+Local nX        := 0
+Local nItem     := 0
+Local aInfo 	:= {}
+Local cQUsuario := ""
+
+
+Local aStru     := {}
+Local cQuery    := ""
+
+
+
+
+Local cGSP := SuperGetMv("MV_GSPUBL",,"1")
+If cGSP == "2" .And.  GetMv("MV_VDFLOGO",,"0") <> "0"
+   cGSP := "3"
+EndIf
+
+
+dbSelectArea("AI3")
+dbSetOrder(1)
+If MsSeek(xFilial("AI3")+cCodigo)
+	If !Empty(AI3->AI3_GRUPO) .AND.  (AI3->AI3_GRUPO <> cCodigo)
+		PrtIniUser(AI3->AI3_GRUPO,@oObj)
+	EndIf
+
+
+
+	oObj:USERCODE          := AI3->AI3_CODUSU
+	oObj:USERLOGIN         := IIF( cUserLogin == NIL, AI3->AI3_LOGIN, cUserLogin )
+	oObj:USERPASSWORD      := IIF( cUserPsw == NIL, AI3->AI3_PSW, cUserPsw )
+	oObj:USERSKIN          := AI3->AI3_SKIN
+	oObj:USERNAME          := AI3->AI3_NOME
+	oObj:USEREMAIL     := AI3->AI3_EMAIL
+	oObj:USERROLES         := VAL(AI3->AI3_ADMIN)
+	oObj:USERACCESSESHEADER := {RetTitle("AI7_WEBSRV"),RetTitle("AI7_DESCRI")}
+	oObj:USERENTIRIESHEADER:= {"Entidade",RetTitle("AI4_CODCLI")+"/"+RetTitle("AI5_CODFOR"),RetTitle("A1_NREDUZ"),RetTitle("AI4_NOMCLI"),RetTitle("A1_CGC"),RetTitle("AI3_SKIN")}
+	oObj:USERGROUP         := AI3->AI3_GRUPO
+	oObj:USERENTIRIES := If( oObj:USERENTIRIES == nil, {}, oObj:USERENTIRIES ) ;
+    oObj:USERWS := If( oObj:USERWS == nil, "", oObj:USERWS ) ;
+	oObj:USERACCESSES := If( oObj:USERACCESSES == nil, {}, oObj:USERACCESSES ) ;
+	dbSelectArea("AI4")
+	dbSetOrder(1)
+
+		lQuery := .T. 
+		cAliasAI4 := "PRTLOGIN"
+		aStru     := AI4->(dbStruct())
+
+		cQuery := "SELECT * "
+		cQuery += "FROM "+RetSqlName("AI4")+" AI4 "
+		cQuery += "WHERE AI4.AI4_FILIAL='"+xFilial("AI4")+"' AND "
+		cQuery += "AI4.AI4_CODUSU = '"+AI3->AI3_CODUSU+"' AND "
+		cQuery += "AI4.D_E_L_E_T_=' ' "
+
+		cQuery := ChangeQuery(cQuery)
+
+		dbUseArea( .T. ,"TOPCONN",TcGenQry(,,cQuery),cAliasAI4)
+		For nX := 1 To Len(aStru)
+			If aStru[nX][2] <> "C"
+				TcSetField("AI4",aStru[nX][1],aStru[nX][2],aStru[nX][3],aStru[nX][4])
+			EndIf
+		next
+
+
+
+
+	While !Eof() .And.  (cAliasAI4)->AI4_FILIAL == xFilial("AI4") .And.  (cAliasAI4)->AI4_CODUSU == AI3->AI3_CODUSU
+		dbSelectArea("SA1")
+		dbSetOrder(1)
+		MsSeek(xFilial("SA1")+(cAliasAI4)->AI4_CODCLI+(cAliasAI4)->AI4_LOJCLI)
+		nItem := aScan(oObj:USERENTIRIES,{|o| o:ENTIRY == "SA1" .And.  o:ID_ENTIRY == (cAliasAI4)->AI4_CODCLI+(cAliasAI4)->AI4_LOJCLI })
+		If nItem == 0
+			AAdd(oObj:USERENTIRIES,WSClassNew("LOGINENTIRYSTRUCT"))
+			nItem := Len(oObj:USERENTIRIES)
+			oObj:USERENTIRIES[nItem]:ENTIRY    	 := "SA1"
+			oObj:USERENTIRIES[nItem]:ID_ENTIRY 	 := (cAliasAI4)->AI4_CODCLI+(cAliasAI4)->AI4_LOJCLI
+			oObj:USERENTIRIES[nItem]:NICKNAME  	 := SA1->A1_NREDUZ
+			oObj:USERENTIRIES[nItem]:NAME      	 := SA1->A1_NOME
+			oObj:USERENTIRIES[nItem]:FederalID  := SA1->A1_CGC
+			oObj:USERENTIRIES[nItem]:Skin       := (cAliasAI4)->AI4_SKIN
+		EndIf
+		dbSelectArea(cAliasAI4)
+		dbSkip()
+	EndDo
+	If lQuery
+		dbSelectArea(cAliasAI4)
+		dbCloseArea()
+		dbSelectArea("AI4")
+	EndIf
+
+	dbSelectArea("AI5")
+	dbSetOrder(1)
+
+		lQuery := .T. 
+		cAliasAI5 := "PRTLOGIN"
+		aStru     := AI5->(dbStruct())
+
+		cQuery := "SELECT * "
+		cQuery += "FROM "+RetSqlName("AI5")+" AI5 "
+		cQuery += "WHERE AI5.AI5_FILIAL='"+xFilial("AI5")+"' AND "
+		cQuery += "AI5.AI5_CODUSU = '"+AI3->AI3_CODUSU+"' AND "
+		cQuery += "AI5.D_E_L_E_T_=' ' "
+
+		cQuery := ChangeQuery(cQuery)
+
+		dbUseArea( .T. ,"TOPCONN",TcGenQry(,,cQuery),cAliasAI5)
+		For nX := 1 To Len(aStru)
+			If aStru[nX][2] <> "C"
+				TcSetField("AI5",aStru[nX][1],aStru[nX][2],aStru[nX][3],aStru[nX][4])
+			EndIf
+		next
+
+
+
+
+	While !Eof() .And.  (cAliasAI5)->AI5_FILIAL == xFilial("AI5") .And.  (cAliasAI5)->AI5_CODUSU == AI3->AI3_CODUSU
+		dbSelectArea("SA2")
+		dbSetOrder(1)
+		MsSeek(xFilial("SA2")+(cAliasAI5)->AI5_CODFOR+(cAliasAI5)->AI5_LOJFOR)
+		nItem := aScan(oObj:USERENTIRIES,{|o| o:ENTIRY == "SA2" .And.  o:ID_ENTIRY == (cAliasAI5)->AI5_CODFOR+(cAliasAI5)->AI5_LOJFOR })
+		If nItem == 0
+			AAdd(oObj:USERENTIRIES,WSClassNew("LOGINENTIRYSTRUCT"))
+			nItem := Len(oObj:USERENTIRIES)
+			oObj:USERENTIRIES[nItem]:ENTIRY    	:= "SA2"
+			oObj:USERENTIRIES[nItem]:ID_ENTIRY 	:= (cAliasAI5)->AI5_CODFOR+(cAliasAI5)->AI5_LOJFOR
+			oObj:USERENTIRIES[nItem]:NICKNAME  	:= SA2->A2_NREDUZ
+			oObj:USERENTIRIES[nItem]:NAME      	:= SA2->A2_NOME
+			oObj:USERENTIRIES[nItem]:FederalID  := SA2->A2_CGC
+			oObj:USERENTIRIES[nItem]:Skin       := (cAliasAI5)->AI5_SKIN
+		EndIf
+		dbSelectArea(cAliasAI5)
+		dbSkip()
+	EndDo
+	If lQuery
+		dbSelectArea(cAliasAI5)
+		dbCloseArea()
+		dbSelectArea("AI5")
+	EndIf
+
+	If !Empty(AI3->AI3_USRSIS)
+		dbSelectArea("SA3")
+		dbSetOrder(7)
+		If MsSeek(xFilial("SA3")+AI3->AI3_USRSIS)
+			AAdd(oObj:USERENTIRIES,WSClassNew("LOGINENTIRYSTRUCT"))
+			nItem := Len(oObj:USERENTIRIES)
+			oObj:USERENTIRIES[nItem]:ENTIRY    	:= "SA3"
+			oObj:USERENTIRIES[nItem]:ID_ENTIRY 	:= SA3->A3_COD
+			oObj:USERENTIRIES[nItem]:NICKNAME  	:= SA3->A3_NREDUZ
+			oObj:USERENTIRIES[nItem]:NAME      	:= SA3->A3_NOME
+			oObj:USERENTIRIES[nItem]:FederalID  := SA3->A3_CGC
+			oObj:USERENTIRIES[nItem]:Skin       := AI3->AI3_SKIN
+		EndIf
+
+		dbSelectArea("AA1")
+		dbSetOrder(4)
+		If MsSeek(xFilial("AA1")+AI3->AI3_USRSIS)
+			AAdd(oObj:USERENTIRIES,WSClassNew("LOGINENTIRYSTRUCT"))
+			nItem := Len(oObj:USERENTIRIES)
+			oObj:USERENTIRIES[nItem]:ENTIRY    	:= "AA1"
+			oObj:USERENTIRIES[nItem]:ID_ENTIRY 	:= AA1->AA1_CODTEC
+			oObj:USERENTIRIES[nItem]:NICKNAME  	:= AA1->AA1_NOMUSU
+			oObj:USERENTIRIES[nItem]:NAME      	:= AA1->AA1_NOMTEC
+			oObj:USERENTIRIES[nItem]:FederalID  := ""
+			oObj:USERENTIRIES[nItem]:Skin       := AI3->AI3_SKIN
+		EndIf
+
+		PswOrder(1)
+		If PswSeek( AI3->AI3_USRSIS )
+			aInfo := PswRet()
+			cQUsuario := aInfo[1][2]
+		EndIf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	EndIf
+
+	dbSelectArea("AI6")
+	dbSetOrder(1)
+
+		lQuery := .T. 
+		cAliasAI6 := "PRTLOGIN"
+		aStru     := AI6->(dbStruct())
+
+		cQuery := "SELECT * "
+		cQuery += "FROM "+RetSqlName("AI6")+" AI6 "
+		cQuery += "WHERE AI6.AI6_FILIAL='"+xFilial("AI6")+"' AND "
+		cQuery += "AI6.AI6_CODUSU = '"+AI3->AI3_CODUSU+"' AND "
+		cQuery += "AI6.D_E_L_E_T_=' ' "
+
+		cQuery := ChangeQuery(cQuery)
+
+		dbUseArea( .T. ,"TOPCONN",TcGenQry(,,cQuery),cAliasAI6)
+		For nX := 1 To Len(aStru)
+			If aStru[nX][2] <> "C"
+				TcSetField("AI6",aStru[nX][1],aStru[nX][2],aStru[nX][3],aStru[nX][4])
+			EndIf
+		next
+
+
+
+
+	While !Eof() .And.  (cAliasAI6)->AI6_FILIAL == xFilial("AI6") .And.  (cAliasAI6)->AI6_CODUSU == AI3->AI3_CODUSU
+
+		dbSelectArea("AI7")
+		dbSetOrder(1)
+		MsSeek(xFilial("AI7")+(cAliasAI6)->AI6_WEBSRV)
+
+		nX := aScan(oObj:USERACCESSES,{|o| o:WEBSRV == (cAliasAI6)->AI6_WEBSRV})
+		If nX == 0
+			AAdd(oObj:USERACCESSES,WSClassNew("LOGINACCESSESSTRUCT"))
+			nX := Len(oObj:USERACCESSES)
+
+            If cGSP == "3"
+                oObj:USERACCESSES[nX]:WKFAPV := (cAliasAI6)->AI6_WKFAPV
+            Else
+                oObj:USERACCESSES[nX]:WKFAPV := ""
+            EndIf
+			oObj:USERACCESSES[nX]:WEBSRV     := (cAliasAI6)->AI6_WEBSRV
+			oObj:USERACCESSES[nX]:NAME       := AI7->AI7_DESCRI
+			oObj:USERWS                        += ",'"+ALLTrim((cAliasAI6)->AI6_WEBSRV)+"'"
+		EndIf
+
+		dbSelectArea(cAliasAI6)
+		dbSkip()
+	EndDo
+	If SubStr(oObj:USERWS,1,1) == ","
+		oObj:USERWS := SubStr(oObj:USERWS,2)
+	EndIf
+	If lQuery
+		dbSelectArea(cAliasAI6)
+		dbCloseArea()
+		dbSelectArea("AI6")
+	EndIf
+Else
+	lRetorno := .F. 
+EndIf
+
+RestArea(aArea)
+Return(lRetorno)
+
+Static Function fRHMenu()
+
+Local aArea		:= GetArea()
+Local aAreaSX3	:={}
+
+dbSelectArea("SX3")
+aAreaSX3	:= SX3->(GetArea())
+SX3->( dbSetOrder(2))
+
+If SX3->( dbSeek("RGK_OPERAC") )
+	Reclock( "SX3", .F. )
+		SX3->X3_CBOX := "1=Solicitação;2=Alteração;3=Aprovação;4=Reprovação;5=Exclusão                                                                   "
+	MsUnlock()
+Endif
+
+If SX3->( dbSeek("RH3_STATUS") )
+	Reclock( "SX3", .F. )
+		SX3->X3_CBOX := "1=Em processo de aprovação;2=Atendida;3=Reprovada;4=Aguardando Efetivação do RH                                                 "
+	MsUnlock()
+Endif
+
+If SX3->( dbSeek("R8_DURACAO") )
+	Reclock( "SX3", .F. )
+		SX3->X3_DESCRIC := "Número Dias"
+	MsUnlock()
+Endif
+
+If SX3->( dbSeek("RA_SERCP") )
+	Reclock( "SX3", .F. )
+		SX3->X3_TITULO := "Série Cart."
+	MsUnlock()
+Endif
+
+dbSelectArea("AI8")
+AI8->(dbSetOrder(4))
+If AI8->(dbSeek(xFilial("AI8")+"000006"+"W_PWSA190.APW"))
+	If Alltrim(AI8->AI8_TEXTO) == "Ferias"
+		RecLock("AI8", .F. )
+		AI8->AI8_TEXTO := "Férias"
+		AI8->(msUnlock())
+	EndIf
+EndIf
+
+If AI8->(dbSeek(xFilial("AI8")+"000006"+"W_PWSA150.APW"))
+	If Alltrim(AI8->AI8_TEXTO) == "Contratacao"
+		RecLock("AI8", .F. )
+		AI8->AI8_TEXTO := "Contratação"
+		AI8->(msUnlock())
+	EndIf
+EndIf
+
+If AI8->(dbSeek(xFilial("AI8")+"000006"+"W_PWSA120.APW"))
+	If Alltrim(AI8->AI8_TEXTO) == "Acao Salarial"
+		RecLock("AI8", .F. )
+		AI8->AI8_TEXTO := "Ação Salarial"
+		AI8->(msUnlock())
+	EndIf
+EndIf
+
+If AI8->(dbSeek(xFilial("AI8")+"000006"+"W_PWSA140.APW"))
+	If Alltrim(AI8->AI8_TEXTO) == "Transferencia"
+		RecLock("AI8", .F. )
+		AI8->AI8_TEXTO := "Transferência"
+		AI8->(msUnlock())
+	EndIf
+EndIf
+
+If AI8->(dbSeek(xFilial("AI8")+"000006"+"W_PWSA140.APW"))
+	If Alltrim(AI8->AI8_TEXTO) == "Transferencia"
+		RecLock("AI8", .F. )
+		AI8->AI8_TEXTO := "Transferência"
+		AI8->(msUnlock())
+	EndIf
+EndIf
+
+If AI8->(dbSeek(xFilial("AI8")+"000006"+"W_PWSA100A.APW"))
+	If Alltrim(AI8->AI8_TEXTO) == "Ferias"
+		RecLock("AI8", .F. )
+		AI8->AI8_TEXTO := "Férias"
+		AI8->(msUnlock())
+	EndIf
+EndIf
+
+AI8->(dbSetOrder(1))
+If AI8->(dbSeek(xFilial("AI8")+"000006"))
+	While !AI8->(Eof()) .And.  AI8->(AI8_FILIAL+AI8_PORTAL) == xFilial("AI8")+"000006"
+		If Alltrim(AI8->AI8_TEXTO) == "Solicitacoes"
+			RecLock("AI8", .F. )
+			AI8->AI8_TEXTO := "Solicitações"
+			AI8->(msUnlock())
+			Exit
+		Endif
+		AI8->(dbSkip())
+	EndDo
+EndIf
+
+dbSelectArea("SX5")
+SX5->(dbSetOrder(1))
+If SX5->(dbSeek(xFilial("SX5")+"JQ2"))
+	If Alltrim(SX5->X5_DESCRI) == "Alteracao Cadastral"
+		RecLock("SX5", .F. )
+		SX5->X5_DESCRI := "Alteração Cadastral"
+		SX5->(msUnlock())
+
+	Endif
+EndIf
+
+If SX5->(dbSeek(xFilial("SX5")+"JQ3"))
+	If Alltrim(SX5->X5_DESCRI) == "Criacao/Aumento de Postos"
+		RecLock("SX5", .F. )
+		SX5->X5_DESCRI := "Criação/Aumento de Postos"
+		SX5->(msUnlock())
+
+	Endif
+EndIf
+
+If SX5->(dbSeek(xFilial("SX5")+"JQ4"))
+	If Alltrim(SX5->X5_DESCRI) == "Transferencia"
+		RecLock("SX5", .F. )
+		SX5->X5_DESCRI := "Transferência"
+		SX5->(msUnlock())
+	Endif
+EndIf
+
+If SX5->(dbSeek(xFilial("SX5")+"JQ5"))
+	If Alltrim(SX5->X5_DESCRI) == "Admissao"
+		RecLock("SX5", .F. )
+		SX5->X5_DESCRI := "Admissão"
+		SX5->(msUnlock())
+	Endif
+EndIf
+
+If SX5->(dbSeek(xFilial("SX5")+"JQ7"))
+	If Alltrim(SX5->X5_DESCRI) == "Acao Salarial"
+		RecLock("SX5", .F. )
+		SX5->X5_DESCRI := "Ação Salarial"
+		SX5->(msUnlock())
+	Endif
+EndIf
+
+If SX5->(dbSeek(xFilial("SX5")+"JQ8"))
+	If Alltrim(SX5->X5_DESCRI) == "Justificativa de Horario"
+		RecLock("SX5", .F. )
+		SX5->X5_DESCRI := "Justificativa de Horário"
+		SX5->(msUnlock())
+	Endif
+EndIf
+
+If SX5->(dbSeek(xFilial("SX5")+"JQ9"))
+	If Alltrim(SX5->X5_DESCRI) == "Inscricao em Vaga"
+		RecLock("SX5", .F. )
+		SX5->X5_DESCRI := "Inscrição em Vaga"
+		SX5->(msUnlock())
+	Endif
+EndIf
+
+If SX5->(dbSeek(xFilial("SX5")+"JQB"))
+	If Alltrim(SX5->X5_DESCRI) == "Ferias"
+		RecLock("SX5", .F. )
+		SX5->X5_DESCRI := "Férias"
+		SX5->(msUnlock())
+	Endif
+EndIf
+
+RestArea( aAreaSX3 )
+RestArea( aArea )
+
+return

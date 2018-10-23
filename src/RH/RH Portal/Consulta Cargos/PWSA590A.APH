@@ -1,0 +1,91 @@
+<%
+	//#INCLUDE "PWSA590.CH"
+	Local nI := 0
+%>
+<fieldset>
+	<label  class='pos-esq' style="float: left;margin: 20px 0px 0px 0px;width:100px">Título do Cargo:</label>
+	<input name="txtFiltraCargo" id="txtFiltraCargo" type="text" style="margin: 20px 0px 0px 0px;padding: 0px 20px 0px 20px;margin-left: 5px" size="50" maxlength="50" class="Texto" value="<%=HttpGet->FilterValue%>" >
+	<input name="btnFiltraCargo" id="btnFiltraCargo" type="submit" value="Pesquisar" class="Botoes" onClick="GoToPage(event, 1, <%=nPageTotal%>, null, $('txtFiltraCargo').value);">
+	<input name="btnLimpaCargo" id="btnLimpaCargo" type="submit" value="Limpar" class="Botoes" onClick="GoToPage(event, 1, <%=nPageTotal%>, null, '');">
+	
+</fieldset>
+
+<table width="800">
+	<tr>
+		<th><%="Cargo"%></th><!-- Cargo -->		
+		<th><%="Descrição"%></th><!-- Descrição -->
+		<th><%="Especialização"%></th><!-- Especialização -->
+	</tr>
+<%
+	If Len(aCargos) > 0 .and. !Empty(aCargos[1]:cCod)
+		For nI := 1 To Len(aCargos)
+		
+%>
+	<tr>
+		<td class='info-cent'><a href="#" class="links" onclick = "GoToPage(event, <%=nCurrentPage%>,<%=nPageTotal%>, null,document.getElementById('txtFiltraCargo').value,<%=nI%>)"><%=aCargos[nI]:cCod%></a></td>
+		<td class='info-cent'><a href="#" class="links" onclick = "GoToPage(event, <%=nCurrentPage%>,<%=nPageTotal%>, null,document.getElementById('txtFiltraCargo').value,<%=nI%>)"><%=aCargos[nI]:cDesc%></a></td>
+		<td class='info-cent'><a href="#" class="links" onclick = "GoToPage(event, <%=nCurrentPage%>,<%=nPageTotal%>, null,document.getElementById('txtFiltraCargo').value,<%=nI%>)"><%=aCargos[nI]:cEsp%></a></td>
+	</tr>
+<%
+		Next nI
+	Else
+%>
+	<tr>
+		<td colspan="3" class='info-cent'>Não foram encontrados cargos com a descrição pesquisada.</td>
+	</tr>
+<%
+	EndIf
+
+	if (nPageTotal > 1)
+%>
+	    <div class='container-pagin'>
+			<div class="pagin-esq">
+				<%="Página"%> <!-- Pagina: -->
+				<input id="txtPagina" name="txtPagina" type="text" style="text-align:right" value="<%=nCurrentPage%>" size="3" maxlength="3" onKeyPress="return GoToPage(event, this.value, <%=nPageTotal%>,null,document.getElementById('txtFiltraCargo').value);">&nbsp;/&nbsp;<%=nPageTotal%>&nbsp;
+			</div>
+			<div  class="pagin-dir">
+	<%		IF (nCurrentPage > 1) %>
+					<a href="#" onclick="GoToPage(event, 1, <%=nPageTotal%>,null,document.getElementById('txtFiltraCargo').value)" class="ButtonFirst"></a>
+				 	<a href="#" onclick="GoToPage(event, <%=nCurrentPage-1%>,null,null,document.getElementById('txtFiltraCargo').value), <%=nPageTotal%>" class="ButtonPrevious"></a>
+	<%		Else	%>						
+					<a href="#" class="ButtonFirstDisabled"></a>
+					<a href="#" class="ButtonPreviousDisabled"></a>
+	<%		EndIf	%>
+	<%		IF (nCurrentPage != nPageTotal) %>
+					<a href="#" onclick="GoToPage(event, <%=nCurrentPage+1%>, <%=nPageTotal%>,null,document.getElementById('txtFiltraCargo').value)" class="ButtonNext"></a>
+					<a href="#" onclick="GoToPage(event, <%=nPageTotal%>, <%=nPageTotal%>,null,document.getElementById('txtFiltraCargo').value)" class="ButtonLast"></a>
+	<%		Else	%>						
+					<a href="#" class="ButtonNextDisabled"></a>
+					<a href="#" class="ButtonLastDisabled"></a>
+	<%		EndIf	%>
+			</div>
+		</div>
+<%	EndIf	%>
+</table>  
+<table width="800">
+<tr>
+<td>
+	<% If nVar > 0 %>
+	<div class='container-pagin' id="divDescritivo" name="divDescritivo" style="display: block;">
+	<% Else %>
+	<div class='container-pagin' id="divDescritivo" name="divDescritivo" style="display: none;">
+	<% EndIf %>
+		<% If nVar > 0 %>
+			<h3><%=aCargos[nVar]:cCod + ' - ' + aCargos[nVar]:cDesc + If(!Empty(aCargos[nVar]:cEsp),' - ' + aCargos[nVar]:cEsp,'') %></h3>
+			<br>
+		<% EndIf %>
+		<label  class='pos-esq'>Descrição Detalhada</label><!--Descrição-->
+		<textarea readonly name="descCargo" id="descCargo" cols=125 rows=5 class="textarea"><%=cDescCargo%></textarea><br><br>
+		<label  class='pos-esq'>Responsabilidades</label><!--Responsabilidades-->
+		<textarea readonly name="respCargo" cols=125 rows=5 class="textarea"><%=cRespCargo%></textarea><br><br>
+		<label  class='pos-esq'>Habilidades</label><!--Habilidades-->
+		<textarea readonly name="skillCargo" cols=125 rows=5 class="textarea"><%=cSkillCargo%></textarea><br><br>
+		<label class='pos-esq'>Relacionamento Interno</label><!--Relacionamento Interno-->
+		<textarea readonly name="relacCargo" id="relacCargo" cols=125 rows=5 class="textarea"><%=cRelacCargo%></textarea><br><br>
+	</div>
+</td>
+</tr>
+</table>
+	<% If nVar > 0 %>
+		<script>document.getElementById('relacCargo').focus();</script>
+	<% EndIF %>

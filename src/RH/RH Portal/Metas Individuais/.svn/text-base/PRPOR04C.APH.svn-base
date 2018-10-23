@@ -1,0 +1,442 @@
+<%
+Local cTitulo 		:= HttpGet->titulo
+Local cObjetivo 		:= HttpGet->objetivo
+Local nIndice			:= HttpGet->nIndice 
+Local cHorario 		:= HttpGet->Horario 
+Local nReg				:= 0
+Local nCntPeso		:= 0
+%>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!doctype html public "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">	
+		<link href="styles/consulta.css" rel="stylesheet" type="text/css">
+		<link href="styles/estilo.css" rel="stylesheet" type="text/css">
+		<script src="scripts/ajax.js" language="JavaScript" type="text/javascript"></script>
+		<script src="scripts/prototype.js" language="JavaScript" type="text/javascript"></script>
+		<script src="scripts/scriptaculous.js" language="JavaScript" type="text/javascript"></script> 			 			
+		<style>
+			.Linha	
+			{
+    			background: transparent;
+				background-color: transparent;
+			}
+			.Campo	
+			{
+    			background: transparent;
+				background-color: transparent;
+    			border: none;
+				outline: none;
+				border-color: inherit;
+				box-shadow: none;	
+			}
+	  		.MsgErro{
+				color: #FF0000;
+				text-decoration: none;
+				text-align: left; 
+				vertical-align: middle;
+				font-weight: normal;
+				background: #FFE4C4;
+				display: block;
+				border: thin dashed #000000; 
+				padding: 20px;
+				width: 100%;
+				height:10px;
+	  		}
+	  		.Msgok{
+				color: #FF0000;
+				text-decoration: none;
+				text-align: left; 
+				vertical-align: middle;
+				font-weight: normal;
+				background: #00FA9A;
+				display: block;
+				border: thin dashed #000000; 
+				padding: 20px;
+				width: 100%;
+				height:10px;
+	  		}
+			.ButBarra	
+			{
+    			border: none;
+				outline: none;
+				border-color: inherit;
+				box-shadow: none;
+				float:right;
+				width: 150px;
+				height:30px;	
+			}
+			.CampoTxtarea{
+    			background: transparent;
+				background-color: transparent;
+    			border: none;
+				outline: none;
+				border-color: inherit;
+				box-shadow: none;	
+			}
+		</style>
+		<script language=JavaScript type="text/javascript" charset="UTF-8">
+			function addItem(Incluindo,IncMetas,ResMetas,LimPeso,LimMeta) {
+				var tabela 		= document.getElementById('tbMetas');
+				var linhas 		= tabela.getElementsByTagName('tr');
+				var tr 			= document.createElement('tr');
+				var TotalLinha	= linhas.length;
+				var nTotCancel	= 0;
+				var cURL		= 'B_PRP04ADD.APW';
+				var cDestination= '';
+				var oParams		= {};
+				var AguardaRetorno= 0;
+
+				document.getElementById('divMsg').innerHTML= '';
+
+				for (var nX= 1; nX <linhas.length; nX++) {
+					var MetaCancelada = (document.getElementById('ddlStatus__'+nX.toString()).value=='2');
+					if(MetaCancelada){
+						nTotCancel= nTotCancel+1;							
+					}		
+				}
+
+				if ((TotalLinha-nTotCancel) > LimMeta){
+					var MsgErro = '<div style="text-align: center; vertical-align: middle; width:800px;height:10px;"><label class="MsgErro">Não é permitido adicionar mais que '+LimMeta.toString()+' metas!</label></div>';
+					document.getElementById('divMsg').innerHTML= MsgErro;					
+					return
+				}
+
+				if (TotalLinha < 0){
+					TotalLinha=1;						
+				}
+
+				cSeq= TotalLinha.toString();
+
+				tr.setAttribute('id','linha__'+cSeq);
+				
+				cDestination = 'linha__'+cSeq;
+				
+				oParams.cSeq= cSeq.trim();
+				oParams.Incluindo = Incluindo;
+				oParams.IncMetas  = IncMetas;
+				oParams.ResMetas  = ResMetas;
+				oParams.LimPeso   = LimPeso;
+				oParams.LimMeta   = LimMeta;
+				oParams.TotCancel = nTotCancel.toString();
+				
+				new Ajax.Updater(cDestination, 
+								 cURL,
+									{
+										method: 'get',     
+										evalScripts: true,
+										parameters: oParams,
+										onComplete: function(response) {
+											AguardaRetorno= 998;
+										}
+									}
+								);
+
+				while (AguardaRetorno<=1000) {
+					AguardaRetorno=AguardaRetorno+1;
+				}
+
+				tabela.appendChild(tr);
+
+				return false;
+	
+			}			
+			function strzero(cStrAjusta,nCasas){
+
+				while (cStrAjusta.length <  nCasas) {
+					cStrAjusta = "0" + cStrAjusta;
+				}
+
+			return cStrAjusta;	
+			}
+
+			function SalvarMetas(){
+				var cDestination	= 'divMsg';
+				var cURL			= 'B_PRP04GRV.APW';
+				var aguarde			= '';
+				var tabela 			= document.getElementById('tbMetas');
+				var linhas 			= tabela.getElementsByTagName('tr');
+				var TotalLinha		= linhas.length;
+				var SeqNew			= 1;
+				var oParams			= {};
+				var cXmlMetas		='';
+
+				aguarde	= aguarde+'<div style="text-align: left; vertical-align: middle; width: 400px;">';
+				aguarde	= aguarde+'<img src="imagens-rh/ajax-loader.gif"><br><span class="TituloMenor">Realizando atualização, aguarde...</span>';
+				aguarde	= aguarde+'</div>';
+
+				if (TotalLinha==1) {
+					var MsgErro = '<div style="text-align: center; vertical-align: middle; width:800px;height:10px;"><label class="MsgErro">Adicione itens na grid para depois salvar!</label></div>';
+					document.getElementById('divMsg').innerHTML= MsgErro;
+					return
+				}
+
+				for (var nX= 1; nX <linhas.length; nX++) {
+					var Sequencia		= document.getElementById('txtSeq__'+nX.toString()).value;
+					var NaoPrencheuMeta = (document.getElementById('txtMeta__'+nX.toString()).value=='');
+					var NaoPrencheuMeta = (document.getElementById('txtMeta__'+nX.toString()).value=='');
+					var NaoExcluida		= !(document.getElementById('txtExclui__'+nX.toString()).value==".T.");
+						
+					if(NaoPrencheuMeta && NaoExcluida){
+						var MsgErro = '<div style="text-align: center; vertical-align: middle; width:800px;height:10px;"><label class="MsgErro">Campo Meta da sequência '+ Sequencia +' não preenchido, verifique!</label></div>';
+						document.getElementById('divMsg').innerHTML= MsgErro;
+						return							
+					}		
+				}
+			
+				document.getElementById('divMsg').innerHTML= aguarde;
+
+				cXmlMetas= cXmlMetas+ "<items>";
+				for (var nX= 1; nX <linhas.length; nX++) {	
+					cXmlMetas= cXmlMetas+ "	<item id='"+nX.toString()+"'>";
+					cXmlMetas= cXmlMetas+ "		<Seq>"+ strzero(SeqNew.toString(),2) +"</Seq>";
+					cXmlMetas= cXmlMetas+ "		<Meta>"+ document.getElementById('txtMeta__'+nX.toString()).value +"</Meta>";
+					cXmlMetas= cXmlMetas+ "		<Peso>"+ document.getElementById('ddlPeso__'+nX.toString()).value +"</Peso>";
+					cXmlMetas= cXmlMetas+ "		<Perc>"+ document.getElementById('txtRealizado__'+nX.toString()).value +"</Perc>";
+					cXmlMetas= cXmlMetas+ "		<Status>"+ document.getElementById('ddlStatus__'+nX.toString()).value +"</Status>";
+					cXmlMetas= cXmlMetas+ "		<Justif>"+ document.getElementById('txtJustifiq__'+nX.toString()).value +"</Justif>";
+					cXmlMetas= cXmlMetas+ "		<Recno>"+ document.getElementById('txtRecno__'+nX.toString()).value +"</Recno>";
+
+					if(document.getElementById('txtExclui__'+nX.toString()).value==".F."){
+						cXmlMetas= cXmlMetas+ "		<Exclui>N</Exclui>";
+						SeqNew=SeqNew+1;
+					}else{
+						cXmlMetas= cXmlMetas+ "		<Exclui>S</Exclui>";	
+					}
+
+					cXmlMetas= cXmlMetas+ "		<Filial>"+ document.getElementById('txtFilial__'+nX.toString()).value +"</Filial>";
+					cXmlMetas= cXmlMetas+ "		<Mat>"+ document.getElementById('txtMatric__'+nX.toString()).value +"</Mat>";
+					cXmlMetas= cXmlMetas+ "		<CodPer>"+ document.getElementById('txtPerido__'+nX.toString()).value +"</CodPer>";
+					cXmlMetas= cXmlMetas+ "	</item>";
+				}
+				cXmlMetas= cXmlMetas+ "</items>";
+						
+				oParams.XmlMetas=  window.btoa(cXmlMetas);
+
+				new Ajax.Updater(cDestination, 
+							 cURL,
+								{
+									method: 'get',     
+									evalScripts: true,
+									parameters: oParams,
+									onLoading: function () {
+										EvtChange(1,false);
+									},
+									onComplete: function(response) {
+										EvtChange(2,nX==linhas.length);
+									}
+								}
+							);
+
+			}
+			function ExcluirMeta(LinhaDel,ResMetas){
+				if(ResMetas=="1"){
+					var MsgErro = '<div style="text-align: center; vertical-align: middle; width:800px;height:10px;"><label class="MsgErro">Não é permitido a exclusão da meta no período de inclusão de resultados, altere o status para cancelado!</label></div>';
+					document.getElementById('divMsg').innerHTML= MsgErro;
+					return				
+				}
+
+				if (document.getElementById('txtExclui__'+LinhaDel).value==".F."){
+					var MsgInfo = '<div style="text-align: center; vertical-align: middle; width:800px;height:10px;"><label class="MsgErro">Meta excluida, clique em salvar para completar a ação!</label></div>';
+					document.getElementById('txtExclui__'+LinhaDel).value=".T.";
+					document.getElementById('linha__'+LinhaDel).style.backgroundColor="#8B8682";
+					document.getElementById('divMsg').innerHTML= MsgInfo;
+
+				}else{
+					var MsgInfo = '<div style="text-align: center; vertical-align: middle; width:800px;height:10px;"><label class="MsgErro">Meta restaurada, clique em salvar para completar a ação!</label></div>';
+					document.getElementById('txtExclui__'+LinhaDel).value=".F.";
+					document.getElementById('linha__'+LinhaDel).style.backgroundColor="";
+					document.getElementById('divMsg').innerHTML= MsgInfo;
+				}
+
+			}	
+			function VoltarTela(){
+				window.location="B_PRP04EST.APW?EmployeeFilial=<%=HttpSession->DadosFunc[1]:CSUPFILIAL%>&Registration=<%=HttpSession->DadosFunc[1]:CSUPREGISTRATION%>&Periodo=<%=HttpSession->aStrPer:CCDPERATU%>&StatusPer=<%=HttpSession->StatusPer%>";
+			}
+			function EvtChange(nOpcao,AtualizaTela) {
+				if (nOpcao==1){
+					document.getElementById("BtnAdicionar").disabled = true;
+					document.getElementById("BtnSalvar").disabled = true;	
+				}else{
+					document.getElementById('BtnAdicionar').disabled=false; 
+					document.getElementById('BtnSalvar').disabled=false;
+
+					if(AtualizaTela){
+						location.reload();				
+					}
+			
+				}
+				return true;
+			}	
+			function ValidaNumero(e){
+			  var tecla=(window.event)?event.keyCode:e.which;   
+			  if((tecla>47 && tecla<58)){
+				  return true;
+			  }else{
+				  if(tecla==8 || tecla==0){
+					 return true;
+				  }else{
+					 return false;
+				  }
+			  }
+			}
+
+			function ValidaMaximo(Obj){
+				var TotalPerc = parseInt(Obj.value);
+				if (TotalPerc>100){
+					var MsgErro = '<div style="text-align: center; vertical-align: middle; width:800px;height:10px;"><label class="MsgErro">O valor do percentual não pode ser maior que 100!</label></div>';
+					document.getElementById('divMsg').innerHTML= MsgErro;
+					Obj.value='100';
+					return						
+				}
+			}	
+		</script>	
+	</head>
+<body>
+	<h2><%=cTitulo%></h2>
+	<table width="100%">
+		<tbody>
+		<tr>
+			<td width="45%"  style="background: #ffffff;">
+				<b>Matricula:</b><br><%=HttpSession->DadosFunc[1]:CREGISTRATION +" - "+ HttpSession->DadosFunc[1]:CNAME%>		
+			</td>
+			<td width="45%"  style="background: #ffffff;">
+				<b>Período:</b><br><%=HttpSession->aStrPer:CCDPERATU +" - "+ HttpSession->aStrPer:CDSPERATU%>					
+			</td>
+			<td width="10%"  style="background: #ffffff;" rowspan="2">
+				<% IF HttpSession->Permitido%>
+				<input type="button" name="BtnSalvar" id="BtnSalvar" align="right" onclick="javascript:SalvarMetas();" value="Salvar" class="ButBarra" /><br><br><br>
+				<% ENDIF %>	
+				<input type="button" name="BtnVoltar" id="BtnVoltar"  align="right" onclick="javascript:VoltarTela();" value="Voltar" class="ButBarra" />			
+			</td>
+		</tr>
+		<tr>
+			<td style="background: #ffffff;">
+				<b>Cargo:</b><br><%=HttpSession->DadosFunc[1]:CPOSITION %>		
+			</td>
+			<td style="background: #ffffff;">
+				<b>Especialização:</b><br><%=HttpSession->DadosFunc[1]:CFUNCTIONDESC %>					
+			</td>			
+		</tr>		
+		</tbody>
+	</table>	
+	<table width="100%" border="1" id="tbMetas">
+		<tbody>
+		<tr>
+			<th width="5%">Seq.</th>
+			<th width="22%">Meta</th>
+			<th width="10%">Peso</th>
+			<th width="10%">% Realizado</th>
+			<th width="10%">Status</th>
+	      	<th width="20%" >Just. Gestor</th>
+	      	<th width="10%" >Dta Calculo</th>
+	      	<th width="10%" >Resultado</th>
+	      	<th width="1px" >&nbsp;</th>	
+		</tr>
+		<% IF !EMPTY(HttpSession->DadosFunc[2]:OWSITENS) %>
+		<% For nReg:=1 to Len(HttpSession->DadosFunc[2]:OWSITENS) %>
+			<tr id="linha__<%=CVALTOCHAR(nReg)%>"> 
+				<td>
+					<input name="txtSeq__<%=CVALTOCHAR(nReg)%>" id="txtSeq__<%=CVALTOCHAR(nReg)%>" disabled class="Campo"  type="text" value="<%=HttpSession->DadosFunc[2]:OWSITENS[nReg]:CSEQUENCIA%>" style="width:100%"/>
+				</td>
+				<td>
+					<% If HttpSession->aStrPer:LINCMETAS .and. HttpSession->DadosFunc[2]:OWSITENS[nReg]:CSTATUS== "1" .and. HttpSession->Permitido%>
+						<textarea name="txtMeta__<%=CVALTOCHAR(nReg)%>" id="txtMeta__<%=CVALTOCHAR(nReg)%>" class="CampoTxtarea" rows="1" cols="50" style="width:100%;height:100%;"><%=HttpSession->DadosFunc[2]:OWSITENS[nReg]:CMETA%></textarea>
+					<% Else  %>
+						<textarea name="txtMeta__<%=CVALTOCHAR(nReg)%>" id="txtMeta__<%=CVALTOCHAR(nReg)%>" disabled class="CampoTxtarea" rows="1" cols="50" style="width:100%;height:100%;"><%=HttpSession->DadosFunc[2]:OWSITENS[nReg]:CMETA%></textarea>
+					<% EndIf  %>				
+				</td>
+				<td>
+					<% If HttpSession->aStrPer:LINCMETAS .and. HttpSession->DadosFunc[2]:OWSITENS[nReg]:CSTATUS== "1" .and. HttpSession->Permitido%>
+						<select name="ddlPeso__<%=CVALTOCHAR(nReg)%>" id="ddlPeso__<%=CVALTOCHAR(nReg)%>" class="Campo" style="width:100%">
+					<% Else  %>
+						<select name="ddlPeso__<%=CVALTOCHAR(nReg)%>" id="ddlPeso__<%=CVALTOCHAR(nReg)%>" disabled class="Campo" style="width:100%">
+					<% EndIf  %>
+					<% For nCntPeso:=1 to HttpSession->LimPeso %>
+						<% If nCntPeso == HttpSession->DadosFunc[2]:OWSITENS[nReg]:NPESO %>
+							<option value="<%=CVALTOCHAR(nCntPeso)%>" selected><%=CVALTOCHAR(nCntPeso)%></option>
+						<% Else  %>
+							<option value="<%=CVALTOCHAR(nCntPeso)%>"><%=CVALTOCHAR(nCntPeso)%></option>
+						<% EndIf  %>	
+					<% Next nCntPeso %>
+					</select>
+				</td>
+				<td>
+					<% If HttpSession->aStrPer:LRESMETAS .and. HttpSession->DadosFunc[2]:OWSITENS[nReg]:CSTATUS $ "13" .and. HttpSession->Permitido%>
+						<input name="txtRealizado__<%=CVALTOCHAR(nReg)%>" id="txtRealizado__<%=CVALTOCHAR(nReg)%>" class="Campo" type="text" value="<%=HttpSession->DadosFunc[2]:OWSITENS[nReg]:NPERCREAL%>" style="width:100%" maxlength="3" onkeypress="return ValidaNumero(event)" onblur="ValidaMaximo(this)"/>
+					<% Else  %>
+						<input name="txtRealizado__<%=CVALTOCHAR(nReg)%>" id="txtRealizado__<%=CVALTOCHAR(nReg)%>" disabled class="Campo" type="text" value="<%=HttpSession->DadosFunc[2]:OWSITENS[nReg]:NPERCREAL%>" style="width:100%" maxlength="3" onkeypress="return ValidaNumero(event)" onblur="ValidaMaximo(this)"/>
+					<% EndIf  %>							
+				</td>
+				<td>
+					<% If HttpSession->aStrPer:LRESMETAS .AND. HttpSession->DadosFunc[2]:OWSITENS[nReg]:CSTATUS $ "13" .and. HttpSession->Permitido%>
+						<select name="ddlStatus__<%=CVALTOCHAR(nReg)%>" id="ddlStatus__<%=CVALTOCHAR(nReg)%>" class="Campo" style="width:100%">
+					<% Else  %>
+						<select name="ddlStatus__<%=CVALTOCHAR(nReg)%>" id="ddlStatus__<%=CVALTOCHAR(nReg)%>" disabled class="Campo" style="width:100%">
+					<% EndIf  %>								
+						<% If HttpSession->DadosFunc[2]:OWSITENS[nReg]:CSTATUS == "1" %>
+							<option value="1" selected>Ativo</option>					
+						<% Else  %>
+							<option value="1">Ativo</option>
+						<% EndIf  %>
+	
+							<% If HttpSession->DadosFunc[2]:OWSITENS[nReg]:CSTATUS == "2" %>
+							<option value="2" selected>Cancelado</option>					
+						<% Else  %>
+							<option value="2">Cancelado</option>
+						<% EndIf  %>
+						
+						<% If HttpSession->DadosFunc[2]:OWSITENS[nReg]:CSTATUS == "3" %>
+							<option value="3" selected>Calculado</option>					
+						<% EndIf  %>										
+					</select>
+				</td>
+				<td>
+					<% If HttpSession->aStrPer:LRESMETAS .AND. HttpSession->DadosFunc[2]:OWSITENS[nReg]:CSTATUS $ "13" .and. HttpSession->Permitido%>
+						<textarea name="txtJustifiq__<%=CVALTOCHAR(nReg)%>" id="txtJustifiq__<%=CVALTOCHAR(nReg)%>"  class="CampoTxtarea" rows="1" cols="50" style="width:100%;height:100%;"><%=HttpSession->DadosFunc[2]:OWSITENS[nReg]:CJUSTIFIC%></textarea>
+					<% Else  %>
+						<textarea name="txtJustifiq__<%=CVALTOCHAR(nReg)%>" id="txtJustifiq__<%=CVALTOCHAR(nReg)%>" disabled  class="CampoTxtarea" rows="1" cols="50" style="width:100%;height:100%;"><%=HttpSession->DadosFunc[2]:OWSITENS[nReg]:CJUSTIFIC%></textarea>
+					<% EndIf  %>					
+				</td>
+				<td>
+					<input name="txtDtCalculo__<%=CVALTOCHAR(nReg)%>" id="txtDtCalculo__<%=CVALTOCHAR(nReg)%>" disabled class="Campo" type="text" value="<%=HttpSession->DadosFunc[2]:OWSITENS[nReg]:CDTACALC%>" style="width:100%"/>
+				</td>
+				<td>
+					<input name="txtResultado__<%=CVALTOCHAR(nReg)%>" id="txtResultado__<%=CVALTOCHAR(nReg)%>" disabled class="Campo" type="text" value="<%=HttpSession->DadosFunc[2]:OWSITENS[nReg]:NRESULT%>" style="width:100%"/>
+				</td>
+				<td id="ImgCancela__<%=CVALTOCHAR(nReg)%>">
+					<input type="hidden" name="txtFilial__<%=CVALTOCHAR(nReg)%>" id="txtFilial__<%=CVALTOCHAR(nReg)%>" value="<%=HttpSession->DadosFunc[2]:OWSITENS[nReg]:CFILIAL%>"  style="width:100%" />
+					<input type="hidden" name="txtMatric__<%=CVALTOCHAR(nReg)%>" id="txtMatric__<%=CVALTOCHAR(nReg)%>" value="<%=HttpSession->DadosFunc[2]:OWSITENS[nReg]:CMATRIC%>"  style="width:100%" />
+					<input type="hidden" name="txtPerido__<%=CVALTOCHAR(nReg)%>" id="txtPerido__<%=CVALTOCHAR(nReg)%>" value="<%=HttpSession->DadosFunc[2]:OWSITENS[nReg]:CPERIODO%>"  style="width:100%" />
+					<input type="hidden" name="txtRecno__<%=CVALTOCHAR(nReg)%>" id="txtRecno__<%=CVALTOCHAR(nReg)%>" value="<%=HttpSession->DadosFunc[2]:OWSITENS[nReg]:NRECNO%>"  style="width:100%" />
+					<input type="hidden" name="txtExclui__<%=CVALTOCHAR(nReg)%>" id="txtExclui__<%=CVALTOCHAR(nReg)%>" value="<%=HttpSession->DadosFunc[2]:OWSITENS[nReg]:LEXCLUI%>"  style="width:100%" />
+					
+					<% If HttpSession->DadosFunc[2]:OWSITENS[nReg]:CSTATUS== "1" .and. HttpSession->Permitido%>
+						<a href="#" onclick="ExcluirMeta('<%=CVALTOCHAR(nReg)%>',<%=IIF(HttpSession->aStrPer:LRESMETAS,'1','2')%>)">
+							<img id="img_equipe" name="img_equipe" src="imagens-rh/cancela.gif" width="20" height="20" border="0">
+		    			</a>
+					<% EndIf  %>							
+				</td>
+			</tr>	
+		<% Next nReg %>	
+		<% Elseif !HttpSession->Permitido %>  		
+			<tr id="linha__1">
+				<td colspan="9"><span class="TituloMenor"><strong><center>N&atilde;o existem registros para exibi&ccedil;&atilde;o</center></strong></span></td>
+			</tr>
+		<% EndIf %>				
+		</tbody>
+	</table>
+	<br>	
+	<div id="divBut" name="divBut">
+		<% IF HttpSession->Permitido .AND. (HttpSession->aStrPer:LINCMETAS .OR. HttpSession->aStrPer:LRESMETAS) %>
+			<input type="button" name="BtnAdicionar" id="BtnAdicionar" onclick="javascript:addItem(true,<%=IIF(HttpSession->aStrPer:LINCMETAS,'1','2')%>,<%=IIF(HttpSession->aStrPer:LRESMETAS,'1','2')%>,<%=HttpSession->LimPeso%>,<%=HttpSession->LimMeta%>);" value="Adicionar item" class="Botoes" />
+		<% EndIf %>					
+	</div>	
+	<br>
+	<br>		
+	<div id="divMsg" name="divMsg">
+	</div>	
+</body>
+</html>

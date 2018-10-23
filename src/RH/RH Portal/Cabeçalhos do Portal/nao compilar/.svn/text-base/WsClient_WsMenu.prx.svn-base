@@ -1,0 +1,525 @@
+#INCLUDE "PROTHEUS.CH"
+#INCLUDE "APWEBSRV.CH"
+
+/* ===============================================================================
+WSDL Location    http://localhost:8086/ws/MENU.apw?WSDL
+Gerado em        01/16/17 16:41:53
+Observações      Código-Fonte gerado por ADVPL WSDL Client 1.120703
+                 Alterações neste arquivo podem causar funcionamento incorreto
+                 e serão perdidas caso o código-fonte seja gerado novamente.
+=============================================================================== */
+
+User Function _FNSWEIM ; Return  // "dummy" function - Internal Use 
+
+/* -------------------------------------------------------------------------------
+WSDL Service WSMENU
+------------------------------------------------------------------------------- */
+
+WSCLIENT WSMENU
+
+	WSMETHOD NEW
+	WSMETHOD INIT
+	WSMETHOD RESET
+	WSMETHOD CLONE
+	WSMETHOD GETDADOSMENU
+	WSMETHOD GETRHPARAM
+	WSMETHOD UPDHEADER
+
+	WSDATA   _URL                      AS String
+	WSDATA   _HEADOUT                  AS Array of String
+	WSDATA   _COOKIES                  AS Array of String
+	WSDATA   cPORTAL                   AS string
+	WSDATA   cCODMENU                  AS string
+	WSDATA   oWSGETDADOSMENURESULT     AS MENU_MENUVISAO
+	WSDATA   cUSERAVAL                 AS string
+	WSDATA   cPARAMAVAL                AS string
+	WSDATA   cGETRHPARAMRESULT         AS string
+	WSDATA   cTYPEREQ                  AS string
+	WSDATA   cBRANCH                   AS string
+	WSDATA   cHEADUSER                 AS string
+	WSDATA   oWSINPUTHEADER            AS MENU_TINPUTHEADER
+	WSDATA   oWSLISTOTHERS             AS MENU_TINPUTOTHERS
+	WSDATA   oWSUPDHEADERRESULT        AS MENU_ARRAYOFTOPIC
+
+	// Estruturas mantidas por compatibilidade - NÃO USAR
+	WSDATA   oWSTINPUTHEADER           AS MENU_TINPUTHEADER
+	WSDATA   oWSTINPUTOTHERS           AS MENU_TINPUTOTHERS
+
+ENDWSCLIENT
+
+WSMETHOD NEW WSCLIENT WSMENU
+::Init()
+If !FindFunction("XMLCHILDEX")
+	UserException("O Código-Fonte Client atual requer os executáveis do Protheus Build [7.00.131227A-20160510 NG] ou superior. Atualize o Protheus ou gere o Código-Fonte novamente utilizando o Build atual.")
+EndIf
+Return Self
+
+WSMETHOD INIT WSCLIENT WSMENU
+	::oWSGETDADOSMENURESULT := MENU_MENUVISAO():New()
+	::oWSINPUTHEADER     := MENU_TINPUTHEADER():New()
+	::oWSLISTOTHERS      := MENU_TINPUTOTHERS():New()
+	::oWSUPDHEADERRESULT := MENU_ARRAYOFTOPIC():New()
+
+	// Estruturas mantidas por compatibilidade - NÃO USAR
+	::oWSTINPUTHEADER    := ::oWSINPUTHEADER
+	::oWSTINPUTOTHERS    := ::oWSLISTOTHERS
+Return
+
+WSMETHOD RESET WSCLIENT WSMENU
+	::cPORTAL            := NIL 
+	::cCODMENU           := NIL 
+	::oWSGETDADOSMENURESULT := NIL 
+	::cUSERAVAL          := NIL 
+	::cPARAMAVAL         := NIL 
+	::cGETRHPARAMRESULT  := NIL 
+	::cTYPEREQ           := NIL 
+	::cBRANCH            := NIL 
+	::cHEADUSER          := NIL 
+	::oWSINPUTHEADER     := NIL 
+	::oWSLISTOTHERS      := NIL 
+	::oWSUPDHEADERRESULT := NIL 
+
+	// Estruturas mantidas por compatibilidade - NÃO USAR
+	::oWSTINPUTHEADER    := NIL
+	::oWSTINPUTOTHERS    := NIL
+	::Init()
+Return
+
+WSMETHOD CLONE WSCLIENT WSMENU
+Local oClone := WSMENU():New()
+	oClone:_URL          := ::_URL 
+	oClone:cPORTAL       := ::cPORTAL
+	oClone:cCODMENU      := ::cCODMENU
+	oClone:oWSGETDADOSMENURESULT :=  IIF(::oWSGETDADOSMENURESULT = NIL , NIL ,::oWSGETDADOSMENURESULT:Clone() )
+	oClone:cUSERAVAL     := ::cUSERAVAL
+	oClone:cPARAMAVAL    := ::cPARAMAVAL
+	oClone:cGETRHPARAMRESULT := ::cGETRHPARAMRESULT
+	oClone:cTYPEREQ      := ::cTYPEREQ
+	oClone:cBRANCH       := ::cBRANCH
+	oClone:cHEADUSER     := ::cHEADUSER
+	oClone:oWSINPUTHEADER :=  IIF(::oWSINPUTHEADER = NIL , NIL ,::oWSINPUTHEADER:Clone() )
+	oClone:oWSLISTOTHERS :=  IIF(::oWSLISTOTHERS = NIL , NIL ,::oWSLISTOTHERS:Clone() )
+	oClone:oWSUPDHEADERRESULT :=  IIF(::oWSUPDHEADERRESULT = NIL , NIL ,::oWSUPDHEADERRESULT:Clone() )
+
+	// Estruturas mantidas por compatibilidade - NÃO USAR
+	oClone:oWSTINPUTHEADER := oClone:oWSINPUTHEADER
+	oClone:oWSTINPUTOTHERS := oClone:oWSLISTOTHERS
+Return oClone
+
+// WSDL Method GETDADOSMENU of Service WSMENU
+
+WSMETHOD GETDADOSMENU WSSEND cPORTAL,cCODMENU WSRECEIVE oWSGETDADOSMENURESULT WSCLIENT WSMENU
+Local cSoap := "" , oXmlRet
+
+BEGIN WSMETHOD
+
+cSoap += '<GETDADOSMENU xmlns="http://localhost:8086/">'
+cSoap += WSSoapValue("PORTAL", ::cPORTAL, cPORTAL , "string", .T. , .F., 0 , NIL, .F.) 
+cSoap += WSSoapValue("CODMENU", ::cCODMENU, cCODMENU , "string", .T. , .F., 0 , NIL, .F.) 
+cSoap += "</GETDADOSMENU>"
+
+oXmlRet := SvcSoapCall(	Self,cSoap,; 
+	"http://localhost:8086/GETDADOSMENU",; 
+	"DOCUMENT","http://localhost:8086/",,"1.031217",; 
+	"http://localhost:8086/ws/MENU.apw")
+
+::Init()
+::oWSGETDADOSMENURESULT:SoapRecv( WSAdvValue( oXmlRet,"_GETDADOSMENURESPONSE:_GETDADOSMENURESULT","MENUVISAO",NIL,NIL,NIL,NIL,NIL,NIL) )
+
+END WSMETHOD
+
+oXmlRet := NIL
+Return .T.
+
+// WSDL Method GETRHPARAM of Service WSMENU
+
+WSMETHOD GETRHPARAM WSSEND cUSERAVAL,cPARAMAVAL WSRECEIVE cGETRHPARAMRESULT WSCLIENT WSMENU
+Local cSoap := "" , oXmlRet
+
+BEGIN WSMETHOD
+
+cSoap += '<GETRHPARAM xmlns="http://localhost:8086/">'
+cSoap += WSSoapValue("USERAVAL", ::cUSERAVAL, cUSERAVAL , "string", .T. , .F., 0 , NIL, .F.) 
+cSoap += WSSoapValue("PARAMAVAL", ::cPARAMAVAL, cPARAMAVAL , "string", .T. , .F., 0 , NIL, .F.) 
+cSoap += "</GETRHPARAM>"
+
+oXmlRet := SvcSoapCall(	Self,cSoap,; 
+	"http://localhost:8086/GETRHPARAM",; 
+	"DOCUMENT","http://localhost:8086/",,"1.031217",; 
+	"http://localhost:8086/ws/MENU.apw")
+
+::Init()
+::cGETRHPARAMRESULT  :=  WSAdvValue( oXmlRet,"_GETRHPARAMRESPONSE:_GETRHPARAMRESULT:TEXT","string",NIL,NIL,NIL,NIL,NIL,NIL) 
+
+END WSMETHOD
+
+oXmlRet := NIL
+Return .T.
+
+// WSDL Method UPDHEADER of Service WSMENU
+
+WSMETHOD UPDHEADER WSSEND cTYPEREQ,cBRANCH,cHEADUSER,oWSINPUTHEADER,oWSLISTOTHERS WSRECEIVE oWSUPDHEADERRESULT WSCLIENT WSMENU
+Local cSoap := "" , oXmlRet
+
+BEGIN WSMETHOD
+
+cSoap += '<UPDHEADER xmlns="http://localhost:8086/">'
+cSoap += WSSoapValue("TYPEREQ", ::cTYPEREQ, cTYPEREQ , "string", .F. , .F., 0 , NIL, .F.) 
+cSoap += WSSoapValue("BRANCH", ::cBRANCH, cBRANCH , "string", .F. , .F., 0 , NIL, .F.) 
+cSoap += WSSoapValue("HEADUSER", ::cHEADUSER, cHEADUSER , "string", .F. , .F., 0 , NIL, .F.) 
+cSoap += WSSoapValue("INPUTHEADER", ::oWSINPUTHEADER, oWSINPUTHEADER , "TINPUTHEADER", .T. , .F., 0 , NIL, .F.) 
+cSoap += WSSoapValue("LISTOTHERS", ::oWSLISTOTHERS, oWSLISTOTHERS , "TINPUTOTHERS", .T. , .F., 0 , NIL, .F.) 
+cSoap += "</UPDHEADER>"
+
+oXmlRet := SvcSoapCall(	Self,cSoap,; 
+	"http://localhost:8086/UPDHEADER",; 
+	"DOCUMENT","http://localhost:8086/",,"1.031217",; 
+	"http://localhost:8086/ws/MENU.apw")
+
+::Init()
+::oWSUPDHEADERRESULT:SoapRecv( WSAdvValue( oXmlRet,"_UPDHEADERRESPONSE:_UPDHEADERRESULT","ARRAYOFTOPIC",NIL,NIL,NIL,NIL,NIL,NIL) )
+
+END WSMETHOD
+
+oXmlRet := NIL
+Return .T.
+
+
+// WSDL Data Structure MENUVISAO
+
+WSSTRUCT MENU_MENUVISAO
+	WSDATA   nNIVELAPROV               AS integer OPTIONAL
+	WSDATA   nNIVELINI                 AS integer OPTIONAL
+	WSDATA   cVISAO                    AS string OPTIONAL
+	WSMETHOD NEW
+	WSMETHOD INIT
+	WSMETHOD CLONE
+	WSMETHOD SOAPRECV
+ENDWSSTRUCT
+
+WSMETHOD NEW WSCLIENT MENU_MENUVISAO
+	::Init()
+Return Self
+
+WSMETHOD INIT WSCLIENT MENU_MENUVISAO
+Return
+
+WSMETHOD CLONE WSCLIENT MENU_MENUVISAO
+	Local oClone := MENU_MENUVISAO():NEW()
+	oClone:nNIVELAPROV          := ::nNIVELAPROV
+	oClone:nNIVELINI            := ::nNIVELINI
+	oClone:cVISAO               := ::cVISAO
+Return oClone
+
+WSMETHOD SOAPRECV WSSEND oResponse WSCLIENT MENU_MENUVISAO
+	::Init()
+	If oResponse = NIL ; Return ; Endif 
+	::nNIVELAPROV        :=  WSAdvValue( oResponse,"_NIVELAPROV","integer",NIL,NIL,NIL,"N",NIL,NIL) 
+	::nNIVELINI          :=  WSAdvValue( oResponse,"_NIVELINI","integer",NIL,NIL,NIL,"N",NIL,NIL) 
+	::cVISAO             :=  WSAdvValue( oResponse,"_VISAO","string",NIL,NIL,NIL,"S",NIL,NIL) 
+Return
+
+// WSDL Data Structure TINPUTHEADER
+
+WSSTRUCT MENU_TINPUTHEADER
+	WSDATA   oWSLISTOFINPUT            AS MENU_ARRAYOFTOPIC OPTIONAL
+	WSMETHOD NEW
+	WSMETHOD INIT
+	WSMETHOD CLONE
+	WSMETHOD SOAPSEND
+ENDWSSTRUCT
+
+WSMETHOD NEW WSCLIENT MENU_TINPUTHEADER
+	::Init()
+Return Self
+
+WSMETHOD INIT WSCLIENT MENU_TINPUTHEADER
+Return
+
+WSMETHOD CLONE WSCLIENT MENU_TINPUTHEADER
+	Local oClone := MENU_TINPUTHEADER():NEW()
+	oClone:oWSLISTOFINPUT       := IIF(::oWSLISTOFINPUT = NIL , NIL , ::oWSLISTOFINPUT:Clone() )
+Return oClone
+
+WSMETHOD SOAPSEND WSCLIENT MENU_TINPUTHEADER
+	Local cSoap := ""
+	cSoap += WSSoapValue("LISTOFINPUT", ::oWSLISTOFINPUT, ::oWSLISTOFINPUT , "ARRAYOFTOPIC", .F. , .F., 0 , NIL, .F.) 
+Return cSoap
+
+// WSDL Data Structure TINPUTOTHERS
+
+WSSTRUCT MENU_TINPUTOTHERS
+	WSDATA   oWSLISTOFOTHERS           AS MENU_ARRAYOFOTHERS OPTIONAL
+	WSMETHOD NEW
+	WSMETHOD INIT
+	WSMETHOD CLONE
+	WSMETHOD SOAPSEND
+ENDWSSTRUCT
+
+WSMETHOD NEW WSCLIENT MENU_TINPUTOTHERS
+	::Init()
+Return Self
+
+WSMETHOD INIT WSCLIENT MENU_TINPUTOTHERS
+Return
+
+WSMETHOD CLONE WSCLIENT MENU_TINPUTOTHERS
+	Local oClone := MENU_TINPUTOTHERS():NEW()
+	oClone:oWSLISTOFOTHERS      := IIF(::oWSLISTOFOTHERS = NIL , NIL , ::oWSLISTOFOTHERS:Clone() )
+Return oClone
+
+WSMETHOD SOAPSEND WSCLIENT MENU_TINPUTOTHERS
+	Local cSoap := ""
+	cSoap += WSSoapValue("LISTOFOTHERS", ::oWSLISTOFOTHERS, ::oWSLISTOFOTHERS , "ARRAYOFOTHERS", .F. , .F., 0 , NIL, .F.) 
+Return cSoap
+
+// WSDL Data Structure ARRAYOFTOPIC
+
+WSSTRUCT MENU_ARRAYOFTOPIC
+	WSDATA   oWSTOPIC                  AS MENU_TOPIC OPTIONAL
+	WSMETHOD NEW
+	WSMETHOD INIT
+	WSMETHOD CLONE
+	WSMETHOD SOAPSEND
+	WSMETHOD SOAPRECV
+ENDWSSTRUCT
+
+WSMETHOD NEW WSCLIENT MENU_ARRAYOFTOPIC
+	::Init()
+Return Self
+
+WSMETHOD INIT WSCLIENT MENU_ARRAYOFTOPIC
+	::oWSTOPIC             := {} // Array Of  MENU_TOPIC():New()
+Return
+
+WSMETHOD CLONE WSCLIENT MENU_ARRAYOFTOPIC
+	Local oClone := MENU_ARRAYOFTOPIC():NEW()
+	oClone:oWSTOPIC := NIL
+	If ::oWSTOPIC <> NIL 
+		oClone:oWSTOPIC := {}
+		aEval( ::oWSTOPIC , { |x| aadd( oClone:oWSTOPIC , x:Clone() ) } )
+	Endif 
+Return oClone
+
+WSMETHOD SOAPSEND WSCLIENT MENU_ARRAYOFTOPIC
+	Local cSoap := ""
+	aEval( ::oWSTOPIC , {|x| cSoap := cSoap  +  WSSoapValue("TOPIC", x , x , "TOPIC", .F. , .F., 0 , NIL, .F.)  } ) 
+Return cSoap
+
+WSMETHOD SOAPRECV WSSEND oResponse WSCLIENT MENU_ARRAYOFTOPIC
+	Local nRElem1, oNodes1, nTElem1
+	::Init()
+	If oResponse = NIL ; Return ; Endif 
+	oNodes1 :=  WSAdvValue( oResponse,"_TOPIC","TOPIC",{},NIL,.T.,"O",NIL,NIL) 
+	nTElem1 := len(oNodes1)
+	For nRElem1 := 1 to nTElem1 
+		If !WSIsNilNode( oNodes1[nRElem1] )
+			aadd(::oWSTOPIC , MENU_TOPIC():New() )
+			::oWSTOPIC[len(::oWSTOPIC)]:SoapRecv(oNodes1[nRElem1])
+		Endif
+	Next
+Return
+
+// WSDL Data Structure ARRAYOFOTHERS
+
+WSSTRUCT MENU_ARRAYOFOTHERS
+	WSDATA   oWSOTHERS                 AS MENU_OTHERS OPTIONAL
+	WSMETHOD NEW
+	WSMETHOD INIT
+	WSMETHOD CLONE
+	WSMETHOD SOAPSEND
+ENDWSSTRUCT
+
+WSMETHOD NEW WSCLIENT MENU_ARRAYOFOTHERS
+	::Init()
+Return Self
+
+WSMETHOD INIT WSCLIENT MENU_ARRAYOFOTHERS
+	::oWSOTHERS            := {} // Array Of  MENU_OTHERS():New()
+Return
+
+WSMETHOD CLONE WSCLIENT MENU_ARRAYOFOTHERS
+	Local oClone := MENU_ARRAYOFOTHERS():NEW()
+	oClone:oWSOTHERS := NIL
+	If ::oWSOTHERS <> NIL 
+		oClone:oWSOTHERS := {}
+		aEval( ::oWSOTHERS , { |x| aadd( oClone:oWSOTHERS , x:Clone() ) } )
+	Endif 
+Return oClone
+
+WSMETHOD SOAPSEND WSCLIENT MENU_ARRAYOFOTHERS
+	Local cSoap := ""
+	aEval( ::oWSOTHERS , {|x| cSoap := cSoap  +  WSSoapValue("OTHERS", x , x , "OTHERS", .F. , .F., 0 , NIL, .F.)  } ) 
+Return cSoap
+
+// WSDL Data Structure TOPIC
+
+WSSTRUCT MENU_TOPIC
+	WSDATA   cCONTENT                  AS string OPTIONAL
+	WSDATA   cTITLEHEAD                AS string OPTIONAL
+	WSMETHOD NEW
+	WSMETHOD INIT
+	WSMETHOD CLONE
+	WSMETHOD SOAPSEND
+	WSMETHOD SOAPRECV
+ENDWSSTRUCT
+
+WSMETHOD NEW WSCLIENT MENU_TOPIC
+	::Init()
+Return Self
+
+WSMETHOD INIT WSCLIENT MENU_TOPIC
+Return
+
+WSMETHOD CLONE WSCLIENT MENU_TOPIC
+	Local oClone := MENU_TOPIC():NEW()
+	oClone:cCONTENT             := ::cCONTENT
+	oClone:cTITLEHEAD           := ::cTITLEHEAD
+Return oClone
+
+WSMETHOD SOAPSEND WSCLIENT MENU_TOPIC
+	Local cSoap := ""
+	cSoap += WSSoapValue("CONTENT", ::cCONTENT, ::cCONTENT , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("TITLEHEAD", ::cTITLEHEAD, ::cTITLEHEAD , "string", .F. , .F., 0 , NIL, .F.) 
+Return cSoap
+
+WSMETHOD SOAPRECV WSSEND oResponse WSCLIENT MENU_TOPIC
+	::Init()
+	If oResponse = NIL ; Return ; Endif 
+	::cCONTENT           :=  WSAdvValue( oResponse,"_CONTENT","string",NIL,NIL,NIL,"S",NIL,NIL) 
+	::cTITLEHEAD         :=  WSAdvValue( oResponse,"_TITLEHEAD","string",NIL,NIL,NIL,"S",NIL,NIL) 
+Return
+
+// WSDL Data Structure OTHERS
+
+WSSTRUCT MENU_OTHERS
+	WSDATA   dANSWERFINALDATE          AS date
+	WSDATA   dANSWERINITIALDATE        AS date
+	WSDATA   cAUTOEVALUATED            AS string OPTIONAL
+	WSDATA   cCOACHNAME                AS string OPTIONAL
+	WSDATA   cCOMPETENCE               AS string OPTIONAL
+	WSDATA   cCOMPETENCEDESCRIPTION    AS string OPTIONAL
+	WSDATA   cCOSTCENTERDESCRIPTION    AS string OPTIONAL
+	WSDATA   cDESCRIPTION              AS string OPTIONAL
+	WSDATA   cEVALUATEDID              AS string OPTIONAL
+	WSDATA   cEVALUATEDNAME            AS string OPTIONAL
+	WSDATA   cEVALUATEID               AS string OPTIONAL
+	WSDATA   cEVALUATESTATUS           AS string OPTIONAL
+	WSDATA   cEVALUATESTATUSDESCRIPTION AS string OPTIONAL
+	WSDATA   cEVALUATETYPE             AS string OPTIONAL
+	WSDATA   cEVALUATORID              AS string OPTIONAL
+	WSDATA   cEVALUATORNAME            AS string OPTIONAL
+	WSDATA   dFINALDATE                AS date
+	WSDATA   cFUNCTIONDESCRIPTION      AS string OPTIONAL
+	WSDATA   cHIERARQLEVEL             AS string OPTIONAL
+	WSDATA   dINITIALDATE              AS date
+	WSDATA   cLEVEL                    AS string OPTIONAL
+	WSDATA   cMODEL                    AS string OPTIONAL
+	WSDATA   cMODELDESCRIPTION         AS string OPTIONAL
+	WSDATA   cNET                      AS string OPTIONAL
+	WSDATA   cNETDESCRIPTION           AS string OPTIONAL
+	WSDATA   cOTHEREVALUATORNAME       AS string OPTIONAL
+	WSDATA   cPARTLEADER               AS string OPTIONAL
+	WSDATA   cPARTLEADERID             AS string OPTIONAL
+	WSDATA   cPROJECT                  AS string OPTIONAL
+	WSDATA   cPROJECTDESCRIPTION       AS string OPTIONAL
+	WSDATA   cSELFEVALUATE             AS string OPTIONAL
+	WSDATA   cSELFEVALUATEDESCRIPTION  AS string OPTIONAL
+	WSDATA   cTYPEDESCRIPTION          AS string OPTIONAL
+	WSDATA   cTYPEEV                   AS string OPTIONAL
+	WSDATA   cVISION                   AS string OPTIONAL
+	WSDATA   cVISIONDESCRIPTION        AS string OPTIONAL
+	WSMETHOD NEW
+	WSMETHOD INIT
+	WSMETHOD CLONE
+	WSMETHOD SOAPSEND
+ENDWSSTRUCT
+
+WSMETHOD NEW WSCLIENT MENU_OTHERS
+	::Init()
+Return Self
+
+WSMETHOD INIT WSCLIENT MENU_OTHERS
+Return
+
+WSMETHOD CLONE WSCLIENT MENU_OTHERS
+	Local oClone := MENU_OTHERS():NEW()
+	oClone:dANSWERFINALDATE     := ::dANSWERFINALDATE
+	oClone:dANSWERINITIALDATE   := ::dANSWERINITIALDATE
+	oClone:cAUTOEVALUATED       := ::cAUTOEVALUATED
+	oClone:cCOACHNAME           := ::cCOACHNAME
+	oClone:cCOMPETENCE          := ::cCOMPETENCE
+	oClone:cCOMPETENCEDESCRIPTION := ::cCOMPETENCEDESCRIPTION
+	oClone:cCOSTCENTERDESCRIPTION := ::cCOSTCENTERDESCRIPTION
+	oClone:cDESCRIPTION         := ::cDESCRIPTION
+	oClone:cEVALUATEDID         := ::cEVALUATEDID
+	oClone:cEVALUATEDNAME       := ::cEVALUATEDNAME
+	oClone:cEVALUATEID          := ::cEVALUATEID
+	oClone:cEVALUATESTATUS      := ::cEVALUATESTATUS
+	oClone:cEVALUATESTATUSDESCRIPTION := ::cEVALUATESTATUSDESCRIPTION
+	oClone:cEVALUATETYPE        := ::cEVALUATETYPE
+	oClone:cEVALUATORID         := ::cEVALUATORID
+	oClone:cEVALUATORNAME       := ::cEVALUATORNAME
+	oClone:dFINALDATE           := ::dFINALDATE
+	oClone:cFUNCTIONDESCRIPTION := ::cFUNCTIONDESCRIPTION
+	oClone:cHIERARQLEVEL        := ::cHIERARQLEVEL
+	oClone:dINITIALDATE         := ::dINITIALDATE
+	oClone:cLEVEL               := ::cLEVEL
+	oClone:cMODEL               := ::cMODEL
+	oClone:cMODELDESCRIPTION    := ::cMODELDESCRIPTION
+	oClone:cNET                 := ::cNET
+	oClone:cNETDESCRIPTION      := ::cNETDESCRIPTION
+	oClone:cOTHEREVALUATORNAME  := ::cOTHEREVALUATORNAME
+	oClone:cPARTLEADER          := ::cPARTLEADER
+	oClone:cPARTLEADERID        := ::cPARTLEADERID
+	oClone:cPROJECT             := ::cPROJECT
+	oClone:cPROJECTDESCRIPTION  := ::cPROJECTDESCRIPTION
+	oClone:cSELFEVALUATE        := ::cSELFEVALUATE
+	oClone:cSELFEVALUATEDESCRIPTION := ::cSELFEVALUATEDESCRIPTION
+	oClone:cTYPEDESCRIPTION     := ::cTYPEDESCRIPTION
+	oClone:cTYPEEV              := ::cTYPEEV
+	oClone:cVISION              := ::cVISION
+	oClone:cVISIONDESCRIPTION   := ::cVISIONDESCRIPTION
+Return oClone
+
+WSMETHOD SOAPSEND WSCLIENT MENU_OTHERS
+	Local cSoap := ""
+	cSoap += WSSoapValue("ANSWERFINALDATE", ::dANSWERFINALDATE, ::dANSWERFINALDATE , "date", .T. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("ANSWERINITIALDATE", ::dANSWERINITIALDATE, ::dANSWERINITIALDATE , "date", .T. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("AUTOEVALUATED", ::cAUTOEVALUATED, ::cAUTOEVALUATED , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("COACHNAME", ::cCOACHNAME, ::cCOACHNAME , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("COMPETENCE", ::cCOMPETENCE, ::cCOMPETENCE , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("COMPETENCEDESCRIPTION", ::cCOMPETENCEDESCRIPTION, ::cCOMPETENCEDESCRIPTION , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("COSTCENTERDESCRIPTION", ::cCOSTCENTERDESCRIPTION, ::cCOSTCENTERDESCRIPTION , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("DESCRIPTION", ::cDESCRIPTION, ::cDESCRIPTION , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("EVALUATEDID", ::cEVALUATEDID, ::cEVALUATEDID , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("EVALUATEDNAME", ::cEVALUATEDNAME, ::cEVALUATEDNAME , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("EVALUATEID", ::cEVALUATEID, ::cEVALUATEID , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("EVALUATESTATUS", ::cEVALUATESTATUS, ::cEVALUATESTATUS , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("EVALUATESTATUSDESCRIPTION", ::cEVALUATESTATUSDESCRIPTION, ::cEVALUATESTATUSDESCRIPTION , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("EVALUATETYPE", ::cEVALUATETYPE, ::cEVALUATETYPE , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("EVALUATORID", ::cEVALUATORID, ::cEVALUATORID , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("EVALUATORNAME", ::cEVALUATORNAME, ::cEVALUATORNAME , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("FINALDATE", ::dFINALDATE, ::dFINALDATE , "date", .T. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("FUNCTIONDESCRIPTION", ::cFUNCTIONDESCRIPTION, ::cFUNCTIONDESCRIPTION , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("HIERARQLEVEL", ::cHIERARQLEVEL, ::cHIERARQLEVEL , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("INITIALDATE", ::dINITIALDATE, ::dINITIALDATE , "date", .T. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("LEVEL", ::cLEVEL, ::cLEVEL , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("MODEL", ::cMODEL, ::cMODEL , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("MODELDESCRIPTION", ::cMODELDESCRIPTION, ::cMODELDESCRIPTION , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("NET", ::cNET, ::cNET , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("NETDESCRIPTION", ::cNETDESCRIPTION, ::cNETDESCRIPTION , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("OTHEREVALUATORNAME", ::cOTHEREVALUATORNAME, ::cOTHEREVALUATORNAME , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("PARTLEADER", ::cPARTLEADER, ::cPARTLEADER , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("PARTLEADERID", ::cPARTLEADERID, ::cPARTLEADERID , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("PROJECT", ::cPROJECT, ::cPROJECT , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("PROJECTDESCRIPTION", ::cPROJECTDESCRIPTION, ::cPROJECTDESCRIPTION , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("SELFEVALUATE", ::cSELFEVALUATE, ::cSELFEVALUATE , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("SELFEVALUATEDESCRIPTION", ::cSELFEVALUATEDESCRIPTION, ::cSELFEVALUATEDESCRIPTION , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("TYPEDESCRIPTION", ::cTYPEDESCRIPTION, ::cTYPEDESCRIPTION , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("TYPEEV", ::cTYPEEV, ::cTYPEEV , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("VISION", ::cVISION, ::cVISION , "string", .F. , .F., 0 , NIL, .F.) 
+	cSoap += WSSoapValue("VISIONDESCRIPTION", ::cVISIONDESCRIPTION, ::cVISIONDESCRIPTION , "string", .F. , .F., 0 , NIL, .F.) 
+Return cSoap
+
+

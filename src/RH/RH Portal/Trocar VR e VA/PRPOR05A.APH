@@ -1,0 +1,264 @@
+<%
+Local cTitulo := HttpGet->titulo
+Local nCnt 	:= 1
+Local nChekAtu:= 0
+%>
+
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!doctype html public "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<link href="styles/consulta.css" rel="stylesheet" type="text/css">
+		<link href="styles/estilo.css" rel="stylesheet" type="text/css">
+		<script src="scripts/ajax.js" language="JavaScript" type="text/javascript"></script>
+		<script src="scripts/prototype.js" language="JavaScript" type="text/javascript"></script>
+		<script src="scripts/scriptaculous.js" language="JavaScript" type="text/javascript"></script> 
+		<style>	
+			.B01 {
+				background-color: #8c9cbf;
+				border: 1px solid #172d6e;
+				border-bottom: 1px solid #0e1d45;
+				border-radius: 5px;
+				box-shadow: inset 0 1px 0 0 #b1b9cb;
+				color: #fff;
+				font: bold 14px/1 "helvetica neue", helvetica, arial, sans-serif;
+				padding: 7px 0 8px 0;
+				text-decoration: none;
+				text-align: center;
+				text-shadow: 0 -1px 1px #000f4d;
+				width: 100px;
+				height:30px;
+				margin: 3px;	
+			}	
+			.B02 {
+				background-color: #8c9cbf;
+				border: 1px solid #172d6e;
+				border-bottom: 1px solid #0e1d45;
+				border-radius: 5px;
+				box-shadow: inset 0 1px 0 0 #b1b9cb;
+				color: #fff;
+				font: bold 14px/1 "helvetica neue", helvetica, arial, sans-serif;
+				padding: 7px 0 8px 0;
+				text-decoration: none;
+				text-align: center;
+				text-shadow: 0 -1px 1px #000f4d;
+				width: 150px;
+				height:30px;
+				margin: 2px;	
+			}	
+			.B03 {  
+				height:15px;
+				width:15px;			
+				margin: 4px;
+			}					
+	  		.MsgErro{
+				color: #FF0000;
+				text-decoration: none;
+				text-align: left; 
+				vertical-align: middle;
+				font-weight: normal;
+				background: #FFE4C4;
+				display: block;
+				border: thin dashed #000000; 
+				padding: 20px;
+				width: 100%;
+				height:10px;
+	  		}
+	  		.Msgok{
+				color: #FF0000;
+				text-decoration: none;
+				text-align: left; 
+				vertical-align: middle;
+				font-weight: normal;
+				background: #00FA9A;
+				display: block;
+				border: thin dashed #000000; 
+				padding: 20px;
+				width: 100%;
+				height:10px;
+	  		}
+		</style>	
+		<script language="Javascript">
+			function SalvarVAVR(nChekAtu) {
+				var rdOpcoes 	= document.form.rdVALE;			
+				var diainicial 	= parseInt(document.getElementById("txtdiaini").value);
+				var diaFinal 	= parseInt(document.getElementById("txtdiafim").value);
+				var dataAtual 	= new Date();
+    			var dia 		= dataAtual.getDate();
+				var cURL		= '';
+				var NaoAltera	= !(dia >= diainicial  && dia <= diaFinal);
+				var cOpcMark    = '';
+				var nChekMark   = 0;
+				var cDestination= 'divMsg';
+				var oParams		= {};
+				var aguarde 	= '<div style="text-align: left; vertical-align: middle; width: 400px;"><img src="imagens-rh/ajax-loader.gif"><br><span class="TituloMenor">Realizando atualização, aguarde...</span></div>';
+								
+				document.getElementById(cDestination).innerHTML= '';	
+
+				// Verifica se está fora do periodo de alteração
+				if (NaoAltera){
+					var MsgErro 	= '<div style="text-align: center; vertical-align: middle; width:800px;height:10px;"><label class="MsgErro">Só é permitido alteração entre o dia '+diainicial.toString()+' ao dia '+diaFinal.toString()+'.</label></div>';
+					
+            		for (var i = 0, length = rdOpcoes.length; i < length; i++) {
+                		if (i==nChekAtu){
+                    		rdOpcoes[i].checked= true;  
+						}else{
+                 			rdOpcoes[i].checked= false; 
+                		}
+           	 		}
+
+					document.getElementById(cDestination).innerHTML= MsgErro;
+					return false;
+				}else{
+
+            		for (var i = 0, length = rdOpcoes.length; i < length; i++) {
+                		if (rdOpcoes[i].checked) {
+							nChekMark = i; 
+                    		cOpcMark = rdOpcoes[i].value;  
+                    		break;
+                		}
+           	 		}
+
+				}	
+
+				if (cOpcMark==''){
+					var MsgErro 	= '<div style="text-align: left; vertical-align: middle; width: 400px;height:10px;"><label class="MsgErro">Nenhuma opção selecionada.</label></div>';
+					document.getElementById(cDestination).innerHTML= MsgErro;
+					return false;
+				}
+				
+
+				oParams.cCodVA		= document.getElementById("txtcCodVA"+nChekMark.toString()).value;
+				oParams.cRecnoVA	= document.getElementById("txtcRecnoVA").value;	
+				oParams.cCodVR		= document.getElementById("txtcCodVR"+nChekMark.toString()).value;
+				oParams.cRecnoVR	= document.getElementById("txtcRecnoVR").value;
+				cURL 				= 'B_PRP05GRV.APW';
+				
+				document.getElementById("divVAVR").style.display = 'none';
+				document.getElementById(cDestination).innerHTML= aguarde;
+
+				new Ajax.Updater(cDestination, 
+								 cURL,
+									{
+										method: 'get',     
+										evalScripts: true,
+										parameters: oParams,
+   										onLoading: function () {
+        									BotaoEvento(1);
+    									},
+										onComplete: function(response) {
+        									BotaoEvento(2);
+    									}
+									}
+								);
+
+				return false;
+			}
+			function BotaoEvento(nOpcao) {
+				if (nOpcao==1){
+					document.getElementById('BtnSalvar').disabled=true;
+					document.getElementById('rdVALE').disabled=true; 		
+
+				}else{
+					document.getElementById('BtnSalvar').disabled=false;
+					document.getElementById('rdVALE').disabled=false;	 				
+				}
+				return true;
+			}
+		</script>								 
+	</head>	
+<body>
+	<form name="form" role="form"> 
+	<h2><%=cTitulo%></h2>
+	<br>	
+	<div id="divVAVR" name="divVAVR">
+		<table width="100%" class="TabelaBorda1" border="0" cellspacing="2" cellpadding="2">
+			<tr height="23">
+				<th width="100" align='left'>Matricula:</th>
+				<td width="430">
+					<span class="TituloMenor"><%=HttpPost->DadosFunc:CMATRICULA%></span>
+				</td>
+			</tr>
+			<tr height="23">
+				<th width="100" align='left'>Nome:</th>
+				<td width="430">
+					<span class="TituloMenor"><%=HttpPost->DadosFunc:CNOME%></span>
+				</td>
+			</tr>
+			<tr height="23">
+				<th width="100" align='left'>Admiss&atilde;o:</th>
+				<td width="430">
+					<span class="TituloMenor"><%=HttpPost->DadosFunc:CDTADMISSAO%></span>
+				</td>
+			</tr>
+			<tr height="23">
+				<th width="100" align='left'>Departamento:</th>
+				<td width="430">
+					<span class="TituloMenor"><%=HttpPost->DadosFunc:CDEPARTAMENTO%></span>
+				</td>
+			</tr>
+			<tr height="23">
+				<td colspan="2"><hr></td>
+			</tr>
+		</table>		
+		
+		<table width="100%">
+			<tbody>		
+			<tr>
+				<th width="100%" align='left'>Selecione a opção desejada:</th>
+			</tr>			
+			<tr>					
+				<td style="border-width:1px;border:solid;background: #f9f9f9;">
+					<table width="100%" border='0'>
+						<tbody>
+						<% IF !EMPTY(HttpPost->DadosFunc:OWSTABOPCOES:OWSATABVAVR[nCnt]:cStatus) %>
+							<tr>
+								<td align='left' width="90%">
+										<input type="hidden" id="txtcRecnoVA" name="txtcRecnoVA" value="<%=HttpPost->DadosFunc:cRecnoVA%>">
+										<input type="hidden" id="txtcRecnoVR" name="txtcRecnoVR" value="<%=HttpPost->DadosFunc:cRecnoVR%>">
+										<input type="hidden" id="txtdiaini" name="txtdiaini" value="<%=HttpPost->DadosFunc:cDiaIni%>">
+										<input type="hidden" id="txtdiafim" name="txtdiafim" value="<%=HttpPost->DadosFunc:cDiaFim%>">
+									
+									<% For nCnt := 1 to Len(HttpPost->DadosFunc:OWSTABOPCOES:OWSATABVAVR)  
+									%>
+											<input type="hidden" id="txtcCodVA<%=CVALTOCHAR(nCnt-1)%>" name="txtcCodVA<%=CVALTOCHAR(nCnt-1)%>" value="<%=HttpPost->DadosFunc:OWSTABOPCOES:OWSATABVAVR[nCnt]:cCodVA%>">
+											<input type="hidden" id="txtcCodVR<%=CVALTOCHAR(nCnt-1)%>" name="txtcCodVR<%=CVALTOCHAR(nCnt-1)%>" value="<%=HttpPost->DadosFunc:OWSTABOPCOES:OWSATABVAVR[nCnt]:cCodVR%>">
+										<% IF HttpPost->DadosFunc:OWSTABOPCOES:OWSATABVAVR[nCnt]:cStatus == "S" 
+											nChekAtu:= nCnt-1
+											%>
+											<input type="radio" class='B03' name="rdVALE" id="rdVALE" value="<%= HttpPost->DadosFunc:OWSTABOPCOES:OWSATABVAVR[nCnt]:cCodVA+HttpPost->DadosFunc:OWSTABOPCOES:OWSATABVAVR[nCnt]:cCodVR %>" CHECKED>												
+												<%= HttpPost->DadosFunc:OWSTABOPCOES:OWSATABVAVR[nCnt]:cDescVA%> 
+												e 
+												<%= HttpPost->DadosFunc:OWSTABOPCOES:OWSATABVAVR[nCnt]:cDescVR%> 
+										<% ELSE %>
+											<input type="radio" class='B03' name="rdVALE" id="rdVALE" value="<%= HttpPost->DadosFunc:OWSTABOPCOES:OWSATABVAVR[nCnt]:cCodVA+HttpPost->DadosFunc:OWSTABOPCOES:OWSATABVAVR[nCnt]:cCodVR %>">
+												<%= HttpPost->DadosFunc:OWSTABOPCOES:OWSATABVAVR[nCnt]:cDescVA%> 
+												e 
+												<%= HttpPost->DadosFunc:OWSTABOPCOES:OWSATABVAVR[nCnt]:cDescVR%> 
+										<% ENDIF %>
+										<br>
+									<%NEXT nCnt%> 						
+								</td>
+								<td align='left' width="10%">
+									<input type="button" name="BtnSalvar" id="BtnSalvar" class="B01"  value="Salvar" onclick="javascript:SalvarVAVR(<%=nChekAtu%>);"/>																								
+								</td>
+							</tr>
+						<% Else %> 
+							<tr bgcolor="#F2F2F2" class="Texto">
+								<td colspan="8"><span class="TituloMenor"><strong><center>N&atilde;o existem registros para exibi&ccedil;&atilde;o</center></strong></span></td>
+							</tr>
+						<% EndIf %>											
+						</tbody>
+					</table>														
+				</td>
+			</tr>
+			</tbody>
+		</table>	
+	</div>
+	<div id="divMsg" name="divMsg">
+	</div>	
+	</form>
+</body>
+</html>

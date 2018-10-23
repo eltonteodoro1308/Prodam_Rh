@@ -1,0 +1,26 @@
+<% If ValType(HttpSession->aSearchResults) <> 'U' %>
+	
+		<h2><%="Resultados da Pesquisa"%></h2>
+		<% If Len(HttpSession->aSearchResults) > 0 %>
+			<table id="tabResults">				
+				<tr>
+					<th><%="Departamento"%>:</th>
+					<th><%="Nome"%>:</th>
+					<th><%="Conhecimentos"%>:</th>
+				</tr>
+				<% For m := 1 To Len(HttpSession->aSearchResults) 
+											aResult := Separa(HttpSession->aSearchResults[m], "|")
+									%>
+				<tr>
+					<td class="clsDepto"><%=aResult[1]%></td>
+					<td class="clsFunc"><a href="#" onClick="fAbre( '<%=aResult[4]%>', '<%=aResult[2]%>' )"><%=aResult[2]%></a></td>									
+					<td class="clsCon"><%=aResult[3]%></td>
+				</tr>			
+				<% Next m%>
+			</table>
+		<% ElseIf Len(HttpSession->aSearchResults) == 0 %>
+			<br/>
+			<p align='center' ><%="Nenhum resultado encontrado com os filtros selecionados"%></p>
+		<% EndIf %>
+	<% HttpSession->aSearchResults := Nil %>
+<% EndIf %>

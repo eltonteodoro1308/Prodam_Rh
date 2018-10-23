@@ -1,0 +1,216 @@
+<%
+#INCLUDE "PRD002A.CH"
+	Local cTitulo := OemToAnsi(STR0004)
+	Local msg     := HttpGet->msg
+%>
+
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!doctype html public "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	
+<head>
+	<title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+	<link href="styles/consulta.css" rel="stylesheet" type="text/css">
+	<link href="styles/estilo.css" rel="stylesheet" type="text/css">
+
+	<script src="./scripts/ajax.js" language="JavaScript" type="text/javascript"></script>
+	<script src="./scripts/prototype.js" language="JavaScript" type="text/javascript"></script>
+	<script src="./scripts/scriptaculous.js" language="JavaScript" type="text/javascript"></script>
+</head>
+
+	
+	<script language="Javascript">
+	<!--
+
+       function removeAcentos(palavra) {
+          com_acento = "áàãâäéèêëíìîïóòõôöúùûüçÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÖÔÚÙÛÜÇ";
+          sem_acento = "aaaaaeeeeiiiiooooouuuucAAAAAEEEEIIIIOOOOOUUUUC";
+          nova = "";
+
+          for(i=0;i<palavra.length;i++) {
+
+             if (com_acento.search(palavra.substr(i,1))>=0)
+                 nova += sem_acento.substr(com_acento.search(palavra.substr(i,1)),1);
+             else 
+                 nova += palavra.substr(i,1);
+
+          }
+
+          return nova;
+        }
+
+        function fEvalOpen(idReg)
+        {
+     		//console.log(idReg);
+
+            new Ajax.Request(  "B_PRD002C.APW",
+                            {
+                                method: 'get',
+                                parameters: {nInd: idReg},
+                                onFailure: function() { alert('Problema ao carregar a avaliação!'); return; },
+                                onSuccess: function(transport) 
+                                      { 
+                                          var response = transport.responseText || "";
+                                          if (response != '') {
+                                              window.open(response,'','width=850,height=500,top=0,left=0,scrollbars=1');
+                                          } 
+                                      }
+                             }
+                         );
+
+        }
+
+
+	    function changeEval(idDiv)
+	    {		
+		   var elemDiv = document.getElementById(idDiv);
+	
+	    	if(elemDiv.style.display == 'none'){
+		    	elemDiv.style.display = "block";
+	    	}
+		    else{
+	 		    elemDiv.style.display = "none";
+    		}
+	    }
+
+        function ValidaNumero(e){
+            var tecla=(window.event)?event.keyCode:e.which;
+            if((tecla>47 && tecla<58)) return true;
+            else{
+                 if (tecla==8 || tecla==0) return true;
+                 else  return false;
+             }
+        }
+
+
+
+       function fSubmitAction(action,idReg,idObs)
+       {
+	     var obs = document.getElementById(idObs);
+         var question 
+
+         if (obs.value == ""){
+	    	alert("<%=STR0005%>");<!--Informe uma observação para confirmar a operação! !-->
+    		obs.focus();
+    		return false;
+          }
+          else
+    	  {                              
+
+            if (action == '1'){
+               <!--Confirma a aprovação da avaliação? !-->
+               question = "<%=STR0006%>"
+            } else {
+               <!--Confirma a reprovação da avaliação? !-->
+               question = "<%=STR0007%>"
+            }
+
+            if (confirm(question) == true) {
+                obs.value = removeAcentos(obs.value);
+                document.getElementById("nIndice").value = idReg;
+                document.getElementById("cAction").value = action;
+                document.getElementById("cObs").value    = obs.value;
+         		//document.forms[0].action = "B_PRD002D.APW";
+        		//document.forms[0].submit();
+
+                new Ajax.Request( "B_PRD002D.APW",
+                            {
+                                method: 'get',
+                                parameters: {Ind: idReg, Act: action, Obs: obs.value},
+                                onFailure: function() { alert('Problema ao realizar a ação!'); return; },
+                                onSuccess: function(transport) 
+                                      { 
+                                          var response = transport.responseText || "";
+                                          if (response != '') {
+  											  alert(response);
+                                          } 
+                                      }
+                             }
+                         );
+
+				GoToPage(null, 1);
+
+            }
+          }
+       }  
+
+
+		function GoToPage(ev, nPageType, nPage, nTotalPage, cFilterField, cFilterValue, cParticipant) {
+			var cURL
+			var cDestination
+		
+			if (ev) {
+				if (ev.type == "keypress") {
+					var keyCode = window.event ? ev.keyCode : ev.which;
+				
+					if (keyCode != 13)
+						return true;
+				
+					if (nPage > nTotalPage) {
+						alert('<%=STR0001%>'); <!-- Pagina Invalida -->
+						return false;
+					}
+				}
+			}
+		
+			if (nPageType == 1) {
+				cURL = 'B_PRD002B.APW';
+				cDestination = 'divEval';
+			}
+			
+			var oParams = {};
+		
+			if (cParticipant != null)
+				oParams.cParticipant = cParticipant;
+
+			if (nPage != null)
+				oParams.Page = nPage;
+		
+			if (cFilterField != null)
+				oParams.FilterField = cFilterField;
+		
+			if (cFilterValue != null)
+				oParams.FilterValue = cFilterValue;		
+			
+			new Ajax.Updater(	cDestination, 
+								cURL,
+									{
+										method: 'get',     
+										evalScripts: true,
+										parameters: oParams
+									}
+								);
+			return false;
+		}
+
+		
+		<%	If(valtype(msg) != "U") %>
+				alert('<%=msg%>');
+		<%	EndIf %>
+
+	//-->
+	</script>	
+
+<body>
+	<h2><%=cTitulo%></h2>
+	<br />
+
+	<div id="divEval" name="divEval">
+		<div class="divAjaxLoad">
+			<img src="imagens-rh/ajax-loader.gif"><br>
+			<span class="TituloMenor"><%=STR0003%></span><!-- Aguarde -->
+		</div>
+
+		<script language="Javascript">
+			<!-- 
+			GoToPage(null, 1);
+			-->
+		</script>
+
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,360 @@
+#INCLUDE "PROTHEUS.CH" 
+#INCLUDE "TBICONN.CH"
+#INCLUDE "APWEBEX.CH"
+#INCLUDE "APWEBSRV.CH"
+#INCLUDE "AP5MAIL.CH"
+
+/*************************************************************/
+/* Banco de Talentos - Tela Inicial			    		 */
+/*************************************************************/
+WebUser Function PesquisaFunc()
+Local cHtml   	:= ""
+Local aLinkExc	:= StrTokArr(httpHeadIn->REFERER,"/",.T.)
+lOCAL nTotLink	:= LEN(aLinkExc)
+Local cExcLink	:= ""
+Local nCnt			:= 0
+Local cNomeArq	:= "Banco_de_Talentos_"+Dtos(date())+"_"+StrTran(Time(),":","")+"_"+CVALTOCHAR(Randomize(1,100000))+".xls"	
+
+FOR nCnt:=1 to nTotLink
+	IF nCnt == nTotLink
+		HttpSession->cDirPP:= "\WEB\"+aLinkExc[nCnt-1]+"\Excel\"+cNomeArq
+		cExcLink+= "Excel/"+cNomeArq	
+	ELSE
+		IF "HTTP"$UPPER(aLinkExc[nCnt])
+			cExcLink+= aLinkExc[nCnt] + "//"
+		ELSE
+			cExcLink+=	aLinkExc[nCnt] + "/"		
+		ENDIF	
+	ENDIF	
+NEXT nCnt
+
+HttpSession->cLinkExcel	:= cExcLink
+
+HttpCTType("text/html; charset=ISO-8859-1")	
+
+
+
+HttpGet->titulo			:= "Banco de Talentos - Pesquisa"
+HttpGet->objetivo			:= "Pesquisa de Qualificações do Funcionário"	//"Disponibiliza para consulta as informações dos afastamentos registrados para o funcionário. Permite também a visualização dos afastamentos dos membros de sua equipe."
+
+
+HttpCTType("text/html; charset=ISO-8859-1")	
+
+WEB EXTENDED INIT cHtml START "InSite"
+
+	fGetInfRotina("B_PesquisaFunc.APW")
+	GetMat()
+		    
+	cHtml := ExecInPage("SearchFun")	
+WEB EXTENDED END
+	
+Return cHtml
+
+/********************************************************************/
+/* Banco de Talentos - Submit da pesquisa de funcionários			*/
+/********************************************************************/
+
+WebUser Function APesquisaFunc()	//RH - Banco de Talentos -> Meu Cadastro
+Local cHtml		:= ""
+Local oWSSearch	:= Nil
+Local aArea		:= {}
+Local nX			:= 0
+Local oOrg			:= nil
+
+HttpSession->aSearchResults	:= {}
+
+HttpCTType("text/html; charset=ISO-8859-1")
+
+WEB EXTENDED INIT cHtml START "InSite"
+
+	oWSSearch := WSWS_BTPESQ():New()
+	WsChgURL(@oWSSearch,"WS_BTPESQ.APW")
+
+	oWSSearch:oWSSearch:cAtivFunc 	:= Httpget->expFunc
+	oWSSearch:oWSSearch:cCursos		:= Httpget->curFunc
+	oWSSearch:oWSSearch:cDepart		:= Httpget->depto
+	oWSSearch:oWSSearch:cNome		:= Httpget->nomeFunc
+	oWSSearch:oWSSearch:cOperador 	:= Httpget->formOp
+	oWSSearch:oWSSearch:cVisao	 	:= HttpSession->aInfRotina:cVisao
+	
+	oWSSearch:oWSSearch:cArea 		:= Httpget->formArea1 + "|" + Httpget->formArea2
+	oWSSearch:oWSSearch:cCateg 		:= Httpget->formCat1  + "|" + Httpget->formCat2
+	oWSSearch:oWSSearch:cConhec 	:= Httpget->formCon1  + "|" + Httpget->formCon2
+	oWSSearch:oWSSearch:cNivel 		:= Httpget->formNiv1  + "|" + Httpget->formNiv2
+		
+	If oWSSearch:SEARCHFUNC()
+		HttpSession->aSearchResults := aClone(oWSSearch:oWSSearchFuncResult:cString)	
+		//cHtml := B_PesquisaFunc()
+		cHtml := ExecInPage("ResultBusca" )
+	Else
+		HttpSession->_HTMLERRO  := { "Erro", PWSGetWSError(), "W_PWSA000.APW","top" }	//"Erro"
+		Return ExecInPage("PWSAMSG" )		
+	EndIf
+	
+WEB EXTENDED END	
+		
+Return cHtml
+
+/********************************************************************/
+/* Banco de Talentos - Monta loading para gerar EXCEL							 */
+/********************************************************************/
+
+WebUser Function AExLoad()	//RH - Banco de Talentos -> Meu Cadastro
+Local cHtml:= ""
+
+cHtml:= '<html>'
+cHtml+= '<body>'
+cHtml+= '	<div style="text-align: center; vertical-align: center; width:100%;">'
+cHtml+= '		<img src="imagens-rh/ajax-loader.gif"><br>'
+cHtml+= '		<span class="TituloMenor">Realizando consulta, aguarde...</span>'
+cHtml+= '	</div>'
+cHtml+= '</body>'
+cHtml+= '</html>'
+
+Return cHtml
+
+/********************************************************************/
+/* Banco de Talentos - Submit da gerar EXCEL							 */
+/********************************************************************/
+
+WebUser Function AGExcel()	//RH - Banco de Talentos -> Meu Cadastro
+Local cHtml		:= ""
+Local oWSSearch	:= Nil
+Local nCnta		:= 0
+Local nCntb		:= 0
+Local aCapacs		:= {}
+Local aForms		:= {}
+Local aCertifs	:= {}
+Local aConhecs	:= {}
+Local aAtivFuncs	:= {}
+Local aSearchResults	:= {}
+Local aSeparaResults	:= {}
+Local oFwMsEx			:= NIL
+Local cWorkSheet 		:= "Sheet1"
+Local cTable     		:= "Banco de talentos"
+Local cNomArq 		:= HttpSession->cDirPP  //"\Banco_de_Talentos.xls"
+Local aNivelConhec	:= {"Teórico","Regular","Bom","Ótimo"}
+
+HttpCTType("text/html; charset=ISO-8859-1")
+
+WEB EXTENDED INIT cHtml START "InSite"
+
+	oWSSearch := WSWS_BTPESQ():New()
+	WsChgURL(@oWSSearch,"WS_BTPESQ.APW")
+
+	oWSSearch:oWSSearch:cAtivFunc 	:= Httpget->expFunc
+	oWSSearch:oWSSearch:cCursos		:= Httpget->curFunc
+	oWSSearch:oWSSearch:cDepart		:= Httpget->depto
+	oWSSearch:oWSSearch:cNome		:= Httpget->nomeFunc
+	oWSSearch:oWSSearch:cOperador 	:= Httpget->formOp
+	oWSSearch:oWSSearch:cVisao	 	:= HttpSession->aInfRotina:cVisao
+	
+	oWSSearch:oWSSearch:cArea 		:= Httpget->formArea1 + "|" + Httpget->formArea2
+	oWSSearch:oWSSearch:cCateg 		:= Httpget->formCat1  + "|" + Httpget->formCat2
+	oWSSearch:oWSSearch:cConhec 	:= Httpget->formCon1  + "|" + Httpget->formCon2
+	oWSSearch:oWSSearch:cNivel 		:= Httpget->formNiv1  + "|" + Httpget->formNiv2
+		
+	If oWSSearch:SEARCHFUNC()
+		
+		//Exclui arquivo
+		FERASE(cNomArq)
+		
+		aSearchResults := aClone(oWSSearch:oWSSearchFuncResult:cString)
+		
+		IF !EMPTY(aSearchResults)
+				
+			oFwMsEx:= FWMsExcelEx():New()
+			oFwMsEx:AddWorkSheet(cWorkSheet)
+			oFwMsEx:AddTable(cWorkSheet,cTable)
+			
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Lotação",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"RF",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Profissional",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Tipo",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Categoria do curso",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Nome do curso",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Data Término do Curso",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Duração do curso",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Área do Conhecimento",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Categoria do Conhecimento",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Conhecimento",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Nivel do Conhecimento",1,1)		
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Área/Departamento",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Função",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Atividades",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Projeto",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Sub-Projeto",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Data Início",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Data Final",1,1)
+			oFwMsEx:AddColumn(cWorkSheet,cTable,"Ultima Alteração",1,1)	
+					
+				
+			
+			For nCnta:= 1 To Len(aSearchResults) 
+				aSeparaResults := Separa(aSearchResults[nCnta], "|")
+				
+				//Preparo WebService de Consulta de Cursos
+				oMeuCad := WSWS_MEUCADFUNC():New()
+				WsChgURL(@oMeuCad,"WS_MEUCADFUNC.APW")
+				
+				oMeuCad:cMatricula  := aSeparaResults[4]
+				If oMeuCad:GetCursos()
+					
+					aForms		:= aClone(oMeuCad:oWSGetCursosResult:oWSFormacoes:oWSRA4Stru)
+					aCapacs	:= aClone(oMeuCad:oWSGetCursosResult:oWSCapacitacoes:oWSRA4Stru)
+					aCertifs	:= aClone(oMeuCad:oWSGetCursosResult:oWSCertificacoes:oWSRA4Stru)
+					aConhecs	:= aClone(oMeuCad:oWSGetCursosResult:oWSConhecimentos:oWSConhecimento)
+					aAtivFuncs	:= aClone(oMeuCad:oWSGetCursosResult:oWSFuncionais:oWSFuncional)						
+					
+					// Adiciona as Formações
+					FOR nCntb := 1 To Len(aForms)
+						oFwMsEx:AddRow( cWorkSheet,cTable,{aSeparaResults[1],;
+														   aSeparaResults[4],; 	
+														   aSeparaResults[2],; 	
+														   "Formações",; 	
+														   TRIM(aForms[nCntb]:CDESCCAT),; 	
+														   TRIM(aForms[nCntb]:CDESCCUR),; 	
+														   TRIM(aForms[nCntb]:CDATAFIM),; 	
+														   TRIM(aForms[nCntb]:CDURACAO),; 	
+														   "",;
+														   "",;
+														   "",; 	
+														   "",; 	
+														   "",; 	
+														   "",;
+														   "",;
+														   "",;
+														   "",;
+														   "",;
+														   "",; 	
+														   ""}) 				
+					Next nCntb 
+					
+					// Adiciona as Capacitações
+					FOR nCntb := 1 To Len(aCapacs)
+						oFwMsEx:AddRow( cWorkSheet,cTable,{aSeparaResults[1],;
+														   aSeparaResults[4],; 	
+														   aSeparaResults[2],; 	
+														   "Capacitações",; 	
+														   TRIM(aCapacs[nCntb]:CDESCCAT),; 	
+														   TRIM(aCapacs[nCntb]:CDESCCUR),; 	
+														   TRIM(aCapacs[nCntb]:CDATAFIM),; 	
+														   TRIM(aCapacs[nCntb]:CDURACAO),; 
+														   "",;
+														   "",;
+														   "",; 	
+														   "",; 	
+														   "",; 	
+														   "",;
+														   "",;
+														   "",;
+														   "",;
+														   "",;
+														   "",; 	
+														   ""}) 				
+					Next nCntb 
+					
+					// Adiciona as Certificações
+					FOR nCntb := 1 To Len(aCertifs)
+						oFwMsEx:AddRow( cWorkSheet,cTable,{aSeparaResults[1],;
+														   aSeparaResults[4],; 	
+														   aSeparaResults[2],; 	
+														   "Certificações",; 	
+														   TRIM(aCertifs[nCntb]:CDESCCAT),; 	
+														   TRIM(aCertifs[nCntb]:CDESCCUR),; 	
+														   TRIM(aCertifs[nCntb]:CDATAFIM),; 	
+														   TRIM(aCertifs[nCntb]:CDURACAO),;  	
+														   "",;
+														   "",;
+														   "",; 	
+														   "",; 	
+														   "",; 	
+														   "",;
+														   "",;
+														   "",;
+														   "",;
+														   "",;
+														   "",; 	
+														   ""}) 				
+					Next nCntb 
+					
+					// Adiciona as Conhecimentos
+					FOR nCntb := 1 To Len(aConhecs)
+						IF !EMPTY(aConhecs[nCntb]:CAREA)
+							oFwMsEx:AddRow( cWorkSheet,cTable,{aSeparaResults[1],;
+														   aSeparaResults[4],; 	
+														   aSeparaResults[2],; 	
+														   "Conhecimentos",; 	
+														   TRIM(aConhecs[nCntb]:CDESCCAT),; 	
+														   "",; 	
+														   "",;
+														   "",;
+														   TRIM(aConhecs[nCntb]:CDESCAREA),;
+														   TRIM(aConhecs[nCntb]:CDESCCAT),; 														    	
+														   TRIM(aConhecs[nCntb]:CDESCCON),; 	
+														   	aNivelConhec[VAL(aConhecs[nCntb]:CNIVEL)],; 	
+														   "",;
+														   "",; 	
+														   "",; 	
+														   "",;
+														   "",;
+														   "",;
+														   "",;	
+														   ""})
+						ENDIF    				
+					Next nCntb 
+					
+					
+					// Adiciona as Atividades Funcionais
+					FOR nCntb := 1 To Len(aAtivFuncs)
+						oFwMsEx:AddRow( cWorkSheet,cTable,{aSeparaResults[1],;
+													   aSeparaResults[4],; 	
+													   aSeparaResults[2],; 	
+													   "Atividades Funcionais",; 	
+													   "",; 	
+													   "",; 	
+													   "",; 
+													   "",;
+													   "",;	
+													   "",; 	
+													   "",;
+													   "",;
+													   TRIM(aAtivFuncs[nCntb]:CAREADEPTO),;
+													   TRIM(aAtivFuncs[nCntb]:CFUNCAO),;
+													   TRIM(aAtivFuncs[nCntb]:CATIVIDADES),;
+													   TRIM(aAtivFuncs[nCntb]:CPROJETO),;
+													   TRIM(aAtivFuncs[nCntb]:CSUBPROJETO),;
+													   DTOC(aAtivFuncs[nCntb]:DDTINICIO),;
+													   DTOC(aAtivFuncs[nCntb]:DDTFIM),;
+													   DTOC(aAtivFuncs[nCntb]:DDTALT)})												  													   
+														    				
+					Next nCntb 				
+									 				 
+				Else
+					HttpSession->aCursos  := {}
+					HttpSession->_HTMLERRO  := { "Erro", PWSGetWSError(), "W_PWSA000.APW","top" }	//"Erro"
+					ExecInPage("PWSAMSG" )
+				EndIf			
+					
+			Next nCnta
+			
+			oFwMsEx:Activate()
+			oFwMsEx:GetXMLFile(cNomArq)
+		/*ELSE
+			cHtml+= ' <table width="100%">'
+			cHtml+= ' 	<tbody>'
+			cHtml+= ' 		<tr bgcolor="#F2F2F2" class="Texto">'
+			cHtml+= ' 			<td colspan="8"><span class="TituloMenor"><strong><center>N&atilde;o existem registros para exibi&ccedil;&atilde;o</center></strong></span></td>'
+			cHtml+= ' 		</tr>'
+			cHtml+= ' 	</tbody>'
+			cHtml+= ' </table>'
+		*/					
+		ENDIF					
+	Else
+		HttpSession->_HTMLERRO  := { "Erro", PWSGetWSError(), "W_PWSA000.APW","top" }	//"Erro"
+		Return ExecInPage("PWSAMSG" )		
+	EndIf
+	
+WEB EXTENDED END	
+
+Return cHtml

@@ -1,0 +1,113 @@
+<%
+	Local nCnt			:= 0
+	Local cTitulo 	:= HttpGet->titulo	
+%>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!doctype html public "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Metas</title>
+<style type="text/css">
+	body {
+		background-color: #FFFFFF;
+	}
+
+	.Tabela {
+		border: solid 1px #000000;
+		background-color: #FFFFFF;
+		border: solid 1px #000000;
+		border-collapse: collapse;
+	}   
+	.CabTabela {
+		border: solid 1px #000000;
+		background-color: #FFFFFF;
+		border: solid 1px #000000;
+		border-collapse: collapse;
+	} 
+	.header {
+		border: solid 1px #000000;
+		background-color: #FFFFFF;
+		border: solid 1px #000000;
+		border-collapse: collapse;
+	}  
+	.Linha {
+		border: solid 1px #000000;
+		background-color: #FFFFFF;
+		border: solid 1px #000000;
+		border-collapse: collapse;
+	}           	
+	.Title {
+		font-weight: bold;
+		font-size: 16px;
+		float: left;
+		padding-left: 200px;
+		line-height: 120px;
+		width: 368px;
+		text-transform: uppercase;		
+		text-align:center;
+		height: 120px;
+	}
+	.Logo {
+		float: left;
+		width: 180px;
+		height: 100px;
+		padding-left: 5px;
+		padding-top: 5px;
+	}
+	
+</style>
+<style type="text/css" media="print">
+  @page { size: landscape; }
+</style>
+</head>
+<body>
+	<table width="100%" class="CabTabela">
+		<tbody>
+		<tr>
+			<td width="1%">
+				<div id="bloco-esq"><img src="imagens-rh/topo_logo-esq.jpg" alt="Logo da empresa"></div>
+			</td>
+			<td width="99%" colspan="7">
+				<div class="Title"><%=cTitulo%></div>
+			</td>			
+		</tr>
+		<tr>
+			<td width="100%"  style="background: #ffffff;"  colspan="2">
+				<b>Período: </b><%=HttpSession->aStrPer:CDSPERATU%>					
+			</td>
+		<tr>
+	</table>		
+	<table width="100%" class="Tabela">
+		<tbody>		
+		<tr>
+			<td width="10%" class="header" style="background-color: #CCCCCC">Departamento</td>
+			<td width="10%" class="header" style="background-color: #CCCCCC">Matricula</td>
+			<td width="20%" class="header" style="background-color: #CCCCCC">Nome</td>
+			<td width="10%" class="header" style="background-color: #CCCCCC">Periodo</td>
+			<td width="5%" class="header" style="background-color: #CCCCCC">Seq.</td>
+	      	<td width="20%" class="header" style="background-color: #CCCCCC">Meta</td>
+	      	<td width="5%" class="header" style="background-color: #CCCCCC">% Realizado</td>
+	      	<td width="19%" class="header" style="background-color: #CCCCCC">Justificativa</th>	
+		</tr>	
+	<%	IF !EMPTY(HttpSession->aDadosMetas) %>
+		<%	for nCnt:= 1 To Len(HttpSession->aDadosMetas) %>
+			<tr>
+				<td class="Linha"><%=HttpSession->aDadosMetas[nCnt][1]%></td>
+				<td class="Linha"><%=HttpSession->aDadosMetas[nCnt][2]%></td>
+				<td class="Linha"><%=HttpSession->aDadosMetas[nCnt][3]%></td>
+				<td class="Linha"><%=HttpSession->aDadosMetas[nCnt][4]%></td>
+				<td class="Linha"><%=HttpSession->aDadosMetas[nCnt][5]%></td>
+				<td class="Linha"><%=HttpSession->aDadosMetas[nCnt][6]%></td>
+				<td class="Linha"><%=HttpSession->aDadosMetas[nCnt][7]%></td>
+				<td class="Linha"><%=HttpSession->aDadosMetas[nCnt][8]%></td>		
+			</tr>
+		<%	Next	%>	
+	<%	ELSE %>
+		<tr>
+			<td width="100%" colspan="8">Não existem dados para exbição</div>
+		</tr>
+	<%	ENDIF %>
+	</table>	
+</body>
+</html>
