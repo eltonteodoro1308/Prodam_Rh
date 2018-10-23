@@ -3,28 +3,6 @@
 
 Static lAPD010VQ := ExistBlock( "APD010VQ" )
 
-/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑฺฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฟฑฑ
-ฑฑณPrograma  ณAPDM010     ณ Autor ณ Eduardo Ju              ณ Data ณ 17.03.05 ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณDescri…o ณCalculo do Resultado da Avaliacao a partir das Avaliacoes       ณฑฑ
-ฑฑณ          ณe/ou Avaliados selecionados (Miscelanea).                       ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณRetorno   ณNenhum                                                          ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณParametrosณ                                                                ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณ            ATUALIZACOES SOFRIDAS DESDE A CONSTRU€AO INICIAL               ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณProgramador ณData      ณBOPS       ณMotivo da Alteracao                    ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณCecilia Car.ณ04/07/2014ณTPZWF1     ณIncluido o fonte da 11 para a 12 e efe-ณฑฑ
-ฑฑณ            ณ          ณ           ณtuada a limpeza.                       ณฑฑ
-ฑฑภฤฤฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤูฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿*/
-
 /*/{Protheus.doc} APDM010
 Calculo do Resultado da Avaliacao a partir das Avaliacoes
 e/ou Avaliados selecionados (Miscelanea).
@@ -50,7 +28,7 @@ Private cCadastro := OemtoAnsi(STR0017)	//"Cแlculo do Resultado da Avalia็ใo"
 //ณ Inicializa o filtro utilizando a funcao FilBrowse                      ณ
 //ภฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤู
 dbSelectArea("RD6")
-dbSetOrder(1)
+RD6->(dbSetOrder(1))
 
 cFiltra 	:= CHKRH(FunName(),"RD6","1")
 bFiltraBrw 	:= {|| FilBrowse("RD6",@aIndFil,@cFiltra) }
@@ -70,31 +48,24 @@ mBrowse(6, 1, 22, 75, "RD6")
 EndFilBrw("RD6",aIndFil)
 
 dbSelectArea("RD9")//Itens Avaliacoes versus Avaliados
-dbSetOrder(1)
+RD9->(dbSetOrder(1))
 
 dbSelectArea("RD6")//Avaliacoes
-dbSetOrder(1)
+RD6->(dbSetOrder(1))
 
 dbSelectArea("RDC")//Itens Envio Envio/Retorno Avaliacoes
-dbSetOrder(1)
+RDC->(dbSetOrder(1))
 
 Return Nil
 
-/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑฺฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฟฑฑ
-ฑฑณFuncao    ณAPD010SX1 ณ Autor ณEduardo Ju             ณ Data ณ17.03.05  ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณDescri…o ณAjuste do SX1 para Calculo da Avaliacao                     ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณRetorno   ณNenhum                                                      ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณParametrosณNenhum                                                      ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณUso       ณAPD010SX1                                                   ณฑฑ
-ฑฑภฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤูฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿*/
+/*/{Protheus.doc} APDM010Perg
+Ajuste do SX1 para Calculo da Avaliacao
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+/*/
 Function APDM010Perg()
 
 //ฺฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฟ
@@ -111,22 +82,18 @@ Pergunte("APM010",.T.)
 
 Return Nil
 
-/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑฺฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฟฑฑ
-ฑฑณFuncao    ณAPDM010CALCMณ Autor ณ Eduardo Ju		    ณ Data ณ 18.03.05 ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณDescri…o ณCalculo do Resultado da Avaliacao de acordo com as          ณฑฑ
-ฑฑณ          ณAvaliacoes e Avaliados selecionados pelo Usuario.           ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณRetorno   ณNenhum                                                      ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณParametrosณ1- cAlias                                                   ณฑฑ
-ฑฑณ          ณ2- nReg                                                     ณฑฑ
-ฑฑณ          ณ3- nOpc                                                     ณฑฑ
-ฑฑภฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤูฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿*/
+/*/{Protheus.doc} APDCALCM
+Calculo do Resultado da Avaliacao de acordo com as
+Avaliacoes e Avaliados selecionados pelo Usuario.
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param cAlias, characters, cAlias
+@param nReg, numeric, nReg
+@param nOpc, numeric, nOpc
+/*/
 Function APDCALCM(cAlias,nReg,nOpc)
 
   /*ฺฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฟ
@@ -136,28 +103,19 @@ Function APDCALCM(cAlias,nReg,nOpc)
 
 Return
 
-/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑฺฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฟฑฑ
-ฑฑณFuncao    ณAPDM010CALC ณ Autor ณ Eduardo Ju		      ณ Data ณ 17.03.05 ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณDescri…o ณCalculo do Resultado por Questao e por Item de Competencia. 	ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณRetorno   ณNenhum                                                      	ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณParametrosณ1- cAlias - Alias                                            	ณฑฑ
-ฑฑณ          ณ2- nReg - Registro                                           	ณฑฑ
-ฑฑณ          ณ3- nOpc - Opcao                                              	ณฑฑ
-ฑฑณ          ณ4- nTipo (1, 2 ou 3)                                        	ณฑฑ
-ฑฑณ          ณ	1- Calculo a partir das Avaliacoes e Avaliados Selecionados ณฑฑ
-ฑฑณ          ณ na rotina de 'Calcular Avaliacao' em Miscelanea.             ณฑฑ
-ฑฑณ          ณ	2- Calculo a partir da Avaliacao Corrente na rotina de      ณฑฑ
-ฑฑณ          ณ 'Calcular' em Avalicao (Montagem).                           ณฑฑ
-ฑฑณ          ณ	3- Calculo a partir do Avaliado Corrente atraves do Botao   ณฑฑ
-ฑฑณ          ณ 'Calcular Avaliacao' na Avaliacao+Montagem+Avaliados.        ณฑฑ
-ฑฑภฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤูฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿*/
+/*/{Protheus.doc} APDM010CALC
+Calculo do Resultado por Questao e por Item de Competencia.
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param cAlias, characters, cAlias
+@param nReg, numeric, nReg
+@param nOpc, numeric, nOpc
+@param nTipo, numeric, nTipo
+@param lGeraLog, logical, lGeraLog
+/*/
 Function APDM010CALC(cAlias,nReg,nOpc,nTipo,lGeraLog)
 
 Local aArea				:= GetArea()
@@ -249,18 +207,17 @@ EndIf
 RestArea(aArea)
 Return
 
-/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณfAvalAtivo  บAutor  ณMicrosiga           บ Data ณ  27/12/02   บฑฑ
-ฑฑฬออออออออออุออออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDesc.     ณVerifica retorno das avaliacoes                               บฑฑ
-ฑฑบ          ณ                                                              บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ AP7                                                          บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿*/
+/*/{Protheus.doc} fAvalAtivo
+Verifica retorno das avaliacoes
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param nReg, numeric, descricao
+@param nTipo, numeric, descricao
+@return Logical, lATivo
+/*/
 Static function fAvalAtivo(nReg,nTipo)
 
 Local lAtivo	:= .T.
@@ -278,18 +235,16 @@ Endif
 
 Return (lATivo)
 
-/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณfVerRetorno บAutor  ณMicrosiga           บ Data ณ  10/24/02   บฑฑ
-ฑฑฬออออออออออุออออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDesc.     ณVerifica retorno das avaliacoes                               บฑฑ
-ฑฑบ          ณ                                                              บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ AP7                                                          บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿*/
+/*/{Protheus.doc} fVerRetorno
+Verifica retorno das avaliacoes
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param nTipo, numeric, nTipo
+@return Logical, Definir
+/*/
 Static Function fVerRetorno(nTipo)
 
 Local nOpcCalc		:= 1.00
@@ -333,18 +288,16 @@ If nLogOcorr = 1 // -- Sim
 Endif
 Return ( if(nOpcCalc=1,.T.,.F.) )
 
-/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณfAPDAGeraLogบAutor  ณMicrosiga           บ Data ณ  10/24/02   บฑฑ
-ฑฑฬออออออออออุออออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDesc.     ณVerifica retorno das avaliacoes                               บฑฑ
-ฑฑบ          ณ                                                              บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ AP7                                                          บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿*/
+/*/{Protheus.doc} fAPDAGeraLog
+Verifica retorno das avaliacoes
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param nTipo, numeric, nTipo
+@param lGeraLog, logical, lGeraLog
+/*/
 Static Function  fAPDAGeraLog(nTipo,lGeraLog)
 
 Local nCountRet		:= nCountNaoRet	:= 0
@@ -370,7 +323,7 @@ DEFAULT lGeraLog	:=	.F.
 	//ภฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤู
 	If nTipo <> 1
 		DbSelectarea("RDC")
-		If dbSeek(xFilial("RDC") + cCodAvaliacao, .F. )
+		If RDC->(dbSeek(xFilial("RDC") + cCodAvaliacao, .F. ))
 			While  !RDC->(Eof() ) .and. xFilial("RDC") + cCodAvaliacao = RDC->RDC_FILIAL + RDC->RDC_CODAVA .and. ;
 				RDC->RDC_CODADO >= cAvalDe .and. RDC->RDC_CODADO  <= cAvalAte
 				If cAvaliado  # RDC->RDC_CODADO
@@ -392,7 +345,7 @@ DEFAULT lGeraLog	:=	.F.
 	Else
 		//EM ANALISE -> Em primeira instancia, nao considerado
 		DbSelectarea("RDC")
-		If dbSeek(xFilial("RDC") + cAvaliaDe + cAdoDe, .F.)
+		If RDC->(dbSeek(xFilial("RDC") + cAvaliaDe + cAdoDe, .F.))
 			While  !RDC->(Eof() ) .And. RDC->RDC_CODAVA >= cAvaliaDe .And. RDC->RDC_CODAVA <= cAvaliaAte .And. ;
 				RDC->RDC_CODADO >= cAdoDe .And. RDC->RDC_CODADO  <= cAdoAte
 
@@ -429,18 +382,16 @@ DEFAULT lGeraLog	:=	.F.
 
 Return
 
-/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณAPDALogCalc บAutor  ณMicrosiga           บ Data ณ  10/24/02   บฑฑ
-ฑฑฬออออออออออุออออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDesc.     ณ                                                              บฑฑ
-ฑฑบ          ณ                                                              บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ AP7                                                          บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿*/
+/*/{Protheus.doc} APDALogCalc
+Definir
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param nOpcCalc, numeric, descricao
+@return numeric, nOpcCalc
+/*/
 Static Function APDALogCalc(nOpcCalc)
 
 Local bSvSet15	:= { || NIL }
@@ -492,17 +443,19 @@ SetKey( 24 , bSvSet24 )
 
 Return nOpcCalc
 
-/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณAPDACalculo บAutor  ณMicrosiga           บ Data ณ  10/24/02   บฑฑ
-ฑฑฬออออออออออุออออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDesc.     ณCalculo das Medias                                            บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ AP7                                                          บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿*/
+/*/{Protheus.doc} APDACalculo
+Calculo das Medias
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param cAlias, characters, cAlias
+@param nReg, numeric, nReg
+@param nTipo, numeric, nTipo
+@param oSelf, object, oSelf
+@param lGeraLog, logical, lGeraLog
+/*/
 Static Function APDACalculo(cAlias, nReg, nTipo, oSelf , lGeraLog )
 
 Local aOpenFile 		:= {"RD5"}
@@ -702,19 +655,17 @@ EndIf
 
 Return
 
-/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณfCalcQuestao      บAutor  ณAline Correa do Valeบ Data ณ 12/02/2004  บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDesc.     ณCalculo Valor da Questao                                            บฑฑ
-ฑฑบ          ณ                                                                    บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ AP7                                                                บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿*/
-
+/*/{Protheus.doc} fCalcQuestao
+Calculo Valor da Questao
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param aCols, array, aCols
+@param aHeader, array, aHeader
+@return Array, aVlrQuestao
+/*/
 Static Function fCalcQuestao(aCols,aHeader)
 
 Local aArea			:= GetArea()
@@ -772,19 +723,21 @@ Next Questao
 RestArea(aArea)
 Return aVlrQuestao
 
-/*
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณfVlrQuestao       บAutor  ณAline Correa do Valeบ Data ณ 12/02/2004  บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDesc.     ณCalculo - pontuacao da  Questao                                     บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ AP7                                                                บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
-*/
+/*/{Protheus.doc} fVlrQuestao
+Calculo - pontuacao da  Questao
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param cCodCom, characters, cCodCom
+@param cCodItem, characters, cCodItem
+@param cCodQuestao, characters, cCodQuestao
+@param cAlternativa, characters, cAlternativa
+@param cEscala, characters, cEscala
+@param cIteesc, characters, cIteesc
+@return numeric, nPtosQuestao
+/*/
 Static Function fVlrQuestao(cCodCom,cCodItem, cCodQuestao, cAlternativa, cEscala, cIteesc )
 
 Local nPontos 			:= 0
@@ -795,7 +748,7 @@ Local nVlrGrImp			:= 1 // Contem o fafor do grau de importancia da questa
 Local nRet				:= 0
 
 dbSelectArea("SQO")
-If dbSeek(xFilial("SQO") + cCodQuestao ,.f.)
+If SQO->(dbSeek(xFilial("SQO") + cCodQuestao ,.f.))
 	nPontos	:= SQO->QO_PONTOS
 	If SQO->QO_TIPOOBJ == "3" //Dissertativa
 		nPtosQuestao := nPontos
@@ -805,7 +758,7 @@ If dbSeek(xFilial("SQO") + cCodQuestao ,.f.)
 	Else
 		If Empty( SQO->QO_ESCALA )
 			dbSelectArea("SQP")
-			If dbSeek(xFilial("SQP") +  cCodQuestao + StrZero(Val(cAlternativa),2))
+			If SQP->(dbSeek(xFilial("SQP") +  cCodQuestao + StrZero(Val(cAlternativa),2)))
 				nVlrQst:= SQP->QP_PERCENT / 100
 			Endif
 		Else
@@ -839,17 +792,16 @@ Endif
 
 Return  ( nPtosQuestao )
 
-/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑฺฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฟฑฑ
-ฑฑณFuncao    ณfCalcMediaComp ณ Autor ณEduardo Ju        ณ Data ณ15.03.05  ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณDescri…o ณCalculo do valor da Media por Item de competencia           ณฑฑ
-ฑฑรฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤดฑฑ
-ฑฑณUso       ณAPDM010                                                     ณฑฑ
-ฑฑภฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤูฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿*/
+/*/{Protheus.doc} fCalcMediaComp
+Calculo do valor da Media por Item de competencia
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param aVlrQuestao, array, aVlrQuestao
+@return array, aMediaItemComp
+/*/
 Static Function fCalcMediaComp(aVlrQuestao)
 
 Local aArea			:= GetArea()
@@ -923,19 +875,18 @@ RestArea( aArea )
 
 Return ( aMediaItemComp )
 
-/*
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  |fSaveFile บAutor  ณMicrosiga           บ Data ณ  10/28/02   บฑฑ
-ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDesc.     ณ Grava RDD e RDB                                            บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ AP7                                                        บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
-*/
+/*/{Protheus.doc} fSaveFile
+Grava RDD e RDB
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param aMediaItemNet, array, aMediaItemNet
+@param aVlrQuestao, array, aVlrQuestao
+@param aTotItemNet, array, aTotItemNet
+@return logical, lRet
+/*/
 Static Function fSaveFile( aMediaItemNet,aVlrQuestao,aTotItemNet)
 
 Local aArea			:= GetArea( )
@@ -977,6 +928,18 @@ Return lRet
 ฑฑภฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤูฑฑ
 ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
 ฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿*/
+
+/*/{Protheus.doc} fGravaRDD
+Salva o Valor da Media por Item de Competencia / Rede
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param aMediaItemNet, array, aMediaItemNet
+@param aTotItemNet, array, aTotItemNet
+@return logical, lOk
+/*/
 Static function fGravaRDD(aMediaItemNet,aTotItemNet)
 
 Local aArea		:= GetArea()
@@ -1024,18 +987,16 @@ Next nAvaliado
 RestArea(aArea)
 Return (lOk)
 
-/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณfGravaRDB บAutor  ณMicrosiga           บ Data ณ  10/28/02   บฑฑ
-ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDesc.     ณ Salva Valor da Questao                                     บฑฑ
-ฑฑบ          ณ                                                            บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ AP7                                                        บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿*/
+/*/{Protheus.doc} fGravaRDB
+Salva Valor da Questao
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param aVlrQuestao, array, aVlrQuestao
+@return logical, lOk
+/*/
 Static Function  fGravaRDB(aVlrQuestao)
 
 Local aArea			:= GetArea()
@@ -1061,18 +1022,16 @@ fGravaRBI(aVlrQuestao)
 RestArea(aArea)
 Return(lOk)
 
-/*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณfGravaRBI บAutor  ณFlavio S. Correa    บ Data ณ  29/11/09   บฑฑ
-ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDesc.     ณ Salva resultado obitido na tabela de habilidades do Func   บฑฑ
-ฑฑบ          ณ                                                            บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ AP7                                                        บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿*/
+/*/{Protheus.doc} fGravaRBI
+Salva resultado obitido na tabela de habilidades do Func
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param aVlrQuestao, array, aVlrQuestao
+@return logical, lOk
+/*/
 Static Function  fGravaRBI(aVlrQuestao)
 
 Local aArea			:= GetArea()
@@ -1170,22 +1129,16 @@ Next nI
 RestArea(aArea)
 Return(lOk)
 
-/*
-ฺฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฟ
-ณFuno    ณfAPDACarTab	   ณ Autor ณNatie Sugahara       ณ Data ณ24/10/2002ณ
-รฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤด
-ณDescrio ณ															   ณ
-รฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤด
-ณSintaxe   ณ															   ณ
-รฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤด
-ณParametrosณ                                         					   ณ
-รฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤด
-ณRetorno   ณNIL     													   ณ
-รฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤด
-ณObservaoณ                                                      	       ณ
-รฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤด
-ณUso       ณGenerica                                                       ณ
-ภฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤู*/
+/*/{Protheus.doc} fAPDACarTab
+Definir
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@param aOpenFile, array, aOpenFile
+@return ${return}, ${return_description}
+/*/
 Function fAPDACarTab( aOpenFile )
 
 Local aArea			:= GetArea()
@@ -1195,7 +1148,7 @@ For nFiles	:= 1 TO Len(aOpenFile)
 	//-- Rede
 	If aOpenFile[nFiles] ="RD1"
 		dbSelectArea(aOpenFile[nFiles])
-		If dbSeek(xFilial(aOpenFile[nFiles]) ,.f.)
+		If RD1->(dbSeek(xFilial(aOpenFile[nFiles]) ,.f.))
 			While RD1->( !eof() )  .and. xFilial(aOpenFile[nFiles])  = RD1_FILIAL
 				aadd(aRede,{RD1->RD1_FILIAL,RD1->RD1_CODIGO, RD1->RD1_DESC } )
 				RD1->( dbSkip() )
@@ -1204,8 +1157,8 @@ For nFiles	:= 1 TO Len(aOpenFile)
 	ElseIf aOpenFile[nFiles] ="RDE"
 		//-- Participante na estrutura
 		dbSelectArea( aOpenFile[nFiles] )
-		dbSetOrder(2)
-		If dbSeek( xFilial(aOpenFile[nFiles]) + M->RD6_CODVIS ,.f. )
+		RDE->(dbSetOrder(2))
+		If RDE->(dbSeek( xFilial(aOpenFile[nFiles]) + M->RD6_CODVIS ,.f. ))
 			While RDE->( !eof() )  .and. xFilial(aOpenFile[nFiles]) + M->RD6_CODVIS = RDE_FILIAL+ RDE_CODVIS
 				Aadd(aPartEstru , {RDE->RDE_FILIAL,RDE_CODVIS,RDE_ITEVIS,RDE_CODPAR }  )
 				RDE->( dbSkip() )
@@ -1232,16 +1185,16 @@ Local nPos			:= 0
 Local nValAux		:= 0
 
 DbSelectArea("RD8")
-DbSetOrder(1) //RD8_FILIAL+RD8_CODMOD+RD8_CODCOM+RD8_ITECOM+RD8_CODQUE
+RD8->(DbSetOrder(1)) //RD8_FILIAL+RD8_CODMOD+RD8_CODCOM+RD8_ITECOM+RD8_CODQUE
 
 DbSelectArea("SQO")
-DbSetOrder(1) //QO_FILIAL+QO_QUESTAO
+SQO->(DbSetOrder(1)) //QO_FILIAL+QO_QUESTAO
 
 DbSelectArea("RBL")
-DbSetOrder(1) //RBL_FILIAL+RBL_ESCALA+RBL_ITEM
+RBL->(DbSetOrder(1)) //RBL_FILIAL+RBL_ESCALA+RBL_ITEM
 
 DbSelectArea("RDO")
-DbSetOrder(1) //RDO_FILIAL+RDO_CODMOD+RDO_CODCOM+RDO_ITECOM+RDO_ESCALA+RDO_ITEESC
+RDO->(DbSetOrder(1)) //RDO_FILIAL+RDO_CODMOD+RDO_CODCOM+RDO_ITECOM+RDO_ESCALA+RDO_ITEESC
 
 //Se existe relevancia (RDO)
 If RDO->(DbSeek(xFilial("RDO")+ RD6->RD6_CODMOD + RD6->RD6_CODCOM))
@@ -1303,22 +1256,16 @@ RestArea(aArea)
 
 Return aRet
 
-/*
-ฺฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤยฤฤฤฤฤฤยฤฤฤฤฤฤฤฤฤฤฟ
-ณFuno    ณ MenuDef		ณAutorณ  Luiz Gustavo     ณ Data ณ21/12/2006ณ
-รฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤด
-ณDescrio ณIsola opcoes de menu para que as opcoes da rotina possam    ณ
-ณ          ณser lidas pelas bibliotecas Framework da Versao 9.12 .      ณ
-รฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤด
-ณSintaxe   ณ< Vide Parametros Formais >									ณ
-รฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤด
-ณ Uso      ณAPDM010                                                     ณ
-รฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤด
-ณ Retorno  ณaRotina														ณ
-รฤฤฤฤฤฤฤฤฤฤลฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤด
-ณParametrosณ< Vide Parametros Formais >									ณ
-ภฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤู*/
-
+/*/{Protheus.doc} MenuDef
+Isola opcoes de menu para que as opcoes da rotina possam
+ser lidas pelas bibliotecas Framework da Versao 9.12 .
+@project MAN0000038865_EF_002
+@type function Rotina Especรญfica
+@version P12
+@author TOTVS
+@since 22/10/2018
+@return array, aRotina
+/*/
 Static Function MenuDef()
 
 //ฺฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฟ

@@ -33,4 +33,11 @@ conforme o cadastro especifico de usuário para DIMBP (tabela SZK).
 @return return, return_description
 /*/
 User Function funcName(aArr,nNum,cCar,lLog,oObj,bBloc,dDate,uOther)
+
+
+
+
+
+
+
 Return
