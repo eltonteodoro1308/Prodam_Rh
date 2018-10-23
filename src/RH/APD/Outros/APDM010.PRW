@@ -19,18 +19,28 @@ Static lAPD010VQ := ExistBlock( "APD010VQ" )
 ±±ÃÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
 ±±³Programador ³Data      ³BOPS       ³Motivo da Alteracao                    ³±±
 ±±ÃÄÄÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Cecilia Car.³04/07/2014³TPZWF1     ³Incluido o fonte da 11 para a 12 e efe-³±±  
-±±³            ³          ³           ³tuada a limpeza.                       ³±±  
+±±³Cecilia Car.³04/07/2014³TPZWF1     ³Incluido o fonte da 11 para a 12 e efe-³±±
+±±³            ³          ³           ³tuada a limpeza.                       ³±±
 ±±ÀÄÄÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß*/
+
+/*/{Protheus.doc} APDM010
+Calculo do Resultado da Avaliacao a partir das Avaliacoes
+e/ou Avaliados selecionados (Miscelanea).
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 22/10/2018
+/*/
 Function APDM010()
 
 Local cFiltra		:= ""			//Variavel para filtro
-Local aIndFil		:= {}			//Variavel Para Filtro    
-Private bFiltraBrw 	:= {|| Nil}		//Variavel para Filtro   		
+Local aIndFil		:= {}			//Variavel Para Filtro
+Private bFiltraBrw 	:= {|| Nil}		//Variavel para Filtro
 Private aRotina := MenuDef() // ajuste para versao 9.12 - chamada da funcao MenuDef() que contem aRotina
-	
+
 //ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 //³ Define o cabecalho da tela de atualizacoes                   ³
 //ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
@@ -84,22 +94,22 @@ Return Nil
 ±±³Uso       ³APD010SX1                                                   ³±±
 ±±ÀÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß*/ 
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß*/
 Function APDM010Perg()
 
 //ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 //³Variaveis utilizadas para parametros                                    ³
 //³mv_par01		//"Avaliacao De"                                           ³
 //³mv_par02		//"Avaliacao Ate"                                          ³
-//³mv_par03		//"Avaliado De"                                            ³	   	
-//³mv_par04		//"Avaliado Ate"                                           ³	   			   	
-//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ  
+//³mv_par03		//"Avaliado De"                                            ³
+//³mv_par04		//"Avaliado Ate"                                           ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 //+--------------------------------------------------------------+
 //¦ Verifica as perguntas selecionadas                           ¦
-//+--------------------------------------------------------------+        
+//+--------------------------------------------------------------+
 Pergunte("APM010",.T.)
-	
-Return Nil 
+
+Return Nil
 
 /*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
@@ -112,19 +122,19 @@ Return Nil
 ±±³Retorno   ³Nenhum                                                      ³±±
 ±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
 ±±³Parametros³1- cAlias                                                   ³±±
-±±³          ³2- nReg                                                     ³±± 
+±±³          ³2- nReg                                                     ³±±
 ±±³          ³3- nOpc                                                     ³±±
 ±±ÀÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß*/
 Function APDCALCM(cAlias,nReg,nOpc)
-	
+
   /*ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 	³ A partir da Rotina Calculo das Avaliacoes em Miscelanea  |
 	ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
 	APDM010CALC(cAlias,nReg,nOpc,1)
-	
-Return 
+
+Return
 
 /*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
@@ -136,14 +146,14 @@ Return
 ±±³Retorno   ³Nenhum                                                      	³±±
 ±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
 ±±³Parametros³1- cAlias - Alias                                            	³±±
-±±³          ³2- nReg - Registro                                           	³±± 
+±±³          ³2- nReg - Registro                                           	³±±
 ±±³          ³3- nOpc - Opcao                                              	³±±
 ±±³          ³4- nTipo (1, 2 ou 3)                                        	³±±
-±±³          ³	1- Calculo a partir das Avaliacoes e Avaliados Selecionados ³±± 
+±±³          ³	1- Calculo a partir das Avaliacoes e Avaliados Selecionados ³±±
 ±±³          ³ na rotina de 'Calcular Avaliacao' em Miscelanea.             ³±±
-±±³          ³	2- Calculo a partir da Avaliacao Corrente na rotina de      ³±± 
+±±³          ³	2- Calculo a partir da Avaliacao Corrente na rotina de      ³±±
 ±±³          ³ 'Calcular' em Avalicao (Montagem).                           ³±±
-±±³          ³	3- Calculo a partir do Avaliado Corrente atraves do Botao   ³±± 
+±±³          ³	3- Calculo a partir do Avaliado Corrente atraves do Botao   ³±±
 ±±³          ³ 'Calcular Avaliacao' na Avaliacao+Montagem+Avaliados.        ³±±
 ±±ÀÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
@@ -153,8 +163,8 @@ Function APDM010CALC(cAlias,nReg,nOpc,nTipo,lGeraLog)
 Local aArea				:= GetArea()
 Local aSays				:= {}
 Local aButtons			:= {}
-Local nOpca 			:= 0    
-                            
+Local nOpca 			:= 0
+
 Local cFunction		:= "APDM010"
 Local cTitle    	:= OemtoAnsi(STR0017)	//"Cálculo do Resultado da Avaliação"
 Local bProcess	  	:= {|oSelf| APDACalculo( cAlias, nReg, nTipo, oSelf,@lGeraLog)}
@@ -163,51 +173,51 @@ Local cDescription	:=	OemToAnsi(STR0001) +" "+; //"Cálculo das Médias "
 						OemToAnsi(STR0003)        //"arquivo de Log mostrando os resultados obtidos. "
 
 Private cCodAvaliacao	:= RD6->RD6_CODIGO
-Private cPerg           := ""              
+Private cPerg           := ""
 Private lRelease11		:= (GetRpoRelease("R1.1"))
 
 DEFAULT lGeraLog	:=	.F.
 
-If nTipo == 1 
-	cPerg := "APM010" 	 
+If nTipo == 1
+	cPerg := "APM010"
 Elseif nTipo=2
-	cPerg := "APDM10"	
-EndIf                  
-                 
-If  lRelease11   
-	
-	/*                        
-	
+	cPerg := "APDM10"
+EndIf
+
+If  lRelease11
+
+	/*
+
 	ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 	³ Verifica  Retorno das  avaliacoes  e mostra log de ocorrencias     |
 	³ de acordo com  parametro desejado                                  |
 	ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
 	Pergunte(cPerg, .F. )
-	If nTipo == 3  
+	If nTipo == 3
 		/*
 		ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 		³ Executa o Processo de Calculo das Medias caso Avaliacao estiver ativa     |
 		ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
 		If fAvalAtivo(nReg)
 			Processa( {|| APDACalculo( cAlias, nReg, nTipo ) } )
-    	Endif   
+    	Endif
 	Else
-		tNewProcess():New(cFunction,cTitle,bProcess,cDescription,cPerg,,,,,,.T.)   
+		tNewProcess():New(cFunction,cTitle,bProcess,cDescription,cPerg,,,,,,.T.)
 	Endif
-             
+
 	If ( (lGeraLog) .AND. (fVerRetorno(nTipo)) )
-		
+
 		FMakeLog( { aLog } , aLogTitle , , NIL , NIL , cTitulo,"M","P",,.F., cAlias )
-		lGeraLog	:=	.F.					
-		
-	EndIf 
-Else 
-	If nTipo <> 3 
+		lGeraLog	:=	.F.
+
+	EndIf
+Else
+	If nTipo <> 3
 		//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 		//³ Verifica as perguntas selecionadas                           ³
 		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 		Pergunte(cPerg, .F. )
-	
+
 		AADD(aSays,OemToAnsi(STR0001) )
 		AADD(asays,OemToAnsi(STR0002) )
 		AADD(asays,OemToAnsi(STR0003) )
@@ -218,13 +228,13 @@ Else
 	Else
 		nOpca := 1 //Calcular Avaliacao
 	EndIf
-	
+
 	/*
 	ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 	³ Verifica  Retorno das  avaliacoes  e mostra log de ocorrencias     |
 	³ de acordo com  parametro desejado                                  |
 	ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
-	
+
 	If 	nOpca = 1 .and. fVerRetorno( nTipo )
 		/*
 		ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
@@ -232,8 +242,8 @@ Else
 		ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
 		If fAvalAtivo(nReg)
 			Processa( {|| APDACalculo( cAlias, nReg, nTipo ) } )
-	    Endif   
-	Endif	
+	    Endif
+	Endif
 EndIf
 
 RestArea(aArea)
@@ -253,18 +263,18 @@ Return
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß*/
 Static function fAvalAtivo(nReg,nTipo)
 
-Local lAtivo	:= .T. 
+Local lAtivo	:= .T.
 
 RD6->(dbGoTo(nReg))
 
-If RD6->RD6_STATUS <>"1" 
+If RD6->RD6_STATUS <>"1"
 	If nTipo <> 1
 		AVISO("",OemToAnsi(STR0012),{"Ok"} ) 	//-- "Nao e possivel efetuar o Calculo das Medias. Avaliacao ja foi encerrada. "
-		lAtivo	:= .F. 
+		lAtivo	:= .F.
 	Else  //Quando rotina de Calcular em Miscelanea, nao eh mostrado o Aviso
-		lAtivo	:= .F.  	
-	EndIf	   	
-Endif  
+		lAtivo	:= .F.
+	EndIf
+Endif
 
 Return (lATivo)
 
@@ -295,23 +305,23 @@ Private nLogOcorr	:= 0
 //³ Recebe os valores dos Parametros para Calculo em Miscelanea  ³
 //ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 If nTipo == 1
-	cAvaliaDe	:= mv_par01    
-	cAvaliaAte	:= mv_par02    
-	cAdoDe 		:= mv_par03    
-	cAdoAte		:= mv_par04 
+	cAvaliaDe	:= mv_par01
+	cAvaliaAte	:= mv_par02
+	cAdoDe 		:= mv_par03
+	cAdoAte		:= mv_par04
 	nLogOcorr   := mv_par05
 ElseIf nTipo == 2
 	cAvalDe		:= mv_par01
 	cAvalAte	:= mv_par02
 	nLogOcorr	:= mv_par03
 EndIf
-	
+
 /*
 ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-³Gera e mostra arquivo de Log de Ocorrencias 
+³Gera e mostra arquivo de Log de Ocorrencias
 ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
-If nLogOcorr = 1 // -- Sim 
-	
+If nLogOcorr = 1 // -- Sim
+
 	fAPDAGeraLog(nTipo)
 	/*
 	ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
@@ -319,9 +329,9 @@ If nLogOcorr = 1 // -- Sim
 	³avaliacoes terem  retornados ou nao                                                |
 	ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
 	ApdaLogCalc(@nOpcCalc)
-		
+
 Endif
-Return ( if(nOpcCalc=1,.T.,.F.) ) 
+Return ( if(nOpcCalc=1,.T.,.F.) )
 
 /*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
@@ -335,39 +345,39 @@ Return ( if(nOpcCalc=1,.T.,.F.) )
 ±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß*/
-Static Function  fAPDAGeraLog(nTipo,lGeraLog) 
+Static Function  fAPDAGeraLog(nTipo,lGeraLog)
 
-Local nCountRet		:= nCountNaoRet	:= 0  
+Local nCountRet		:= nCountNaoRet	:= 0
 Local cAvaliado 	:= ""
 Static aLogTitle		:=	{}
 Static aLog 			:=	{}
 Static cTitulo 		:= OemToAnsi(STR0006)
 DEFAULT lGeraLog	:=	.F.
-	
 
-	aAdd(aLogTitle , space(5) + OemToAnsi(STR0007) )                                                   
+
+	aAdd(aLogTitle , space(5) + OemToAnsi(STR0007) )
 	//--123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
-	//-- 999999 - -XXXXXXXX(Avaliado )XXXXXXXX 
+	//-- 999999 - -XXXXXXXX(Avaliado )XXXXXXXX
 	//--     Avaliador                              Rede                              Dt Envio      Dt Retorno"
-	//--     999999-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  99 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 99/99/9999    99/99/9999 
-   	//--                                            Total Geral ...                   9999          9999 
+	//--     999999-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  99 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 99/99/9999    99/99/9999
+   	//--                                            Total Geral ...                   9999          9999
 	aAdd(aLog,OemToAnsi(STR0004))
 	aAdd(aLog, cCodAvaliacao  + space(2)  + fDesc( "RD6",cCodAvaliacao, "RD6_DESC" ) )
 	aAdd(aLog,  " ")
-	 
+
 	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 	//³ Verifica o retorno das Avaliacoes ³
 	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 	If nTipo <> 1
 		DbSelectarea("RDC")
-		If dbSeek(xFilial("RDC") + cCodAvaliacao, .F. )	
+		If dbSeek(xFilial("RDC") + cCodAvaliacao, .F. )
 			While  !RDC->(Eof() ) .and. xFilial("RDC") + cCodAvaliacao = RDC->RDC_FILIAL + RDC->RDC_CODAVA .and. ;
-				RDC->RDC_CODADO >= cAvalDe .and. RDC->RDC_CODADO  <= cAvalAte 		
+				RDC->RDC_CODADO >= cAvalDe .and. RDC->RDC_CODADO  <= cAvalAte
 				If cAvaliado  # RDC->RDC_CODADO
 					aAdd(aLog,RDC->RDC_CODADO + "-" + fDesc( "RD0" ,RDC->RDC_CODADO , "RD0_NOME" )  )
 					cAvaliado 	:= RDC->RDC_CODADO
 	 	        Endif
-				If !empty(RDC_DATRET) 
+				If !empty(RDC_DATRET)
 					nCountRet++
 				Endif
 				If !empty(RDC_DATENV)
@@ -377,20 +387,20 @@ DEFAULT lGeraLog	:=	.F.
 				                      RDC->RDC_CODNET + "-" + fDesc( "RD1" ,RDC->RDC_CODNET , "RD1_DESC" )+  space(1) + ;
 				                      dtoc(RDC->RDC_DATENV)+ space(6) + dtoc(RDC->RDC_DATRET)  )
 				RDC->( dbSkip() )
-			Enddo 
-		Endif 
+			Enddo
+		Endif
 	Else
-		//EM ANALISE -> Em primeira instancia, nao considerado 
-		DbSelectarea("RDC")  
-		If dbSeek(xFilial("RDC") + cAvaliaDe + cAdoDe, .F.)	
+		//EM ANALISE -> Em primeira instancia, nao considerado
+		DbSelectarea("RDC")
+		If dbSeek(xFilial("RDC") + cAvaliaDe + cAdoDe, .F.)
 			While  !RDC->(Eof() ) .And. RDC->RDC_CODAVA >= cAvaliaDe .And. RDC->RDC_CODAVA <= cAvaliaAte .And. ;
 				RDC->RDC_CODADO >= cAdoDe .And. RDC->RDC_CODADO  <= cAdoAte
-								
+
 				If cAdoDe  # RDC->RDC_CODADO
 					aAdd(aLog,RDC->RDC_CODADO + "-" + fDesc( "RD0" ,RDC->RDC_CODADO , "RD0_NOME" )  )
 					cAdoDe 	:= RDC->RDC_CODADO
 	 	        Endif
-				If !empty(RDC_DATRET) 
+				If !empty(RDC_DATRET)
 					nCountRet++
 				Endif
 				If !empty(RDC_DATENV)
@@ -400,10 +410,10 @@ DEFAULT lGeraLog	:=	.F.
 				                      RDC->RDC_CODNET + "-" + fDesc( "RD1" ,RDC->RDC_CODNET , "RD1_DESC" )+  space(1) + ;
 				                      dtoc(RDC->RDC_DATENV)+ space(6) + dtoc(RDC->RDC_DATRET)  )
 				RDC->( dbSkip() )
-			Enddo 
+			Enddo
 		Endif
-	EndIf		
-		
+	EndIf
+
 	//-- Total Geral
 	aAdd(aLog,  " ")
 	aAdd(aLog, SPACE(45) + OemToAnsi(STR0008) +space(19)+ StrZero(nCountRet,4) + space(10)+  StrZero(nCountNaoRet,4)  )
@@ -412,10 +422,10 @@ DEFAULT lGeraLog	:=	.F.
 	ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 	³ Gera e Mostra o Log 										  ³
 	ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
-	//Obs.: Gera-se logo somente para tipo 2 e 3. Para tipo 1, gerado log na rotina de Calculo. 
-	If ( lGeraLog ) .AND. ( nTipo <> 1 ) 
+	//Obs.: Gera-se logo somente para tipo 2 e 3. Para tipo 1, gerado log na rotina de Calculo.
+	If ( lGeraLog ) .AND. ( nTipo <> 1 )
 		FMakeLog( { aLog } , aLogTitle , , NIL , NIL , cTitulo,"M","P",,.F. )
-	EndIf	
+	EndIf
 
 Return
 
@@ -453,25 +463,25 @@ Local aGDCoord		:= {}
 aAdvSize		:= MsAdvSize()
 aAdvSize[5]	:=	(aAdvSize[5]/100) * 70	//horizontal
 aAdvSize[6]	:=  (aAdvSize[6]/100) * 50	//Vertical
-aInfoAdvSize	:= { aAdvSize[1] , aAdvSize[2] , aAdvSize[3] , aAdvSize[4] , 0 , 0 }					 
+aInfoAdvSize	:= { aAdvSize[1] , aAdvSize[2] , aAdvSize[3] , aAdvSize[4] , 0 , 0 }
 aAdd( aObjCoords , { 000 , 000 , .T. , .T. } )
 aObjSize	:= MsObjSize( aInfoAdvSize , aObjCoords )
 aGdCoord	:= { (aObjSize[1,1]+3), (aObjSize[1,2]+5), (((aObjSize[1,3])/100)*50), (((aObjSize[1,4])/100)*62) }	//1,3 Vertical /1,4 Horizontal
 
 SetaPilha()
 	DEFINE FONT oFont NAME "Arial" SIZE 0,-11 BOLD
-	
-	DEFINE MSDIALOG oDlg TITLE OemToAnsi(STR0001 ) FROM  aAdvSize[7],20 TO aAdvSize[6]-50,460  OF oMainWnd PIXEL //094,001 TO 250,400  
+
+	DEFINE MSDIALOG oDlg TITLE OemToAnsi(STR0001 ) FROM  aAdvSize[7],20 TO aAdvSize[6]-50,460  OF oMainWnd PIXEL //094,001 TO 250,400
 
 	@ aGdCoord[1]+5 , aGdCoord[2]	GROUP oGroupCalc TO (aGdCoord[3]/1.5),aGdCoord[4]+10  LABEL OemToAnsi(STR0011) OF oDlg PIXEL //"Selecione o Objeto da Pesquisa"
 	oGroupCalc:oFont:=oFont
-	@ aGdCoord[1]+15,aGdCoord[2]+10	RADIO oRadioCalc VAR nOpcCalc 	ITEMS 	OemToAnsi(STR0009), ;			//--Sim //030,010	
+	@ aGdCoord[1]+15,aGdCoord[2]+10	RADIO oRadioCalc VAR nOpcCalc 	ITEMS 	OemToAnsi(STR0009), ;			//--Sim //030,010
 														OemToAnsi(STR0010)  ;			//--Nao
 				SIZE 100,010 OF oDlg PIXEL
 
-	oDlg:bSet15 := { || oDlg:End() } 
+	oDlg:bSet15 := { || oDlg:End() }
 	bSvSet15 := SetKey( 15 , oDlg:bSet15 )
-	oDlg:bSet24 := { || nOpcCalc := 0 , oDlg:End() }  
+	oDlg:bSet24 := { || nOpcCalc := 0 , oDlg:End() }
 	bSvSet24 := SetKey( 24 , oDlg:bSet24 )
 
 	ACTIVATE MSDIALOG oDlg CENTERED ON INIT EnchoiceBar( oDlg , oDlg:bSet15 , oDlg:bSet24 )
@@ -494,7 +504,7 @@ Return nOpcCalc
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß*/
 Static Function APDACalculo(cAlias, nReg, nTipo, oSelf , lGeraLog )
-      
+
 Local aOpenFile 		:= {"RD5"}
 
 //--Variaveis Getdados
@@ -507,10 +517,10 @@ Local aRecnos		:= {}
 Local aNotFields	:= {}
 
 //-- Variaveis para calculo
-Local aVlrQuestao 	:= {}               //-- Array contendo os valores obtidos de cada Questao 
+Local aVlrQuestao 	:= {}               //-- Array contendo os valores obtidos de cada Questao
 Local aMediaItemNet	:= {}				//-- Array contendo a Media por competencia / Rede
 Local aTotItemNet	:= {}				//-- Array contendo a pontuação máxima por item de competencia
-Local aLogMsg		:= {}				// Array para armazenar mensagem de falha de calculo       
+Local aLogMsg		:= {}				// Array para armazenar mensagem de falha de calculo
 
 Local cTitulo 		:= OemToAnsi(STR0006)
 
@@ -526,16 +536,16 @@ dbSelectArea( "RD5" )
 dbSelectArea( "RD6" )
 
 If nTipo =1         // Miscelancia (Ranger de avaliacao e avaliadao)
-	cAvaliaDe		:= mv_par01    
-	cAvaliaAte		:= mv_par02    
-	cAdoDe 			:= mv_par03    
+	cAvaliaDe		:= mv_par01
+	cAvaliaAte		:= mv_par02
+	cAdoDe 			:= mv_par03
 	cAdoAte	  		:= mv_par04
 	nLogOcorr 		:= mv_par05
 	cCodAvaliacao	:= cAvaliaDe
     bWhile			:= {|| RD6->RD6_CODIGO >= cAvaliaDe .AND.RD6->RD6_CODIGO  <= cAvaliaAte }
 ElseIf nTipo=2		// Montagem (Ranger de avaliados)
-	cAdoDe 			:= mv_par01    
-	cAdoAte  		:= mv_par02 
+	cAdoDe 			:= mv_par01
+	cAdoAte  		:= mv_par02
 	nLogOcorr		:= mv_par03
 	cCodAvaliacao	:= RD6->RD6_CODIGO
     bWhile			:= {|| RD6->RD6_CODIGO==cCodAvaliacao}
@@ -543,7 +553,7 @@ ElseIf nTipo=3 		// Montagem ( botao de calculo somente de um avaliado)
 	cAvaliaDe			:= RD9->RD9_CODAVA
 	cAvaliaAte			:= RD9->RD9_CODAVA
 	cAdoDe 				:= RD9->RD9_CODADO
-	cAdoAte				:= RD9->RD9_CODADO 
+	cAdoAte				:= RD9->RD9_CODADO
 	nLogOcorr           := 0
 	cCodAvaliacao		:= RD9->RD9_CODAVA
     bWhile				:= {|| RD6->RD6_CODIGO==cCodAvaliacao}
@@ -563,69 +573,69 @@ If nTipo <> 1
 Else
  	RD6->(dbSetOrder(1))
 	RD6->( dbSeek(xFilial("RD6") + cAvaliaDe, .T. ) )
-EndIf	
+EndIf
 
 aLogMsg	:={}
 
 If nTipo == 3  .or. !lRelease11
-	ProcRegua( RD6->( Reccount() ) )    
+	ProcRegua( RD6->( Reccount() ) )
 Else
 	oSelf:SetRegua1(RD6->( Reccount() ))
 	oSelf:SaveLog(STR0001 + " - " + STR0020)	//"Inicio do Processamento"
 EndIf
 
-While !RD6->( Eof() ).And. Eval(bWhile) 
+While !RD6->( Eof() ).And. Eval(bWhile)
 
 	If nTipo == 3 .or. !lRelease11
 		IncProc(OemToAnsi(STR0018)+": "+RD6->RD6_CODIGO)
 	Else
 		oSelf:IncRegua1(OemToAnsi(STR0018)+": "+RD6->RD6_CODIGO)
 	EndIf
-	
+
 	If RD6->RD6_STATUS <> "1"
-		
+
 		If nTipo <> 1
 			AVISO("",OemToAnsi(STR0012),{"Ok"} ) 				//-- "Nao e possivel efetuar o Calculo das Medias. Avaliacao ja foi encerrada. "
 			lAtivo	:= .F.
 		Else
 			lAtivo	:= .F.
-		EndIf   	
-    
-    Else  
-    	 
+		EndIf
+
+    Else
+
     	If nLogOcorr == 1
 			//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 			//³ Alimenta Log com as avaliacoes as quais os avaliados estavam com o RDB possivelmente vazios  ³
 			//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 			aAdd(aLogMsg,  " ")
-			aAdd(aLogMsg, "["+RD6->RD6_CODIGO+"]" + RD6->RD6_DESC )    
+			aAdd(aLogMsg, "["+RD6->RD6_CODIGO+"]" + RD6->RD6_DESC )
 		EndIf
-			
-	Endif   
-	
-	cKey	:= SubStr( &( IndexKey() ) , 1 , 8 )   
-	bKey	:= { ||SubStr( &( IndexKey() ) , 1 , 8 )}     
-	bSkip	:= {|| RDB->RDB_CODAVA <> RD6->RD6_CODIGO .or. ( RDB->RDB_CODADO < cAdoDe .OR. RDB->RDB_CODADO > cAdoAte )  }	
+
+	Endif
+
+	cKey	:= SubStr( &( IndexKey() ) , 1 , 8 )
+	bKey	:= { ||SubStr( &( IndexKey() ) , 1 , 8 )}
+	bSkip	:= {|| RDB->RDB_CODAVA <> RD6->RD6_CODIGO .or. ( RDB->RDB_CODADO < cAdoDe .OR. RDB->RDB_CODADO > cAdoAte )  }
 
 	aCols 	:=RDB->( GdMontaCols( @aHeader , @nUsado , @aVirtGd , @aVisual , NIL , aNotFields , @aRecnos , "RDB",cKey ,bKey ,bSkip) )
-	
-	cCodAvaliacao := RD6->RD6_CODIGO	
+
+	cCodAvaliacao := RD6->RD6_CODIGO
 	/*
 	ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 	³ Carrega tabelas                                              ³
 	ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
 	fAPDACarTab(aOpenFile)
-	
+
 	/*
 	ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 	³ Calcula Valor para Cada questao respondida  (RDB)            ³
 	ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
 	aVlrQuestao	:= fCalcQuestao( aCols, aheader)
-	
+
 	If Empty(aTotItemNet) .or. aTotItemNet[1,1] <> cCodAvaliacao
 		aTotItemNet := fCalcTotItem()
 	EndIf
-	
+
 	/*
 	ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 	³Calculo da Media por Item de Competencia/Rede  (RDD)          |
@@ -633,22 +643,22 @@ While !RD6->( Eof() ).And. Eval(bWhile)
 	If Len(aVlrQuestao) > 0
 		aMediaItemNet 	:= fCalcMediaComp(aVlrQuestao)
 	EndIF
-	
+
 	If Empty(aVlrQuestao) .or. Empty(aMediaItemNet)
-	   
+
 		If nTipo <> 1
 			AVISO(" ",OemToAnsi(STR0013)+ CRLF + OemToAnsi(STR0014)  ,{"Ok"} )   //-- "Calculo nao foi efetuado. Verifique os parametros"
-		EndIf	
-		
+		EndIf
+
 	Elseif Empty(aVlrQuestao) .or. Empty(aMediaItemNet) .And. nTipo == 2
-	    
+
 	    If nLogOcorr == 1
 	    	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 			//³ Alimenta Log com as avaliacoes as quais os avaliados estavam com o RDB possivelmente vazios  ³
 			//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 			aAdd(aLogMsg, "["+RD6->RD6_CODIGO+"]" + RD6->RD6_DESC ) //Codigo e Descricao da Avaliacao
 		EndIf
-		
+
 	Else
 		/*
 		ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
@@ -656,21 +666,21 @@ While !RD6->( Eof() ).And. Eval(bWhile)
 		ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
 		lRet := fSaveFile( aMediaItemNet,aVlrQuestao,aTotItemNet)
 		aMediaItemNet := {}
-		//Durante o laço lRetRd6 alterou o seu estado para .F. ele não altera até o fim do processo 
+		//Durante o laço lRetRd6 alterou o seu estado para .F. ele não altera até o fim do processo
 		If lRetRd6
 			lRetRd6	:= lRet
 		EndIf
 	Endif
-    
+
     RD6->(dbSkip())
 EndDo
 
 If lRetRd6
 	AVISO("",OemToAnsi(STR0005),{"Ok"} ) 				//-- Calculo efetuado com  sucesso
 Else
-	AVISO("",OemToAnsi(STR0022),{"Ok"} ) 				//-- As Avaliacoes nao foram calculadas para todos os respectivos avaliados, verifique o log do sistema!	
+	AVISO("",OemToAnsi(STR0022),{"Ok"} ) 				//-- As Avaliacoes nao foram calculadas para todos os respectivos avaliados, verifique o log do sistema!
 EndIf
-	
+
 If lRelease11 .AND. nTipo <> 3
 	oSelf:SaveLog(STR0001 + " - " + STR0021)	//"Término do Processamento"
 EndIf
@@ -686,9 +696,9 @@ If ( nLogOcorr == 1 )
 		ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
 		FMakeLog( { aLogMsg } ,{OemToAnsi( STR0019 )}, , NIL , NIL , cTitulo,"M","P",,.F. ) //"As Avaliacoes abaixo nao foram calculadas para todos os seus respectivos avaliados:"
 	Else
-		lGeraLog	:=	.T.	
+		lGeraLog	:=	.T.
 	EndIf
-EndIf 
+EndIf
 
 Return
 
@@ -707,10 +717,10 @@ Return
 
 Static Function fCalcQuestao(aCols,aHeader)
 
-Local aArea			:= GetArea() 
+Local aArea			:= GetArea()
 Local aVlrQuestao	:= {}
-Local nVlrQuestao	:= 0 				//-- Valor da Questao 
-Local nQuestao 		:= 0				//-- 
+Local nVlrQuestao	:= 0 				//-- Valor da Questao
+Local nQuestao 		:= 0				//--
 Local nPosCodAdo	:= GdFieldPos("RDB_CODADO", aHeader  )
 Local nPosCodPro	:= GdFieldPos("RDB_CODPRO", aHeader  )
 Local nPosCodDor	:= GdFieldPos("RDB_CODDOR", aHeader  )
@@ -721,17 +731,17 @@ Local nPosIte		:= GdFieldPos("RDB_ITECOM", aHeader  )
 Local nPosNet		:= GdFieldPos("RDB_CODNET", aHeader  )
 Local nPosQue		:= GdFieldPos("RDB_CODQUE", aHeader  )
 Local nPosAlt		:= GdFieldPos("RDB_CODALT", aHeader  )
-Local nPosTip		:= GdFieldPos("RDB_CODTIP", aHeader  )   
-Local nPosTipoAv    := GdFieldPos("RDB_TIPOAV", aHeader  ) 
-Local nPosEscala    := GdFieldPos("RDB_ESCALA", aHeader  ) 
-Local nPosIteesc    := GdFieldPos("RDB_ITEESC", aHeader  ) 
-Local nPosMod	    := GdFieldPos("RDB_CODMOD", aHeader  ) 
-                                         
+Local nPosTip		:= GdFieldPos("RDB_CODTIP", aHeader  )
+Local nPosTipoAv    := GdFieldPos("RDB_TIPOAV", aHeader  )
+Local nPosEscala    := GdFieldPos("RDB_ESCALA", aHeader  )
+Local nPosIteesc    := GdFieldPos("RDB_ITEESC", aHeader  )
+Local nPosMod	    := GdFieldPos("RDB_CODMOD", aHeader  )
+
 For nQuestao := 1 to Len( aCols )
 
 	/*ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 	  ³Retorna valor de uma questao e  salva no array aVlrQuestao    ³
-	  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/ 
+	  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
 	//Condicao abaixo reconsiderada para calcular a todos os tipos de avaliadores (rdb_tipoav)
 	//If aCols[nQuestao,nPosTipoAv] == "3" //Somente quando Avaliacao de Consenso
 	nVlrQuestao	:= fVlrQuestao(aCols[nQuestao,nPosCom],aCols[nQuestao,nPosIte],aCols[nQuestao,nPosQue], aCols[nQuestao,nPosAlt], aCols[nQuestao,nPosEscala], aCols[nQuestao,nPosIteesc])
@@ -740,25 +750,25 @@ For nQuestao := 1 to Len( aCols )
 								{;
 									xFilial("RDB"),;				//01
 									cCodAvaliacao,;					//02
-									aCols[nQuestao,nPosCodAdo],;	//03	
-									aCols[nQuestao,nPosCodPro],;	//04	
+									aCols[nQuestao,nPosCodAdo],;	//03
+									aCols[nQuestao,nPosCodPro],;	//04
 									aCols[nQuestao,nPosCodDor],;	//05
-									aCols[nQuestao,nPosDtIava],;	//06	
-									aCols[nQuestao,nPosDtFava],;	//07	
+									aCols[nQuestao,nPosDtIava],;	//06
+									aCols[nQuestao,nPosDtFava],;	//07
 									aCols[nQuestao,nPosCom],;		//08
 									aCols[nQuestao,nPosIte],;		//09
 									aCols[nQuestao,nPosNet],;		//10
 									aCols[nQuestao,nPosQue],;		//11
 									nVlrQuestao,;					//12
 									aCols[nQuestao,nPosTip],;		//13
-									aCols[nQuestao,nPosTipoAv],;	//14 
+									aCols[nQuestao,nPosTipoAv],;	//14
 									aCols[nQuestao,nPosDtFava],;	//15
 									aCols[nQuestao,nPosMod],;		//16
-								};                                    
-			)  		
+								};
+			)
 	EndIf
-	//EndIf	
-Next Questao 
+	//EndIf
+Next Questao
 RestArea(aArea)
 Return aVlrQuestao
 
@@ -777,16 +787,16 @@ Return aVlrQuestao
 */
 Static Function fVlrQuestao(cCodCom,cCodItem, cCodQuestao, cAlternativa, cEscala, cIteesc )
 
-Local nPontos 			:= 0 
+Local nPontos 			:= 0
 Local nPtosQuestao		:= 0
 Local nVlrQst			:= 1 // Conter calculo do fator da questa
-Local nVlrGrImp			:= 1 // Contem o fafor do grau de importancia da questa     
+Local nVlrGrImp			:= 1 // Contem o fafor do grau de importancia da questa
 //Obs.: Variaveis declaradas acima como 1 devido os calculos
 Local nRet				:= 0
- 
+
 dbSelectArea("SQO")
 If dbSeek(xFilial("SQO") + cCodQuestao ,.f.)
-	nPontos	:= SQO->QO_PONTOS 
+	nPontos	:= SQO->QO_PONTOS
 	If SQO->QO_TIPOOBJ == "3" //Dissertativa
 		nPtosQuestao := nPontos
 	EndIf
@@ -806,15 +816,15 @@ If dbSeek(xFilial("SQO") + cCodQuestao ,.f.)
 			If RBL->( dbSeek( xFilial("RBL") + SQO->QO_ESCALA + StrZero(Val(cAlternativa),2) ))
 				nVlrQst:= RBL->RBL_VALOR / 100
 			Endif
-		EndIf            
+		EndIf
         //ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 		//³ Calculo do Fator do Grau de Importancia da Alternativa  ³
 		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 		If !Empty(cIteesc) .And. RBL->( dbSeek( xFilial("RBL") + cEscala + cIteesc ))
 			nVlrGrImp:=(RBL->RBL_VALOR / 100 )
 		Endif
-		
-		If lAPD010VQ 
+
+		If lAPD010VQ
 			IF ( ValType( nRet := ExecBlock( "APD010VQ", .F. , .F. ,{nPontos, nVlrQst, nVlrGrImp} ) ) == "N" )
 			   nPtosQuestao += nRet
 			Else
@@ -827,7 +837,7 @@ If dbSeek(xFilial("SQO") + cCodQuestao ,.f.)
 	EndIf
 Endif
 
-Return  ( nPtosQuestao )       
+Return  ( nPtosQuestao )
 
 /*ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
@@ -843,14 +853,14 @@ Return  ( nPtosQuestao )
 Static Function fCalcMediaComp(aVlrQuestao)
 
 Local aArea			:= GetArea()
-Local aMediaItemComp:= {}				//-- Array de Retorno 
+Local aMediaItemComp:= {}				//-- Array de Retorno
 
 //-- Ptos por Questao
 Local nQuestao		:= 0
 
 Local cCodAdo 		:= ""
 Local cCodPro       := ""
-Local dDtIava    
+Local dDtIava
 Local dDtFava
 Local cCodCom		:= ""
 Local cCoditem		:= ""
@@ -879,7 +889,7 @@ For nQuestao := 1 to Len(aVlrQuestao)
 		aadd(aMediaItemComp,{;
 								cCodAvaliacao,;	//01
 								cCodAdo,;		//02
-								cCodPro,;		//03   
+								cCodPro,;		//03
 								dDtIava,;		//04
 								dDtFava,;		//05
 								cCodCom,;		//06
@@ -889,7 +899,7 @@ For nQuestao := 1 to Len(aVlrQuestao)
 								cCodTip,;		//10
 								cCodTipAv;		//11
 							 };
-			 ) 
+			 )
 	Endif
 	aMediaItemComp[Len(aMediaItemComp)][9] += aVlrQuestao[nQuestao,12]
 Next nQuestao
@@ -898,7 +908,7 @@ Next nQuestao
 ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 ³ Ponto de Entrada para tratamento da media.                   ³
 ³ Permite que seja feita a media aritmetica das notas sem consi³
-³ derar os pesos dos itens de competencia. 					   
+³ derar os pesos dos itens de competencia.
 ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
 IF ( lApdm010Block )
 	IF ( ValType( aRet := ExecBlock("APD01001", .F. , .F. ,{aMediaItemComp,aVlrQuestao}) ) == "A" )
@@ -911,7 +921,7 @@ EndIF
 //ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 RestArea( aArea )
 
-Return ( aMediaItemComp ) 
+Return ( aMediaItemComp )
 
 /*
 ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
@@ -931,26 +941,26 @@ Static Function fSaveFile( aMediaItemNet,aVlrQuestao,aTotItemNet)
 Local aArea			:= GetArea( )
 Local lRet			:= .T.
 
-Begin Sequence 
+Begin Sequence
 
-	/*ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿  
+	/*ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 	  ³Salva Media Item Compet. / Rede                               ³
 	  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
-	If fGravaRDD(aMediaItemNet,aTotItemNet)	
+	If fGravaRDD(aMediaItemNet,aTotItemNet)
 		/*ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 		  ³Salva Resultado por Questao                                   ³
 		  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
 		If !fGravaRDB(aVlrQuestao)
 			lRet	:= .F.
-			Break	
+			Break
 		Endif
 	Else
 		lRet := .F.
-		Break		
+		Break
 	EndIf
-	
 
-End Sequence 
+
+End Sequence
 
 RestArea( aArea )
 
@@ -967,7 +977,7 @@ Return lRet
 ±±ÀÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß*/
-Static function fGravaRDD(aMediaItemNet,aTotItemNet) 
+Static function fGravaRDD(aMediaItemNet,aTotItemNet)
 
 Local aArea		:= GetArea()
 Local nAvaliado	:= 0
@@ -978,23 +988,23 @@ Local lOk		:= .F.
 
 RDD->( dbSetOrder(1))
 
-For nAvaliado := 1 to Len(aMediaItemNet ) 	
-	
+For nAvaliado := 1 to Len(aMediaItemNet )
+
 	cKey 	:= xFilial("RDD") +aMediaItemNet[ nAvaliado,1 ] + aMediaItemNet[ nAvaliado,2 ] + aMediaItemNet[ nAvaliado,3 ] + dTos( aMediaItemNet[ nAvaliado,4 ] ) + aMediaItemNet[ nAvaliado,6 ] + aMediaItemNet[ nAvaliado,7 ]+ aMediaItemNet[ nAvaliado,8 ]+ aMediaItemNet[ nAvaliado,11 ]
-	If RDD->(dbSeek(ckey))   		
+	If RDD->(dbSeek(ckey))
 		RDD->( RecLock("RDD",.F.,.T.) )		//-- altera
-		lOk	:= .T.	
-	Else     	
+		lOk	:= .T.
+	Else
 		RDD->( RecLock("RDD",.T.,.T.) )		//-- Inclui
 		lOk	:= .T.
-	EndIf	
-	
+	EndIf
+
 	If (nPosAux := aScan(aTotItemNet,{|x| x[4] == aMediaItemNet[nAvaliado,7] })) > 0
 		nPtoMax := aTotItemNet[nPosAux][5]
 	Else
 		nPtoMax := 0
 	EndIf
-	
+
 	RDD->RDD_FILIAL		:= xFilial("RDB")
 	RDD->RDD_CODAVA		:= aMediaItemNet[nAvaliado,1]
 	RDD->RDD_CODADO		:= aMediaItemNet[nAvaliado,2]
@@ -1029,16 +1039,16 @@ Return (lOk)
 Static Function  fGravaRDB(aVlrQuestao)
 
 Local aArea			:= GetArea()
-Local nVlrQuestao 	:= 0 
+Local nVlrQuestao 	:= 0
 Local cKey			:= ""
 Local lOk			:= .F.
 
 RDB->(dbSetOrder(1))
-For  nVlrQuestao := 1 to Len( aVlrQuestao )	
+For  nVlrQuestao := 1 to Len( aVlrQuestao )
     cKey:= xFilial("RDB")+ cCodAvaliacao + aVlrQuestao[nVlrQuestao,3]+ aVlrQuestao[nVlrQuestao,4]+ aVlrQuestao[nVlrQuestao,5]+ dTos(aVlrQuestao[nVlrQuestao,6])+ aVlrQuestao[nVlrQuestao,8]+ aVlrQuestao[nVlrQuestao,9]+ aVlrQuestao[nVlrQuestao,10]+ aVlrQuestao[nVlrQuestao,11]+ aVlrQuestao[nVlrQuestao,14]
 	If RDB->(dbSeek(ckey))
 		RDB->( RecLock("RDB",.F.,.T.) )			  		//-- Alteracao
-		RDB->RDB_RESOBT	:= aVlrQuestao[nVlrQuestao,12] 		//-- Vlr Questao 
+		RDB->RDB_RESOBT	:= aVlrQuestao[nVlrQuestao,12] 		//-- Vlr Questao
 		RDB->( MsUnlock() )
 		lOk		:= .T.
 	Endif
@@ -1066,15 +1076,15 @@ Return(lOk)
 Static Function  fGravaRBI(aVlrQuestao)
 
 Local aArea			:= GetArea()
-Local nI			:= 0   
+Local nI			:= 0
 Local nJ			:= 0
 Local nValor		:= 0
 Local nQtd			:= 0
 Local nMedia		:= 0
-Local cKey			:= "" 
+Local cKey			:= ""
 Local cItem			:= ""
 Local lOk			:= .F.
-Local aHabilidade	:= {}   
+Local aHabilidade	:= {}
 Local aValor		:= {}
 
 DbSelectaREA("RD8")
@@ -1091,7 +1101,7 @@ For nI := 1 To Len(aVlrQuestao)
 				Else
 					aadd(aHabilidade,{RD8->RD8_HABIL,{aVlrQuestao[nI,12]},aVlrQuestao[nI,3] }) //habilidade e valor
 				EndIf
-			Else               
+			Else
 				aadd(aHabilidade,{RD8->RD8_HABIL,{aVlrQuestao[nI,12]},aVlrQuestao[nI,3] }) //habilidade e valor
 			EndIf
 		EndIf
@@ -1101,21 +1111,21 @@ Next nI
 RBI->(dbSetOrder(1))
 RBG->(dbSetOrder(1))
 RBL->(dbSetOrder(1))
-	
+
 For nI := 1 To Len(aHabilidades)
 	nQtd	:= Len(aHabilidades[nI][2])
 	aEval(aHabilidades[nI][2],{|x| nValor += x })
 	nMedia	:= round(nValor / nQtd,2)
 
 	If nMedia > 0
-		//comparacao de escala                    
+		//comparacao de escala
 		If RBG->(dbSeek(xFilial("RBG")+aHabilidade[nI][1]) )
 			If RBL->( dbSeek( xFilial("RBL") + RBG->RBG_ESCALA ))
 		    	While !RBL->(Eof()) .And. RBL->(RBL_FILIAL+RBL_ESCALA) == xFilial("RBL") + RBG->RBG_ESCALA
 		    		Aadd(aValor,{RBL->RBL_ITEM,RBL->RBL_VALOR})
 		    		RBL->(dbSkip())
 		    	EndDo
-			EndIf	
+			EndIf
 			aValor := aSort(aValor,,,{|x,y| x[2] < y[2]})
 			For nJ := 1 To Len(aValor)
 				If nMedia < aValor[nJ][2]
@@ -1123,7 +1133,7 @@ For nI := 1 To Len(aHabilidades)
 				EndIf
 				cItem := aValor[nJ][1]
 			Next nJ
-			
+
 			If !Empty(cItem)
 				lAchou := RBI->(dbSeek(xFilial("RBI")+aHabilidade[nI][3]) )
 				//grava historico da habilidade
@@ -1139,7 +1149,7 @@ For nI := 1 To Len(aHabilidades)
 						RAS->RAS_RESULT	:= RBI->RBI_RESULT
 					RAS->(msUnlock())
 				EndIf
-			    
+
 				//grava habilidade do funcionario
 			    RecLock("RBI",!lAchou)
 					RBI->RBI_FILIAL	:= xFilial("RAS")
@@ -1150,9 +1160,9 @@ For nI := 1 To Len(aHabilidades)
 					RBI->RBI_TIPGRV	:= ""
 					RBI->RBI_DATA	:= dDatabase
 					RBI->RBI_RESULT	:= nMedia
-			    RBI->(msunlock())         
+			    RBI->(msunlock())
 			EndIf
-		EndIf		
+		EndIf
 	EndIf
 Next nI
 
@@ -1180,7 +1190,7 @@ Function fAPDACarTab( aOpenFile )
 
 Local aArea			:= GetArea()
 Local nFiles
-                  
+
 For nFiles	:= 1 TO Len(aOpenFile)
 	//-- Rede
 	If aOpenFile[nFiles] ="RD1"
@@ -1189,10 +1199,10 @@ For nFiles	:= 1 TO Len(aOpenFile)
 			While RD1->( !eof() )  .and. xFilial(aOpenFile[nFiles])  = RD1_FILIAL
 				aadd(aRede,{RD1->RD1_FILIAL,RD1->RD1_CODIGO, RD1->RD1_DESC } )
 				RD1->( dbSkip() )
-			Enddo	
-		Endif                             
+			Enddo
+		Endif
 	ElseIf aOpenFile[nFiles] ="RDE"
-		//-- Participante na estrutura 
+		//-- Participante na estrutura
 		dbSelectArea( aOpenFile[nFiles] )
 		dbSetOrder(2)
 		If dbSeek( xFilial(aOpenFile[nFiles]) + M->RD6_CODVIS ,.f. )
@@ -1201,8 +1211,8 @@ For nFiles	:= 1 TO Len(aOpenFile)
 				RDE->( dbSkip() )
 			Enddo
 		EndIf
-	Endif	
-	
+	Endif
+
 Next nFiles
 
 RestArea(aArea)
@@ -1244,7 +1254,7 @@ If RDO->(DbSeek(xFilial("RDO")+ RD6->RD6_CODMOD + RD6->RD6_CODCOM))
 				 		While RBL->(!Eof()) .and. RBL->(RBL_FILIAL + RBL_ESCALA) == xFilial("RBL") + SQO->QO_ESCALA
 				 			If RBL->RBL_VALOR > nValAux
 				 				nValAux := RBL->RBL_VALOR
-				 			EndIf 
+				 			EndIf
 							RBL->(DbSkip())
 						EndDo
 						If nValAux > 0
@@ -1272,7 +1282,7 @@ Else
 			 		While RBL->(!Eof() .and. RBL_FILIAL + RBL_ESCALA == xFilial("RBL") + SQO->QO_ESCALA)
 			 			If RBL->RBL_VALOR > nValAux
 			 				nValAux := RBL->RBL_VALOR/100
-			 			EndIf 
+			 			EndIf
 						RBL->(DbSkip())
 					EndDo
 					If nValAux > 0
@@ -1293,7 +1303,7 @@ RestArea(aArea)
 
 Return aRet
 
-/*                                	
+/*
 ÚÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄ¿
 ³Fun‡„o    ³ MenuDef		³Autor³  Luiz Gustavo     ³ Data ³21/12/2006³
 ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´
@@ -1307,7 +1317,7 @@ Return aRet
 ³ Retorno  ³aRotina														³
 ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
 ³Parametros³< Vide Parametros Formais >									³
-ÀÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/   
+ÀÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
 
 Static Function MenuDef()
 
@@ -1323,8 +1333,8 @@ Static Function MenuDef()
 //³    3 - Inclui registros no Bancos de Dados                   ³
 //³    4 - Altera o registro corrente                            ³
 //³    5 - Remove o registro corrente do Banco de Dados          ³
-//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ	
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
  Local aRotina := { 	{ OemToAnsi(STR0015),'PesqBrw', 0, 1,,.F.}, ;	//"Pesquisar"
-						{ OemToAnsi(STR0016),'APDCALCM'	, 0, 4} }	//"Calcular"  														
+						{ OemToAnsi(STR0016),'APDCALCM'	, 0, 4} }	//"Calcular"
 
 Return aRotina
