@@ -206,7 +206,7 @@ user function f0100204(cOrigem)
 					nNivel:= TRG1->NIVEL2
 				EndIf
 			Endif */
-			If TRG1->ANO <= nGratAno .and. TRG1->MES <= nGratMes .and. TRG1->DIA < nGratDia
+			If TRG1->ANO <= nGratAno .and. TRG1->MES <= nGratMes .and. TRG1->DIA <= nGratDia
 				nNivel:= TRG1->NIVEL1
 			Else
 				nNivel:= TRG1->NIVEL2

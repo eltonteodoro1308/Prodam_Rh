@@ -1299,13 +1299,18 @@ User Function fDescVRVA()
 
 	nDescVR := 	nVlrVR * (nPercVR/100)
 	nDescVA := 	nVlrVA * (nPercVA/100)
-		
-	If nDescVR > 0 .and. Empty(fBuscaPD(cDescVR,"V",cSemana))
+	
+	fDelPD(cDescVR)
+	fDelPD(cDescVA)
+	fDelPD(cVbVR)
+	fDelPD(cVbVA)
+			
+	If nDescVR > 0 //.and. Empty(fBuscaPD(cDescVR,"V",cSemana))
 		FGERAVERBA(cDescVR,nDescVR,,,,"V","C",,,,lRet,)
 		FGERAVERBA(cVbVR,(nVlrVR - nDescVR),,,,"V","C",,,,lRet,)
 	Endif
 	
-	If nDescVR > 0 .and. Empty(fBuscaPD(cDescVA,"V",cSemana))
+	If nDescVA > 0 //.and. Empty(fBuscaPD(cDescVA,"V",cSemana))
 		FGERAVERBA(cDescVA,nDescVA,,,,"V","C",,,,lRet,)
 		FGERAVERBA(cVbVA,(nVlrVA - nDescVA),,,,"V","C",,,,lRet,)
 	Endif

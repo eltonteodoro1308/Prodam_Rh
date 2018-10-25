@@ -189,7 +189,10 @@ While (cAliasQRY)->(!Eof())
 	If (cAliasQRY)->R8_DATAINI >= dPerIni
 		If (SUPERGETMV("MV_DIASPER",,"1") == "2" .AND. Day(dPerFim) == 31 .And. nDiasC == 30 .And. SRA->RA_CATFUNC = "M") .And. !((cAliasQRY)->RCM_TIPOAF == '4') 
 			//nDiasDisp	:= dPerFim - (cAliasQRY)->R8_DATAINI + 1 //04/09/18 - Tirado o menos -1 porque estava calculando um dia a mais nos meses de 31 dias. Prb identiifcado especialmnete no afastamento de licenca maternidade
-			nDiasDisp	:= dPerFim - (cAliasQRY)->R8_DATAINI
+			nDiasDisp	:= dPerFim - (cAliasQRY)->R8_DATAINI + 1
+				If (DIASTRAB - nDiasDisp) + nDiasDisp > 30
+					nDiasDisp - 1
+				EndIf	
 		Else
 			If P_PGSALFEV
 				nDiasDisp	:= If(Day(dPerFim) <= 29 .And. nDiasC == 30 .And. !((cAliasQRY)->RCM_TIPOAF == '4') .And. !((cAliasQRY)->RCM_CODSEF $ "O1*P1"), If(Day(dPerFim) == 28,dPerFim - (cAliasQRY)->R8_DATAINI + 3,dPerFim - (cAliasQRY)->R8_DATAINI + 2) ,dPerFim - (cAliasQRY)->R8_DATAINI + 1)	
