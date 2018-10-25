@@ -7,7 +7,7 @@ conforme o cadastro especifico de usuário para DIMBP (tabela SZK).
 @type function Rotina Específica
 @version P12
 @author TOTVS
-@since 22/10/2018
+@since 25/10/2018
 @return ${return}, ${return_description}
 /*/
 
@@ -34,7 +34,7 @@ conforme o cadastro especifico de usuário para DIMBP (tabela SZK).
 /*/
 User Function funcName(aArr,nNum,cCar,lLog,oObj,bBloc,dDate,uOther)
 
-
+ConOut('')
 
 
 
