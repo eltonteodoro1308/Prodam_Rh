@@ -4,13 +4,12 @@
 #DEFINE _ENTER chr(13)+chr(10)
 
 /*/{Protheus.doc} APD005
-
-@type function
-@author Jorge Heitor
-@since 06/04/2016
-@version 1.0
-@description Rotina de processamento dos cálculos de Resultados de Política de Consolidação 
-
+Rotina de processamento dos cálculos de Resultados de Política de Consolidação
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
 /*/
 User Function APD005()
 
@@ -24,21 +23,21 @@ User Function APD005()
 	Local aObjCoords	:= {}
 	Local aGDCoord		:= {}
 	Local aArea			:= GetArea()
-	
-	Private cCadastro 	:= OemToAnsi("Cálculo de Política de Consolidação")	
+
+	Private cCadastro 	:= OemToAnsi("Cálculo de Política de Consolidação")
 	Private nSavRec		:= 0
 	Private _nRound		:= GetMV("MV_APDARRM")
 	Private dDataCalc	:= Date()
 
-	
+
 	Pergunte("APD005",.F.)
-	
+
 	/*
 	---------------------------
 	Monta dimensões dos objetos
 	---------------------------
 	*/
-	
+
 	aAdvSize		:= MsAdvSize()
 	aAdvSize[5]		:= (aAdvSize[5]/100) * 35	//horizontal
 	aAdvSize[6]		:= (aAdvSize[6]/100) * 55	//Vertical
@@ -46,23 +45,23 @@ User Function APD005()
 	aAdd( aObjCoords , { 000 , 000 , .T. , .T. } )
 	aObjSize		:= MsObjSize( aInfoAdvSize , aObjCoords )
 	aGdCoord		:= { (aObjSize[1,1]+3), (aObjSize[1,2]+5), (((aObjSize[1,3])/100)*25), (((aObjSize[1,4])/100)*29.6) }	//1,3 Vertical /1,4 Horizontal
-	
+
 	SetaPilha()
-	
+
 	DEFINE FONT oFont NAME "Arial" SIZE 0,-11 BOLD
 	DEFINE MSDIALOG oDlg TITLE cCadastro FROM  aAdvSize[7],20 TO aAdvSize[6]-50,600  OF oMainWnd PIXEL
-	
+
 		//@ aGdCoord[1]+7,aGdCoord[2]	GROUP oGroupCalc TO (aGdCoord[3]/1.2)+5,aGdCoord[4]+5  LABEL "" OF oDlg PIXEL
 		//oGroupCalc:oFont:=oFont
 		@ aGdCoord[1]+20,aGdCoord[2]+4 Say OemToAnsi( "Este programa tem como objetivo efetuar o Cálculo da Política de Consolidação," ) Size 290,07 Pixel Font oFont Color CLR_BLUE
 		@ aGdCoord[1]+32,aGdCoord[2]+4 Say OemToAnsi( "com base no critério estabelecido em 'Parâmetros'" ) Size 290,07 Pixel Font oFont Color CLR_BLUE
-		
+
 		aButtons	:=	{;
 						{"Perguntas"  ,{ || Pergunte("APD005",.T. ) },"Parâmetros","Parâmetros"};
 						}
-			
+
 	ACTIVATE MSDIALOG oDlg CENTERED ON INIT EnchoiceBar( oDlg , { || nOpca 	:= 1, oDlg:End() } , { || nOpca 	:= 0 , oDlg:End() } , NIL , aButtons )
-	
+
 	SetaPilha()
 
 	/*
@@ -71,21 +70,20 @@ User Function APD005()
 	------------------------------------
 	*/
 	If nOpca == 1
-		Processa({|lEnd| APD005Proc(),OemToAnsi("Cálculo de Política de Consolidação")}) 
+		Processa({|lEnd| APD005Proc(),OemToAnsi("Cálculo de Política de Consolidação")})
 	EndIf
-	
+
 	RestArea(aArea)
 
 Return Nil
 
 /*/{Protheus.doc} APD005Proc
-
-@type function
-@author Jorge Heitor
-@since 06/04/2016
-@version 1.0
-@description Processamento dos cálculos Consolidados
-
+Processamento dos cálculos Consolidados
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
 /*/
 Static Function APD005Proc()
 
@@ -104,7 +102,7 @@ Static Function APD005Proc()
 	Private cPolitica	:= mv_par01
 	Private cRD0		:= mv_par02
 	Private cFiltro		:= ''
-	
+
 	aAdd(aLog,"----------------------------------------------------------------------")
 	aAdd(aLog,"Data/Hora de Início do Processamento: " + DtoC(Date()) + " / " + Time()) //"Data/Hora de Início do Processamento: "
 	aAdd(aLog,"----------------------------------------------------------------------")
@@ -112,9 +110,9 @@ Static Function APD005Proc()
 	aAdd(aLog,"Parâmetros: ") //"Parâmetros: "
 	aAdd(aLog,"-------------")
 	aAdd(aLog,"Política de Consolidação: " + cPolitica + " - " + Posicione("SZC",1,xFilial("SZC")+cPolitica,"ZC_DESC")) //"Política de Consolidação: "
-	
+
 	aAdd(aLog," ")
-	
+
 	aAdd(aLog,"----------------------------------------------------------------------")
 	aAdd(aLog,"Início da Leitura da Política: " + Time()) //"Início da Leitura da Política: "
 	aAdd(aLog,"----------------------------------------------------------------------")
@@ -132,7 +130,7 @@ Static Function APD005Proc()
 	aAdd(aLog,"----------------------------------------------------------------------")
 	aAdd(aLog,"Término da Leitura da Política: " + Time()) //"Término da Leitura da Política: "
 	aAdd(aLog,"----------------------------------------------------------------------")
-	aAdd(aLog," ")	
+	aAdd(aLog," ")
 	aAdd(aLog,"----------------------------------------------------------------------")
 	aAdd(aLog,"Verificação de reprocessamento: " + Time()) //"Verificação de reprocessamento: "
 	aAdd(aLog,"----------------------------------------------------------------------")
@@ -146,18 +144,18 @@ Static Function APD005Proc()
 	aAdd(aLog,"Término da Verificação de reprocessamento: " + Time()) //"Término da Verificação de reprocessamento: "
 	aAdd(aLog,"----------------------------------------------------------------------")
 	aAdd(aLog," ")
-	
+
 	If lTemSZE
-	
+
 		If empty(cRD0)
 			lProcessa := MsgNoYes("Foram encontrados registros de resultados para a política " + cPolitica + ". Deseja continuar e substituir o cálculo anterior de TODOS os participantes ?")
 		Else
 			lProcessa := MsgNoYes("Foi encontrado registro de resultado do participante para a política " + cPolitica + ". Deseja continuar e substituir o cálculo anterior do participante " + cRD0 + " ?")
-		EndIf		
+		EndIf
 	EndIf
-	
+
 	If lProcessa
-		
+
 		/*
 		-------------------------------------
 		Exclui Registros da SZE (se houverem)
@@ -172,16 +170,16 @@ Static Function APD005Proc()
 			aAdd(aLog,"Término do reprocessamento: " + Time()) //"Término do reprocessamento: "
 			aAdd(aLog,"----------------------------------------------------------------------")
 			aAdd(aLog," ")
-		
+
 		EndIf
-		
+
 		/*
 		-------------------------------------
 		Processa Metas
 		-------------------------------------
 		*/
 		If lMetas
-		
+
 			aAdd(aLog,"----------------------------------------------------------------------")
 			aAdd(aLog,"Cálculos das Metas: " + Time()) //"Cálculos das Metas: "
 			aAdd(aLog,"----------------------------------------------------------------------")
@@ -190,16 +188,16 @@ Static Function APD005Proc()
 			aAdd(aLog,"Término Cálculo das Metas: " + Time()) //"Término Cálculo das Metas: "
 			aAdd(aLog,"----------------------------------------------------------------------")
 			aAdd(aLog," ")
-			
+
 		EndIf
-		
+
 		/*
 		-------------------------------------
 		Processa Competências
 		-------------------------------------
 		*/
 		If lComp
-		
+
 			aAdd(aLog,"----------------------------------------------------------------------")
 			aAdd(aLog,"Cálculos das Competências: " + Time()) //"Cálculos das Competências: "
 			aAdd(aLog,"----------------------------------------------------------------------")
@@ -208,16 +206,16 @@ Static Function APD005Proc()
 			aAdd(aLog,"Término dos Cálculos das Competências: " + Time()) //"Término dos Cálculos das Competências: "
 			aAdd(aLog,"----------------------------------------------------------------------")
 			aAdd(aLog," ")
-			
+
 		EndIf
-		
+
 		/*
 		-------------------------------------
 		Processa Formação Acadêmica
 		-------------------------------------
 		*/
 		If lForma
-		
+
 			aAdd(aLog,"----------------------------------------------------------------------")
 			aAdd(aLog,"Cálculos das Formações Acadêmicas: " + Time()) //"Cálculos das Formações Acadêmicas: "
 			aAdd(aLog,"----------------------------------------------------------------------")
@@ -226,9 +224,9 @@ Static Function APD005Proc()
 			aAdd(aLog,"Término dos Cálculos das Formações Acadêmicas: " + Time()) //"Término dos Cálculos das Formações Acadêmicas: "
 			aAdd(aLog,"----------------------------------------------------------------------")
 			aAdd(aLog," ")
-			
+
 		EndIf
-		
+
 		/*
 		-------------------------------------
 		Processa Cálculo Consolidado
@@ -242,96 +240,102 @@ Static Function APD005Proc()
 		aAdd(aLog,"Término dos Cálculos Consolidados: " + Time()) //"Término dos Cálculos Consolidados: "
 		aAdd(aLog,"----------------------------------------------------------------------")
 		aAdd(aLog," ")
-		
+
 	EndIf
-	
+
 	_GravaLog(aLog,aFunc)
-	
+
 Return Nil
 
-
-
 /*/{Protheus.doc} LoadPolitica
-
-@type function
-@author Jorge Heitor
-@since 14/04/2016
-@version 1.0
-@description Carrega dados da Política de Avaliação Consolidada
-
+Carrega dados da Política de Avaliação Consolidada
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
+@param cPolitica, characters, descricao
+@param lComp, logical, descricao
+@param nPerComp, numeric, descricao
+@param lMetas, logical, descricao
+@param nPerMeta, numeric, descricao
+@param lForma, logical, descricao
+@param nPerForma, numeric, descricao
+@param aPeriodos, array, descricao
 /*/
 Static Function LoadPolitica(cPolitica,lComp,nPerComp,lMetas,nPerMeta,lForma,nPerForma,aPeriodos)
 
 	//Caso o Alias esteja em uso, fecha o mesmo
 	If Select("TSZC") > 0 ; TSZC->(dbCloseArea()) ; EndIf
-	
+
 	BeginSQL Alias "TSZC"
-		
-		SELECT * FROM %Table:SZC% SZC
+
+		SELECT 	ZC_PERCOMP, ZC_PERCOMP,	ZC_PERMETA,	ZC_PERMETA,	ZC_PERFORM,	ZC_PERFORM,	ZC_FILTRO FROM %Table:SZC% SZC
 		WHERE SZC.ZC_CODIGO = %Exp:cPolitica% AND SZC.%NotDel% AND SZC.ZC_STATUS = "1"
-		
+
 	EndSQL
-	
+
 	dbSelectArea("TSZC")
 	If !TSZC->(Eof())
-	
+
 		lComp 		:= (TSZC->ZC_PERCOMP > 0)
 		nPerComp 	:= TSZC->ZC_PERCOMP
 		lMetas 		:= (TSZC->ZC_PERMETA > 0)
-		nPerMeta 	:= TSZC->ZC_PERMETA 
+		nPerMeta 	:= TSZC->ZC_PERMETA
 		lForma 		:= (TSZC->ZC_PERFORM > 0)
 		nPerForma 	:= TSZC->ZC_PERFORM
 		cFiltro		:= TSZC->ZC_FILTRO
-		
+
 		TSZC->(dbCloseArea())
-		
+
 		/*
 		--------------------------
 		Carrega dados dos Períodos
 		--------------------------
 		*/
 		If Select("TSZD") > 0 ; TSZD->(dbCloseArea()) ; EndIf
-		
+
 		BeginSQL Alias "TSZD"
-		
+
 			SELECT SZD.ZD_CODPER CODIGO,RDU.RDU_TIPO TIPO FROM %Table:SZD% SZD
 			INNER JOIN %Table:RDU% RDU ON
 				RDU.RDU_CODIGO = SZD.ZD_CODPER
 			WHERE SZD.ZD_CODIGO = %Exp:cPolitica% AND SZD.%NotDel% AND RDU.%NotDel%
 			ORDER BY SZD.ZD_CODPER,RDU.RDU_TIPO
-			
+
 		EndSQL
-		
+
 		dbSelectArea("TSZD")
 		If !TSZD->(Eof())
-		
+
 			While !TSZD->(Eof())
-			
+
 				aAdd(aPeriodos,{TSZD->CODIGO,TSZD->TIPO})
 				TSZD->(dbSkip())
-				
+
 			End
-			
+
 		EndIf
-		
-		TSZD->(dbCloseArea())		
-		
+
+		TSZD->(dbCloseArea())
+
 	Else
-	
+
 		MsgStop("A política informada não foi encontrada e/ou não está ativa.")
-		
+
 	EndIf
 
 Return Nil
 
 /*/{Protheus.doc} TemSZE
-
-@type function
-@author Jorge Heitor
-@since 06/04/2016
-@version 1.0
-@description Verificação da existência de registros já processados com os parâmetros informados
-
+Verificação da existência de registros já processados com os parâmetros informados
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
+@param cPolitica, characters, descricao
+@return logical, lRet
 /*/
 Static Function TemSZE(cPolitica)
 
@@ -341,83 +345,85 @@ Static Function TemSZE(cPolitica)
 	If !empty(cRD0)
 		cWhere += " AND ZE_CODRD0 = '" + cRD0 + "' "
 	EndIf
-	cWhere := "%" + cWhere + "%" 
+	cWhere := "%" + cWhere + "%"
 
-	
+
 	//Caso o Alias esteja em uso, fecha o mesmo
 	If Select("TSZE") > 0 ; TSZE->(dbCloseArea()) ; EndIf
-	
+
 	BeginSQL Alias "TSZE"
-	
+
 		SELECT COUNT(*) QTD FROM %Table:SZE% SZE
 		WHERE %Exp:cWhere%
-		
+
 	EndSQL
-	
+
 	dbSelectArea("TSZE")
-	
+
 	If TSZE->QTD > 0
-	
+
 		lRet := .T.
-		
-	EndIf	
+
+	EndIf
 
 Return lRet
 
 /*/{Protheus.doc} ExcluiSZE
-
-@type function
-@author Jorge Heitor
-@since 06/04/2016
-@version 1.0
-@description Exclui informações de Processamento de Cálculo Consolidado Anterior
-
+Exclui informações de Processamento de Cálculo Consolidado Anterior
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
+@param cPolitica, characters, descricao
 /*/
 Static Function ExcluiSZE(cPolitica)
 
 	Local aArea		:= GetArea()
-	
+
 	dbSelectArea("SZE")
 
 	If empty(cRD0)
-		dbSetOrder(2) //ZE_IDCONS
+		SZE->(dbSetOrder(2)) //ZE_IDCONS
 		cChave := cPolitica
 	Else
-		dbSetOrder(1) //ZE_FILIAL+ZE_CODRD0+ZE_IDCONS
+		SZE->(dbSetOrder(1)) //ZE_FILIAL+ZE_CODRD0+ZE_IDCONS
 		cChave := xFilial("SZE")+cRD0+cPolitica
 	EndIf
-	
+
 	dbGoTop()
-	
-	dbSeek(cChave)
+
+	SZE->(dbSeek(cChave))
 	If Found()
-	
+
 		While !SZE->(Eof()) .and. If( empty(cRD0), SZE->ZE_IDCONS == cChave, SZE->(ZE_FILIAL+ZE_CODRD0+ZE_IDCONS) == cChave )
-		
+
 			RecLock("SZE",.F.)
-			
+
 				dbDelete()
-				
-			MsUnlock()
-			
+
+			SZE->(MsUnlock())
+
 			SZE->(dbSkip())
-			
+
 		End
-		
+
 	EndIf
-	
+
 	RestArea(aArea)
 
 Return Nil
 
 /*/{Protheus.doc} GeraMetas
-
-@type function
-@author Jorge Heitor
-@since 14/04/2016
-@version 1.0
-@description Calcula Resultado Consolidado de Avaliações de Metas
-
+Calcula Resultado Consolidado de Avaliações de Metas
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
+@param nPerMeta, numeric, descricao
+@param aPeriodos, array, descricao
+@param aFunc, array, descricao
 /*/
 Static Function GeraMetas(nPerMeta,aPeriodos,aFunc)
 
@@ -432,7 +438,7 @@ Static Function GeraMetas(nPerMeta,aPeriodos,aFunc)
 	Local cChave	:= ""
 	Local lErro		:= .f.
 	Local cCodRD0	:= ""
-	
+
 	/*
 	------------------------
 	Composição do Array aSZE
@@ -448,55 +454,55 @@ Static Function GeraMetas(nPerMeta,aPeriodos,aFunc)
 	aSZE[x][9]  -> nMedFin
 	aSZE[x][10] -> Date()
 	*/
-	
+
 	//Cria Condição WHERE para os períodos do tipo "Meta"
 	aEval(aPeriodos,{|y| cMetasIn += Iif(y[2] == '3' , "'" + y[1] + "',","")})
-	
+
 	cMetasIn := "(" + SubString(cMetasIn,1,Len(cMetasIn)-1) + ")"
 
 	If cMetasIn <> "()"
-	
+
 		cWhere := " Z0_STATUS = '3' AND SZ0.D_E_L_E_T_ = '' AND SRA.D_E_L_E_T_ = '' "
 		cWhere += " AND Z0_CODPER IN " + cMetasIn
-		cWhere := "%" + cWhere + "%" 
-		
+		cWhere := "%" + cWhere + "%"
+
 		//Caso esteja aberto o Alias, fecha-o
 		If Select("TSZ0") > 0 ; TSZ0->(dbCloseArea()) ; EndIf
-	  	
+
 		BeginSQL Alias "TSZ0"
-		
+
 			SELECT SRA.R_E_C_N_O_ as SRARECNO, SRA.RA_DEPTO, SZ0.Z0_FILIAL, SZ0.Z0_MAT, SZ0.Z0_CODPER,SUM(SZ0.Z0_RESULT) Z0_RESULT, COUNT(SZ0.Z0_MAT) FATOR
 			FROM %Table:SZ0% SZ0
 			inner join  %Table:SRA% SRA ON RA_FILIAL = Z0_FILIAL and RA_MAT = Z0_MAT
 			WHERE %Exp:cWhere%
 			GROUP BY SRA.R_E_C_N_O_, RA_DEPTO, Z0_FILIAL,Z0_MAT,Z0_CODPER
 			ORDER BY Z0_FILIAL,Z0_MAT,Z0_CODPER
-			
+
 		EndSQL
-		
+
 		dbSelectArea("TSZ0")
 		While !TSZ0->(Eof())
-		
+
 			//Verifica filtro e despreza funcionario
 			If cFiltro <> '3' //Diferente de Ambos
 				SRA->(dbgoto(TSZ0->SRARECNO))
 				cAux := U_fFiltroAva()
 				If cFiltro == '1' //Somente Gestores
-					If !(cAux $ ("09/10/11/12/13")) 
+					If !(cAux $ ("09/10/11/12/13"))
 						TSZ0->(dbSkip())
 						loop
 					EndIf
 				Else	//Demais
-					If (cAux $ ("09/10/11/12/13")) 
+					If (cAux $ ("09/10/11/12/13"))
 						TSZ0->(dbSkip())
 						loop
 					EndIf
-				EndIf										
-			EndIf	
+				EndIf
+			EndIf
 
 //			nTotPer := Round((TSZ0->Z0_RESULT / TSZ0->FATOR),_nRound)
 			nTotPer := Round((TSZ0->Z0_RESULT ),_nRound)
-			
+
 			//Busca na RDZ o codigo RD0 com base na Filial e Matricula
 			If cChave <> (TSZ0->Z0_FILIAL+TSZ0->Z0_MAT)
 				If !( U_fBuscaRD0(TSZ0->Z0_FILIAL,TSZ0->Z0_MAT,@cCodRD0) )
@@ -506,7 +512,7 @@ Static Function GeraMetas(nPerMeta,aPeriodos,aFunc)
 					loop
 				EndIf
 			EndIf
-			If !empty(cRD0) 
+			If !empty(cRD0)
 				If cRD0 <> cCodRD0
 					TSZ0->(dbSkip())
 					loop
@@ -518,74 +524,76 @@ Static Function GeraMetas(nPerMeta,aPeriodos,aFunc)
 
 			//Verifica se o Funcionário existe no Array de Funcionarios (Para pesquisa de Formação Acadêmica)
 			If aScan(aFunc,{|z| z[1] == cCodRD0 }) <= 0
-			
+
 				aAdd(aFunc,{cCodRD0,TSZ0->Z0_FILIAL,TSZ0->Z0_MAT,TSZ0->RA_DEPTO})
-				
+
 			EndIf
 
 			//Verifica se o Funcionário ja existe no array de Gravação do SZE (mediante filtros)
 			nPos := aScan(aSZE,{|x| x[1] == TSZ0->Z0_FILIAL .And. x[2] == TSZ0->Z0_MAT .And. x[5] == TSZ0->Z0_CODPER})
-		
+
 			If nPos <= 0
-			
+
 				aAdd(aSZE,{xFilial("RDD",TSZ0->Z0_FILIAL), cCodRD0, cPolitica, cGrupo,TSZ0->Z0_CODPER,nPerMeta,nTotPer,0,0,dDataCalc,TSZ0->Z0_FILIAL, TSZ0->Z0_MAT,TSZ0->RA_DEPTO,"0"})
-				
+
 			EndIf
-			
+
 			TSZ0->(dbSkip())
-		
+
 		End
-		
+
 		If len(aSZE) > 0
 
 			//Processa Média Parcial para o ultimo registro de cada Funcionário (Serão totalizados todos os períodos)
 			cChave := aSZE[1][1] + aSZE[1][2] //Filial + Codigo RD0
 			nValor := 0
 			nFator := 0
-			
+
 			For x := 1 To Len(aSZE)
-				
+
 				If cChave <> aSZE[x][1] + aSZE[x][2]
-				
+
 					aSZE[x-1][8] := Round(nValor / nFator,_nRound) //Media Parcial
 					aSZE[x-1][9] := Round(aSZE[x-1][8] * (aSZE[x-1][6]/100),_nRound)
 					nValor := 0
 					nFator := 0
-				
+
 				EndIf
-				
+
 				nValor += aSZE[x][7]
 				nFator ++
-				
-				cChave := aSZE[x][1] + aSZE[x][2]		
-			
+
+				cChave := aSZE[x][1] + aSZE[x][2]
+
 			Next x
-			
+
 			//Processa último Funcionário
 			nLast := Len(aSZE)
 			aSZE[nLast][8] := Round(nValor / nFator,_nRound) //Media Parcial
 			aSZE[nLast][9] := Round(aSZE[nLast][8] * (aSZE[nLast][6]/100),_nRound)
 			nValor := 0
 			nFator := 0
-			
+
 			MsAguarde( { || GravaSZE(aSZE) } , "Aguarde", "Gravando Metas...")
 
 		EndIf
 
 	EndIf
-		
+
 	RestArea(aArea)
 
 Return
 
 /*/{Protheus.doc} GeraComp
-
-@type function
-@author Jorge Heitor
-@since 14/04/2016
-@version 1.0
-@description Calcula Resultado Consolidado de Avaliações de Competências
-
+Calcula Resultado Consolidado de Avaliações de Competências
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
+@param nPerComp, numeric, descricao
+@param aPeriodos, array, descricao
+@param aFunc, array, descricao
 /*/
 Static Function GeraComp(nPerComp,aPeriodos,aFunc)
 
@@ -603,9 +611,9 @@ Static Function GeraComp(nPerComp,aPeriodos,aFunc)
 	Local cFil		:= ""
 	Local cMat		:= ""
 	Local cDepto	:= ""
-	
+
 	RDC->(dbsetorder(1))
-		
+
 	/*
 	------------------------
 	Composição do Array aSZE
@@ -621,43 +629,43 @@ Static Function GeraComp(nPerComp,aPeriodos,aFunc)
 	aSZE[x][9]  -> nMedFin
 	aSZE[x][10] -> Date()
 	*/
-	
+
 	//Cria Condição WHERE para os períodos do tipo "Competência"
 	aEval(aPeriodos,{|y| cCompIn += Iif(y[2] == '4' , "'" + y[1] + "',","")})
-	
+
 	cCompIn := "(" + SubString(cCompIn,1,Len(cCompIn)-1) + ")"
-	
+
 	If cCompIn <> "()"
-	
+
 		cWhere := " RD6.D_E_L_E_T_ = '' "
 		cWhere += " AND RD6.RD6_CODPER IN " + cCompIn
-		cWhere := "%" + cWhere + "%" 
-		
+		cWhere := "%" + cWhere + "%"
+
 		//Caso esteja aberto o Alias, fecha-o
 		If Select("TRD6") > 0 ; TRD6->(dbCloseArea()) ; EndIf
-	  	
+
 		BeginSQL Alias "TRD6"
-		
+
 			SELECT RD6_CODIGO,RD6_DESC,RD6_STATUS
 			FROM %Table:RD6% RD6
 			WHERE %Exp:cWhere%
 			ORDER BY RD6_CODIGO
-			
+
 		EndSQL
-		
+
 		dbSelectArea("TRD6")
 		While !TRD6->(Eof())
-		
+
 		/* Desabilitado para permitir o calculo a qualquer momento. Prodam necessida calcular varias vezes.
 			//Caso a Pesquisa ainda esteja aberta, coloca no LOG e pula para a próxima
 			If TRD6->RD6_STATUS <> '2'
-			
+
 				aAdd(aLog,"A avaliação " + TRD6->RD6_CODIGO + " - " + AllTrim(TRD6->RD6_DESC) + " não foi processada, pois está com status 'Aberto'.")
 				TRD6->(dbSkip())
 				Loop
-			
+
 			EndIf
-		*/	
+		*/
 			/*
 			--------------------------------------
 			Busca resultados para a pesquisa atual
@@ -665,8 +673,8 @@ Static Function GeraComp(nPerComp,aPeriodos,aFunc)
 			*/
 			//Fecha Alias caso esteja aberto
 			If Select("TRDD") > 0 ; TRDD->(dbCloseArea()) ; EndIf
-			
-			//Monta Cláusula Where 
+
+			//Monta Cláusula Where
 			cWhere := " RDC.D_E_L_E_T_ = ''"
 			cWhere += " AND RDC.RDC_CODAVA = '" + TRD6->RD6_CODIGO + "'"
 			cWhere += " AND RDC.RDC_TIPOAV IN ('1','3')"
@@ -674,41 +682,41 @@ Static Function GeraComp(nPerComp,aPeriodos,aFunc)
 			If !empty(cRD0)
 				cWhere += " AND RDC_CODADO = '" + cRD0 + "' "
 			EndIf
-			cWhere := "%" + cWhere + "%" 
-			
+			cWhere := "%" + cWhere + "%"
+
 			BeginSQL Alias "TRDD"
-			
-				SELECT RDC.RDC_FILIAL, RDC.RDC_CODAVA, RDC.RDC_CODADO, RDC.RDC_TIPOAV, SUM(RDD.RDD_PTOMAX) RDD_PTOMAX, 
+
+				SELECT RDC.RDC_FILIAL, RDC.RDC_CODAVA, RDC.RDC_CODADO, RDC.RDC_TIPOAV, SUM(RDD.RDD_PTOMAX) RDD_PTOMAX,
 				       SUM(RDD.RDD_RESOBT) RDD_RESOBT, RDC_DATRET, RDC_NIVEL, RDC.R_E_C_N_O_, RDD.RDD_CODAVA
 				FROM %Table:RDC% RDC
-				LEFT JOIN %Table:RDD% RDD on  RDC_FILIAL = RDD_FILIAL and RDC_CODAVA = RDD_CODAVA and 
+				LEFT JOIN %Table:RDD% RDD on  RDC_FILIAL = RDD_FILIAL and RDC_CODAVA = RDD_CODAVA and
 				                              RDC_CODADO = RDD_CODADO and RDC_CODNET = RDD_CODNET and
 				                              RDC_TIPOAV = RDD_TIPOAV and RDD.%NotDel%
 				WHERE %Exp:cWhere%
 				GROUP BY RDC.RDC_FILIAL, RDC.RDC_CODAVA, RDC.RDC_CODADO, RDC.RDC_TIPOAV, RDC.RDC_DATRET, RDC.RDC_NIVEL, RDC.R_E_C_N_O_, RDD.RDD_CODAVA
 				ORDER BY RDC.RDC_FILIAL ASC, RDC.RDC_CODAVA ASC, RDC.RDC_CODADO ASC, RDC.RDC_TIPOAV DESC
-			
+
 			EndSQL
-			
+
 			lErro := .f.
-			
+
 			SRA->(dbsetorder(1))
 
 			dbSelectArea("TRDD")
 			While !TRDD->(Eof())
-				
+
 				//Se for o mesmo funcionario anterior, para a mesma avaliação, pula, pois pega apenas o primeiro registro.
 				If cChave == TRDD->RDC_FILIAL + TRDD->RDC_CODAVA + TRDD->RDC_CODADO
-			
+
 					TRDD->(dbSkip())
 					Loop
-			
+
 				EndIf
 
 				//Alimenta informações de Funcionarios para Formação Acadêmica Consolidada
 				nPosFunc := aScan(aFunc,{|z| z[1] == TRDD->RDC_CODADO })
-				If nPosFunc <= 0 
-				
+				If nPosFunc <= 0
+
 					//Busca a Filial e Matricula na RDZ
 					If !( U_fBuscaMat(TRDD->RDC_CODADO,@cFil,@cMat,@cDepto) )
 						aAdd(aLog,"Filial/Matricula não encontrados para avaliado " + TRDD->RDC_CODADO + " na avaliação " + TRD6->RD6_CODIGO + " - " + AllTrim(TRD6->RD6_DESC))
@@ -722,20 +730,20 @@ Static Function GeraComp(nPerComp,aPeriodos,aFunc)
 						SRA->(dbseek(cFil+cMat))
 						cAux := U_fFiltroAva()
 						If cFiltro == '1' //Somente Gestores
-							If !(cAux $ ("09/10/11/12/13")) 
+							If !(cAux $ ("09/10/11/12/13"))
 								TRDD->(dbSkip())
 								loop
 							EndIf
 						Else	//Demais
-							If (cAux $ ("09/10/11/12/13")) 
+							If (cAux $ ("09/10/11/12/13"))
 								TRDD->(dbSkip())
 								loop
 							EndIf
-						EndIf										
-					EndIf	
+						EndIf
+					EndIf
 
 					aAdd(aFunc,{TRDD->RDC_CODADO,cFil,cMat,cDepto})
-			
+
 				Else
 
 					//Verifica filtro e despreza funcionario
@@ -743,50 +751,50 @@ Static Function GeraComp(nPerComp,aPeriodos,aFunc)
 						SRA->(dbseek(aFunc[nPosFunc,2]+aFunc[nPosFunc,3]))
 						cAux := U_fFiltroAva()
 						If cFiltro == '1' //Somente Gestores
-							If !(cAux $ ("09/10/11/12/13")) 
+							If !(cAux $ ("09/10/11/12/13"))
 								TRDD->(dbSkip())
 								loop
 							EndIf
 						Else	//Demais
-							If (cAux $ ("09/10/11/12/13")) 
+							If (cAux $ ("09/10/11/12/13"))
 								TRDD->(dbSkip())
 								loop
 							EndIf
-						EndIf										
-					EndIf	
-				
+						EndIf
+					EndIf
+
 					cFil 	:= aFunc[nPosFunc,2]
 					cMat 	:= aFunc[nPosFunc,3]
 					cDepto 	:= aFunc[nPosFunc,4]
-				
+
 				EndIf
 
-				//Se for Tipo 3-Avaliacao e nao encontrou RDD significa que nao encontrou resultado 
+				//Se for Tipo 3-Avaliacao e nao encontrou RDD significa que nao encontrou resultado
 				//calculado para consenso e devera avancar para tratar o tipo 1-Avaliacao
-				If TRDD->RDC_TIPOAV = '3' .and. empty(TRDD->RDD_CODAVA)  
+				If TRDD->RDC_TIPOAV = '3' .and. empty(TRDD->RDD_CODAVA)
 					TRDD->(dbSkip())
 					Loop
-				EndIf			
-				
-				//Calculo do Resultado Obtido 
+				EndIf
+
+				//Calculo do Resultado Obtido
 				nTotAva := Round((TRDD->RDD_RESOBT/TRDD->RDD_PTOMAX) * 100,_nRound)
-				
+
 				lTemCons := .f.
 				cStatus  := ''
 
 				//Se for Tipo 1-Avaliacao significa que nao encontrou resultado calculado para consenso na RDD
-				If TRDD->RDC_TIPOAV = '1' 
-				
+				If TRDD->RDC_TIPOAV = '1'
+
 					//Verifica se tem data de finalizacao
 					If empty(TRDD->RDC_DATRET)
-					
+
 						cStatus := 'AVNF' //Avalicao Nao Finalizada
-						
+
 					Else
-				
+
 						//Posiciona a RDC com o registro encontrado na TRDD
-						RDC->(dbgoto(TRDD->R_E_C_N_O_)) 
-	
+						RDC->(dbgoto(TRDD->R_E_C_N_O_))
+
 						//Verifica se tem aprovador e se esta finalizado pelo mesmo
 						If !empty(RDC->RDC_CODAPR)
 							If empty(RDC->RDC_DTRETA)
@@ -797,7 +805,7 @@ Static Function GeraComp(nPerComp,aPeriodos,aFunc)
 						Else
 							cStatus := 'AVF' 		//Avaliacao Finalizada
 						EndIf
-						
+
 
 						If cStatus $ 'APF/AVF'
 
@@ -807,14 +815,14 @@ Static Function GeraComp(nPerComp,aPeriodos,aFunc)
 								if empty(RDC->RDC_DATRET)
 									cStatus := 'CNF'  //Consenso Nao Finalizado
 								Else
-									cStatus := 'CF'	//Consenso Finalizado, porem sem calculo final na RDD							
+									cStatus := 'CF'	//Consenso Finalizado, porem sem calculo final na RDD
 								EndIf
 							EndIf
-								
+
 						EndIf
 
 					EndIf
-					
+
 				//Tipo 3-Consenso
 				Else
 					If empty(TRDD->RDC_DATRET)
@@ -822,9 +830,9 @@ Static Function GeraComp(nPerComp,aPeriodos,aFunc)
 					Else
 						cStatus := 'CC'	//Consenso Finalizado e calculado
 					EndIf
-					
-				EndIf							
-					
+
+				EndIf
+
 
 				//Verifica status para gravar SZE como pendencia
 				If cStatus == 'AVNF'
@@ -838,83 +846,85 @@ Static Function GeraComp(nPerComp,aPeriodos,aFunc)
 				ElseIf cStatus $ 'APF/AVF/CC' .or. empty(cStatus)
 					cPend := '0'	//Finalizado
 				Else
-					cPend := ''				
+					cPend := ''
 				EndIF
 
 				//Alimenta Array aSZE
 				aAdd(aSZE,{TRDD->RDC_FILIAL,TRDD->RDC_CODADO, cPolitica, cGrupo, TRDD->RDC_CODAVA, nPerComp,nTotAva,0,0,dDataCalc,cFil,cMat,cDepto,cPend})
-				
-				//Atualiza chave para verificação 
+
+				//Atualiza chave para verificação
 				cChave := TRDD->RDC_FILIAL + TRDD->RDC_CODAVA + TRDD->RDC_CODADO
-				
+
 				TRDD->(dbSkip())
-				
+
 			EndDo
-			
+
 			If lErro
 				aAdd(aLog,"###  ERRO   ###  A avaliação " + TRD6->RD6_CODIGO + " - " + AllTrim(TRD6->RD6_DESC) + " foi processada, porém com erro.")
 			Else
 				aAdd(aLog,"A avaliação " + TRD6->RD6_CODIGO + " - " + AllTrim(TRD6->RD6_DESC) + " foi processada com sucesso!")
 			EndIf
-			
+
 			TRD6->(dbSkip())
-		
+
 		EndDo
-		
+
 		If Len(aSZE) > 0
 
 			//Processa Média Parcial para o ultimo registro de cada Funcionário (Serão totalizados todos os períodos)
 			cChave := aSZE[1][1] + aSZE[1][2] //Filial + Codigo RD0
 			nValor := 0
 			nFator := 0
-			
+
 			For x := 1 To Len(aSZE)
-				
+
 				If cChave <> aSZE[x][1] + aSZE[x][2]
-				
+
 					aSZE[x-1][8] := Round( (nValor / (nFator * 100)) * 100,_nRound) //Media Parcial
 					aSZE[x-1][9] := Round(aSZE[x-1][8] * (aSZE[x-1][6]/100),_nRound) //Resultado considerando o Peso
 					nValor := 0
 					nFator := 0
-				
+
 				EndIf
-				
+
 				nValor += aSZE[x][7]
 				nFator ++
-				
+
 				cChave := aSZE[x][1] + aSZE[x][2]
-			
+
 			Next x
-			
+
 			//Processa último Funcionário
 			nLast := Len(aSZE)
 			aSZE[nLast][8] := Round( (nValor / (nFator * 100)) * 100,_nRound) //Media Parcial
 			aSZE[nLast][9] := Round(aSZE[nLast][8] * (aSZE[nLast][6]/100),_nRound)
 			nValor := 0
 			nFator := 0
-			
+
 			MsAguarde( { || GravaSZE(aSZE) } , "Aguarde", "Gravando Competências...")
-			
+
 		EndIf
 
 		//Fecha alias temporários
 		If Select("TRD6") > 0 ; TRD6->(dbCloseArea()) ; EndIf
 		If Select("TRDD") > 0 ; TRDD->(dbCloseArea()) ; EndIf
-		
+
 	EndIf
 
 RestArea(aArea)
-	
+
 Return
 
 /*/{Protheus.doc} GeraForm
-
-@type function
-@author Jorge Heitor
-@since 06/04/2016
-@version 1.0
-@description Calcula Resultados de Formação Academica
-
+Calcula Resultados de Formação Academica
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
+@param nPerForma, numeric, descricao
+@param aPeriodos, array, descricao
+@param aFunc, array, descricao
 /*/
 Static Function GeraForm(nPerForma,aPeriodos,aFunc)
 
@@ -928,7 +938,7 @@ Static Function GeraForm(nPerForma,aPeriodos,aFunc)
 	Local x
 	Local cCodRD0	:= ""
 	Local cChave	:= ""
-	
+
 	/*
 	------------------------
 	Composição do Array aSZE
@@ -944,14 +954,14 @@ Static Function GeraForm(nPerForma,aPeriodos,aFunc)
 	aSZE[x][9]  -> nMedFin
 	aSZE[x][10] -> Date()
 	*/
-	
+
 	//Ao inves de processar Funcionário por Funcionário, pego todos os cursos que tem pontuação e os funcionarios que o fizeram, consultando no aFunc
 	If Select("TRA4") > 0 ; TRA4->(dbCloseArea()) ; EndIf
-	
+
 	BeginSQL Alias "TRA4"
-	
+
 		SELECT SRA.R_E_C_N_O_ as SRARECNO, RA_DEPTO, RA4_FILIAL, RA4_MAT, RA4_CURSO, RA1_PONAPD
-		FROM %Table:RA4% RA4 
+		FROM %Table:RA4% RA4
 		INNER JOIN %Table:RA1% RA1 ON
 			RA1.RA1_CURSO = RA4.RA4_CURSO %Exp:cJoinRA1%
 		INNER JOIN %Table:SRA% SRA ON
@@ -965,9 +975,9 @@ Static Function GeraForm(nPerForma,aPeriodos,aFunc)
 			AND SZE.%NotDel%
 			AND RA1.RA1_PONAPD > 0
 		Group by SRA.R_E_C_N_O_, RA_DEPTO, RA4_FILIAL, RA4_MAT, RA4_CURSO, RA1_PONAPD
-		
+
 	EndSQL
-	
+
 	dbSelectArea("TRA4")
 	While !TRA4->(Eof())
 
@@ -976,17 +986,17 @@ Static Function GeraForm(nPerForma,aPeriodos,aFunc)
 			SRA->(dbgoto(TRA4->SRARECNO))
 			cAux := U_fFiltroAva()
 			If cFiltro == '1' //Somente Gestores
-				If !(cAux $ ("09/10/11/12/13")) 
+				If !(cAux $ ("09/10/11/12/13"))
 					TRA4->(dbSkip())
 					loop
 				EndIf
 			Else	//Demais
-				If (cAux $ ("09/10/11/12/13")) 
+				If (cAux $ ("09/10/11/12/13"))
 					TRA4->(dbSkip())
 					loop
 				EndIf
-			EndIf										
-		EndIf	
+			EndIf
+		EndIf
 
 		//Busca na RDZ o codigo RD0 com base na Filial e Matricula
 		If cChave <> (TRA4->RA4_FILIAL+TRA4->RA4_MAT)
@@ -997,7 +1007,7 @@ Static Function GeraForm(nPerForma,aPeriodos,aFunc)
 				loop
 			EndIf
 		EndIf
-		If !empty(cRD0) 
+		If !empty(cRD0)
 			If cRD0 <> cCodRD0
 				TRA4->(dbSkip())
 				loop
@@ -1005,57 +1015,57 @@ Static Function GeraForm(nPerForma,aPeriodos,aFunc)
 				cCodRD0 := cRD0
 			EndIf
 		EndIf
-	
+
 		cChave := (TRA4->RA4_FILIAL,TRA4->RA4_MAT)
-	
+
 		nPos := aScan(aFunc,{|x| x[1] == cCodRD0 })
-		
+
 		If nPos > 0
-		
+
 			aAdd(aSZE,{"",cCodRD0,cPolitica,cGrupo,TRA4->RA4_CURSO,nPerForma,TRA4->RA1_PONAPD,0,0,dDataCalc,TRA4->RA4_FILIAL,TRA4->RA4_MAT,TRA4->RA_DEPTO,"0"})
-		
-		EndIf 
-		
+
+		EndIf
+
 		TRA4->(dbSkip())
-		
+
 	End
-	
+
 	TRA4->(dbCloseArea())
-	
+
 	If Len(aSZE) > 0
-	
+
 		//Processa Média Parcial para o ultimo registro de cada Funcionário (Serão totalizados todos os períodos)
 		cChave := aSZE[1][1] + aSZE[1][2] //Filial + Matricula
 		nValor := 0
 		nFator := 0
-		
+
 		For x := 1 To Len(aSZE)
-			
+
 			If cChave <> aSZE[x][1] + aSZE[x][2]
-			
+
 				aSZE[x-1][8] := Round(nValor,_nRound) //Media Parcial (Considera a pontuação atingida)
 				aSZE[x-1][9] := Round(Iif(nValor > 100,100,nValor) * (aSZE[x-1][6]/100),_nRound) //Resultado considerando o Peso (Considera Teto de 100 pontos)
 				nValor := 0
 				//nFator := 0
-			
+
 			EndIf
-			
+
 			nValor += aSZE[x][7]
 			//nFator ++
-			
+
 			cChave := aSZE[x][1] + aSZE[x][2]
-		
+
 		Next x
-		
+
 		//Processa último Funcionário
 		nLast := Len(aSZE)
 		aSZE[nLast][8] := Round(nValor,_nRound) //Media Parcial (Considera a pontuação atingida)
 		aSZE[nLast][9] := Round(Iif(nValor > 100,100,nValor) * (aSZE[nLast][6]/100),_nRound) //Resultado considerando o Peso (Considera Teto de 100 pontos)
 		nValor := 0
 		nFator := 0
-		
+
 		MsAguarde( { || GravaSZE(aSZE) } , "Aguarde", "Gravando Formação Acadêmica...")
-	
+
 	EndIf
 
 	RestArea(aArea)
@@ -1063,13 +1073,12 @@ Static Function GeraForm(nPerForma,aPeriodos,aFunc)
 Return
 
 /*/{Protheus.doc} GeraCons
-
-@type function
-@author Jorge Heitor
-@since 06/04/2016
-@version 1.0
-@description Calcula Média Final Consolidada (Com base nos dados da tabela SZE que forem contemplados pela execução da rotina)
-
+Calcula Média Final Consolidada (Com base nos dados da tabela SZE que forem contemplados pela execução da rotina)
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
 /*/
 Static Function GeraCons()
 
@@ -1077,9 +1086,9 @@ Static Function GeraCons()
 	Local cGrupo	:= "99"
 	Local cKey		:= "000000"
 	Local aSZE		:= {}
-	
+
 	SZE->(dbsetorder(1))
-	
+
 	/*
 	------------------------
 	Composição do Array aSZE
@@ -1098,17 +1107,17 @@ Static Function GeraCons()
 	aSZE[x][12] -> cMat
 	aSZE[x][13] -> cDepto
 	*/
-	
+
 	cWhere := " ZE_IDCONS = '" + cPolitica + "' "
 	If !empty(cRD0)
 		cWhere += " AND ZE_CODRD0 = '" + cRD0 + "' "
 	EndIf
-	cWhere := "%" + cWhere + "%" 
-	
+	cWhere := "%" + cWhere + "%"
+
 	If Select("TSZE") > 0 ; TSZE->(dbCloseArea()) ; EndIf
-	
+
 	BeginSQL Alias "TSZE"
-		
+
 		SELECT ZE_FILIAL, ZE_CODRD0, RA_DEPTO, ZE_FILMAT, ZE_MAT, ZE_IDCONS, SUM(ZE_MEDTOT) MEDIA
 		FROM %Table:SZE% SZE
 		INNER JOIN %Table:SRA% SRA ON RA_FILIAL = ZE_FILMAT and RA_MAT = ZE_MAT
@@ -1117,12 +1126,12 @@ Static Function GeraCons()
 		AND SZE.%NotDel%
 		AND SRA.%NotDel%
 		GROUP BY ZE_FILIAL,ZE_CODRD0,RA_DEPTO,ZE_FILMAT,ZE_MAT,ZE_IDCONS
-		
+
 	EndSQL
-	
+
 	dbSelectArea("TSZE")
 	While !TSZE->(Eof())
-	
+
 		//Verifica se algum grupo possui pendencia
 		cPend := '0'
 		SZE->(dbseek(TSZE->(ZE_FILIAL+ZE_CODRD0+ZE_IDCONS)))
@@ -1134,40 +1143,40 @@ Static Function GeraCons()
 			EndIf
 			SZE->(dbskip())
 		EndDo
-	
+
 		aAdd(aSZE,{'',TSZE->ZE_CODRD0, cPolitica, cGrupo, cKey, 0, 0, 0, Round(TSZE->MEDIA,_nRound), dDataCalc,TSZE->ZE_FILMAT,TSZE->ZE_MAT,TSZE->RA_DEPTO,cPend})
-		
+
 		TSZE->(dbskip())
 	End
-	
+
 	MsAguarde( { || GravaSZE(aSZE) } , "Aguarde", "Gravando Cálculo Consolidado...")
-	
+
 	RestArea(aArea)
 
 Return
 
 /*/{Protheus.doc} GravaSZE
-
-@type function
-@author Jorge Heitor
-@since 14/04/2016
-@version 1.0
-@description Grava Array gerado pelas Funções na tabela SZE
-
+Grava Array gerado pelas Funções na tabela SZE
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
+@param aSZE, array, descricao
 /*/
 Static Function GravaSZE(aSZE)
 
 	Local aArea		:= GetArea()
 	Local x
-	
+
 	dbSelectArea("SZE")
-	
+
 	For x := 1 To Len(aSZE)
-	
+
 		If empty(cRD0) .or. aSZE[x][2] == cRD0
-	
+
 			RecLock("SZE",.T.)
-			
+
 				SZE->ZE_FILIAL	:= aSZE[x][1]
 				SZE->ZE_CODRD0	:= aSZE[x][2]
 				SZE->ZE_IDCONS	:= aSZE[x][3]
@@ -1182,51 +1191,60 @@ Static Function GravaSZE(aSZE)
 				SZE->ZE_MAT		:= aSZE[x][12]
 				SZE->ZE_DEPTO	:= aSZE[x][13]
 				SZE->ZE_PENDENC := aSZE[x][14]
-				
-			MsUnlock()
+
+			SZE->(MsUnlock())
 
 		EndIF
-	
+
 	Next x
-	
+
 	RestArea(aArea)
-	
+
 Return
 
-//Valida Parâmetros de processamento
-
+/*/{Protheus.doc} APD005V
+Valida Parâmetros de processamento
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
+@param cPolitica, characters, descricao
+@return logical, lRet
+/*/
 User Function APD005V(cPolitica)
 
 	Local lRet := .T.
 	Local aArea := GetArea()
 	Local cMsg  := ''
 	Local cStatus := Posicione("SZC",1,FWxFilial("SZC") + cPolitica,"ZC_STATUS")
-	
+
 	If  cStatus $ "2/3"
-	
+
 		lRet := .F.
-		cMsg := "A Politica de Consolidação informada encontra-se "+If(cStatus=='2','cancelada','fechada')+"." 
-		
+		cMsg := "A Politica de Consolidação informada encontra-se "+If(cStatus=='2','cancelada','fechada')+"."
+
 	EndIf
-	
+
 	If !Empty(cMsg) .And. !lRet
-	
+
 		help("APD005V",,"ZC_STATUS","Política",cMsg,1,0,,,,,) //"Política"
-		
+
 	EndIf
-	
+
 	RestArea(aArea)
-	
+
 Return lRet
 
 /*/{Protheus.doc} _GravaLog
-
-@type function
-@author Jorge Heitor
-@since 08/04/2016
-@version 1.0
-@description Apresenta LOG (Resumo) e permite visualizar Log Completo dos dados processados
-
+Apresenta LOG (Resumo) e permite visualizar Log Completo dos dados processados
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
+@param aLog, array, descricao
+@param aFunc, array, descricao
 /*/
 Static Function _GravaLog(aLog,aFunc)
 
@@ -1244,23 +1262,23 @@ Static Function _GravaLog(aLog,aFunc)
 	Local cArq			:= "\SYSTEM\" + CriaTrab( , .F. ) + ".txt"
 	Local nHandle		:= fCreate(cArq)
 	Local x
-	
+
 	Private cCadastro 	:= OemToAnsi("Processamento Concluído") //"Processamento Concluído"
-	
+
 	If nHandle < 0
-		
+
 		MsgStop("_GravaLog - Não foi possivel criar o arquivo de Log.") //"_GravaLog - Não foi possivel criar o arquivo de Log."
-	
+
 	EndIf
-	
+
 	cLog := "Processo concluído! Clique em 'Confirmar' para mais detalhes." + _ENTER //"Processo concluído! Clique em 'Confirmar' para mais detalhes."
 	cLog += _ENTER
-	
+
 	For x := 1 To Len(aLog)
-	
+
 		cLog += aLog[x] + _ENTER
 		FWrite(nHandle,aLog[x]+_ENTER)
-	
+
 	Next x
 
 	FWrite(nHandle,_ENTER)
@@ -1268,15 +1286,15 @@ Static Function _GravaLog(aLog,aFunc)
 	FWrite(nHandle,"LISTA DE FUNCIONARIOS PROCESSADOS" + _ENTER) //"LISTA DE FUNCIONARIOS PROCESSADOS"
 	FWrite(nHandle,Replicate("-",115) + _ENTER)
 	FWrite(nHandle,_ENTER)
-	FWrite(nHandle,PadR("Codigo",10) + PadR("Filial",10) + PadR("Matrícula",10) + PadR("Nome",35) + _ENTER) //"Codigo" | "Filial" | "Matrícula" | "Nome" 
+	FWrite(nHandle,PadR("Codigo",10) + PadR("Filial",10) + PadR("Matrícula",10) + PadR("Nome",35) + _ENTER) //"Codigo" | "Filial" | "Matrícula" | "Nome"
 	FWrite(nHandle,Replicate("-",9) + " " + Replicate("-",9) + " " + Replicate("-",9) + " " + Replicate("-",34) + " " + _ENTER)
-	
+
 	For x := 1 To Len(aFunc)
-	
+
 		FWrite(nHandle,PadR(aFunc[x][1],10) + PadR(aFunc[x][2],10) + PadR(aFunc[x][3],10) + PadR(Posicione("SRA",1,aFunc[x][2]+aFunc[x][3],"RA_NOME"),35) + _ENTER)
-	
+
 	Next x
-	
+
 	FClose(nHandle)
 
 	/*
@@ -1289,41 +1307,41 @@ Static Function _GravaLog(aLog,aFunc)
 	aAdd( aObjCoords , { 000 , 000 , .T. , .T. } )
 	aObjSize		:= MsObjSize( aInfoAdvSize , aObjCoords )
 	aGdCoord		:= { (aObjSize[1,1]+3), (aObjSize[1,2]+5), (((aObjSize[1,3])/100)*25), (((aObjSize[1,4])/100)*29.6) }	//1,3 Vertical /1,4 Horizontal
-	
+
 	SetaPilha()
-	
+
 	DEFINE FONT oFont NAME "Arial" SIZE 0,-11 BOLD
 	DEFINE MSDIALOG oDlg1 TITLE cCadastro FROM  aAdvSize[7],20 TO aAdvSize[6]-50,600  OF oMainWnd PIXEL
-	
+
 		@ aGdCoord[1]+7,aGdCoord[2]	GROUP oGroup1 TO (aGdCoord[3]*1.9)+5,aGdCoord[4]+5  LABEL "" OF oDlg1 PIXEL
 		oGroup1:oFont:=oFont
 		@ aGdCoord[1]+11,aGdCoord[2]+4 Get oGet Var cLog Memo Size 273,173 OF oGroup1 Pixel
-		
+
 		aButtons	:=	{}
-			
+
 	ACTIVATE MSDIALOG oDlg1 CENTERED ON INIT EnchoiceBar( oDlg1 , { || nOpca 	:= 1, oDlg1:End() } , { || nOpca 	:= 0 , oDlg1:End() } , NIL , aButtons )
-	
+
 	SetaPilha()
-	
+
 	/*
 		Variaveis utilizadas para Parâmetros
 	*/
 	If nOpca == 1
 		AbreLog(cArq)
 	EndIf
-	
+
 	RestArea(aArea)
-	
+
 Return Nil
 
 /*/{Protheus.doc} AbreLog
-
-@type function
-@author Jorge Heitor
-@since 07/04/2016
-@version 1.0
-@description Validações específicas para constatar se o período informado no parâmetro pode ser utilizado para o Cálculo de Metas
-
+Validações específicas para constatar se o período informado no parâmetro pode ser utilizado para o Cálculo de Metas
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
+@param cArquivo, characters, descricao
 /*/
 Static Function AbreLog(cArquivo)
 
@@ -1331,27 +1349,29 @@ Static Function AbreLog(cArquivo)
 	Local cDirLocal	:= GetTempPath()
 
 	If CpyS2T(cArquivo,cDirLocal)
-	
+
 		ShellExecute("Open",cDirLocal + cNomeArq, "", "C:\", 3 )
-		
+
 	Else
-	
+
 		MsgStop("Falha na cópia do arquivo " + cNomeArq + " para visualização. O arquivo estará disponível na pasta '\SYSTEM\' do Servidor.") // "Falha na cópia do arquivo " | " para visualização. O arquivo estará disponível na pasta '\SYSTEM\' do Servidor."
-	
+
 	Endif
 
 Return Nil
 
-
-
 /*/{Protheus.doc} fBuscaMat
-
-@type function
-@author 
-@since 07/04/2016
-@version 1.0
-@description Busca Filial e Matricula de registro ativo no SRA a partir do codigo da RD0
-
+Busca Filial e Matricula de registro ativo no SRA a partir do codigo da RD0
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
+@param cCodAdo, characters, descricao
+@param cFil, characters, descricao
+@param cMat, characters, descricao
+@param cDepto, characters, descricao
+@return logical, lAchou
 /*/
 User Function fBuscaMat(cCodAdo,cFil,cMat,cDepto)
 
@@ -1390,15 +1410,17 @@ RestArea(aArea)
 
 Return(lAchou)
 
-
 /*/{Protheus.doc} fBuscaRD0
-
-@type function
-@author 
-@since 07/04/2016
-@version 1.0
-@description Busca o código RD0 a partir da Filial e Matricula passados como parametro
-
+Busca o código RD0 a partir da Filial e Matricula passados como parametro
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
+@param cFil, characters, descricao
+@param cMat, characters, descricao
+@param cCodRD0, characters, descricao
+@return logical, lAchou
 /*/
 User Function fBuscaRD0(cFil,cMat,cCodRD0)
 
@@ -1418,4 +1440,3 @@ RestArea(aArea)
 
 Return(lAchou)
 
-				

@@ -1,26 +1,16 @@
-#INCLUDE "rwmake.ch"
 #INCLUDE "protheus.ch"
 #INCLUDE "topconn.ch"
-#INCLUDE "tbiconn.ch"          
+#INCLUDE "tbiconn.ch"
 
-//---------------------------------------------------------------------------------------
-/*/{Protheus.doc} APDFINAVAL
-@Descrição  PONTO DE ENTRADA NA FINALIZACAO DA AVALIACAO
-@author     Marcos Pereira
-@since     	20/03/2016
-@version  	P.12      
-@param 		Nenhum
-@return    	Nenhum
-@obs        Nenhum
-Alterações Realizadas desde a Estruturação Inicial
-------------+-----------------+----------------------------------------------------------
-Data       	|Desenvolvedor    |Motivo                                                                                                                 
-------------+-----------------+----------------------------------------------------------
-		  	|       		  | 
-------------+-----------------+----------------------------------------------------------
+/*/{Protheus.doc} APDFinaVal
+PONTO DE ENTRADA NA FINALIZACAO DA AVALIACAO
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author Marcos Pereira
+@since 20/03/2016
 /*/
-//--------------------------------------------------------------------------------------- 
-User Function APDFinaVal() 
+User Function APDFinaVal()
 Local aArea		:= getarea()
 Local cTabAux	:= GetNextAlias()
 Local cCodVis	:= ''
@@ -28,38 +18,38 @@ Local cItem		:= ''
 Local cItemSup	:= ''
 Local cSuperior	:= ''
 Local lContinua	:= .f.
-	
+
 //Se finalizacao de Avaliacao
 If RDC->RDC_TIPOAV == "1"
 
 	//A avaliacao sendo finalizada pode ser de uma avaliador PAR. Nesse caso tem que desprezar.
-	//Se encontrar na RDH o CODNET da RDC posicionada com parametricacao de mesmo nivel e sem autoavaliacao e consenso, 
+	//Se encontrar na RDH o CODNET da RDC posicionada com parametricacao de mesmo nivel e sem autoavaliacao e consenso,
 	//significa que trata-se de avaliação de PAR e entao nao continua.
 	cQry:= " Select RDC_CODNET from " + RetSqlName("RDC") + CRLF
 	cQry+= " Where RDC_ID = '"+ RDC->RDC_ID +"' " + CRLF
 	cQry+= "   and D_E_L_E_T_ = '' " + CRLF
 	cQry+= "   and RDC_CODNET NOT IN ( " + CRLF
 	cQry+= "                          Select RDH_CODNET from " + RetSqlName("RDH") + CRLF
-	cQry+= "                       		Where RDH_CODTIP = '"+ RDC->RDC_CODTIP +"' " + CRLF   
-	cQry+= "                       		  and RDH_CODNET = '"+ RDC->RDC_CODNET +"' " + CRLF   
-	cQry+= "                       		  and (RDH_NIVEL = 1 or RDH_NIVEL  = 3)" + CRLF   
-	cQry+= "                       		  and RDH_AUTOAV = 2 " + CRLF   
-	cQry+= "                       		  and RDH_FEEDBK = 2 " + CRLF   
+	cQry+= "                       		Where RDH_CODTIP = '"+ RDC->RDC_CODTIP +"' " + CRLF
+	cQry+= "                       		  and RDH_CODNET = '"+ RDC->RDC_CODNET +"' " + CRLF
+	cQry+= "                       		  and (RDH_NIVEL = 1 or RDH_NIVEL  = 3)" + CRLF
+	cQry+= "                       		  and RDH_AUTOAV = 2 " + CRLF
+	cQry+= "                       		  and RDH_FEEDBK = 2 " + CRLF
 	cQry+= "                              and D_E_L_E_T_ = '' )" + CRLF
-	TcQuery cQry NEW ALIAS (cTabAux)	                                                   
+	TcQuery cQry NEW ALIAS (cTabAux)
 	If (cTabAux)->(!EOF())
 		lContinua := .t.
 	EndIf
 	(cTabAux)->(dbCloseArea())
-	
-	If lContinua	
-	
+
+	If lContinua
+
 		//Codigo da Visao utilizada
 		cCodVis := RD6->RD6_CODVIS
-		
+
 		//Se utiliza Visao
 		If !empty(cCodVis)
-	
+
 			//Busca na RDE o Item da Visao
 			cTabAux	:= GetNextAlias()
 			cQry:= " Select RDE_ITEVIS, RDE_XAPROV  From " + RetSqlName("RDE") + CRLF
@@ -68,7 +58,7 @@ If RDC->RDC_TIPOAV == "1"
 			cQry+= "   and RDE_CODPAR = '"+ RDC->RDC_CODDOR +"' " + CRLF
 			cQry+= "   and RDE_STATUS = '1' " + CRLF
 			cQry+= "   and D_E_L_E_T_ = '' " + CRLF
-			TcQuery cQry NEW ALIAS (cTabAux)	                                                   
+			TcQuery cQry NEW ALIAS (cTabAux)
 			If (cTabAux)->(!EOF())
 				If (cTabAux)->RDE_XAPROV == '2'
 					cSuperior := 'NAO'
@@ -77,16 +67,16 @@ If RDC->RDC_TIPOAV == "1"
 				EndIf
 			EndIf
 			(cTabAux)->(dbCloseArea())
-			
+
 			If cSuperior <> 'NAO'
 
 				//Busca na RD4 o item superior
 				If !empty(cItem)
-		
+
 					aRD4 := RD4->(getarea())
 					cItemSup := Posicione("RD4",1,xFilial("RD4")+cCodVis+cItem,"RD4_TREE")
 					RestArea(aRD4)
-					
+
 					//Busca na RDE o codigo do aprovador
 					If !empty(cItemSup)
 						cTabAux	:= GetNextAlias()
@@ -96,19 +86,19 @@ If RDC->RDC_TIPOAV == "1"
 						cQry+= "   and RDE_ITEVIS = '"+ cItemSup +"' " + CRLF
 						cQry+= "   and RDE_STATUS = '1' " + CRLF
 						cQry+= "   and D_E_L_E_T_ = '' " + CRLF
-						TcQuery cQry NEW ALIAS (cTabAux)	                                                   
+						TcQuery cQry NEW ALIAS (cTabAux)
 						If (cTabAux)->(!EOF())
 							cSuperior := (cTabAux)->RDE_CODPAR
 						EndIf
 						(cTabAux)->(dbCloseArea())
 					EndIf
 				EndIf
-	
+
 			EndIf
-	
-		//Se utiliza estrutura de Depto	
-		Else 
-		
+
+		//Se utiliza estrutura de Depto
+		Else
+
 			aRD0	:= RD0->(getarea())
 			aRDZ	:= RDZ->(getarea())
 			aSRA	:= SRA->(getarea())
@@ -129,17 +119,17 @@ If RDC->RDC_TIPOAV == "1"
 					EndIf
 				EndIf
 			EndIf
-			RestArea(aSQB)				
-			RestArea(aSRA)				
-			RestArea(aRDZ)				
-			RestArea(aRD0)				
-		
+			RestArea(aSQB)
+			RestArea(aSRA)
+			RestArea(aRDZ)
+			RestArea(aRD0)
+
 		EndIf
-		
-		
+
+
 		//Envia email ao aprovador
 		If !empty(cSuperior)
-	
+
 			If cSuperior == 'NAO'
 
 				//Grava na RDC que nao precisa de superior, porem com data de retorno da aprovacao para liberar consenso
@@ -155,14 +145,14 @@ If RDC->RDC_TIPOAV == "1"
 			Else
 
 				U_MontaMail(2,RDC->RDC_CODADO,cSuperior)
-		
+
 				//Grava na RDC informacoes do email enviado
 				RecLock("RDC",.f.)
 				RDC->RDC_CODAPR := cSuperior	//Código do aprovador
 				RDC->RDC_DTEMAP	:= date()		//Data de envio de email para o aprovador
 				RDC->RDC_DTRETA	:= ctod("//")	//Data de retorno da aprovacao
 				RDC->(MsUnLock())
-						
+
 			Endif
 
 		Else
@@ -170,41 +160,41 @@ If RDC->RDC_TIPOAV == "1"
 		EndIf
 
 	EndIf
-	
+
 EndIf
 
-RestArea(aArea)	
+RestArea(aArea)
 Return
 
-
-/*
-ÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛ
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  ³ MontaMail    ºAutor  ³Totvs		       º Data ³12/07/2013 º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDesc.     ³ Monta o e-mail para superior ao finalizar a avaliação      º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³                                                            º±±
-±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛ
-*/
+/*/{Protheus.doc} MontaMail
+Monta o e-mail para superior ao finalizar a avaliação
+@project MAN0000038865_EF_002
+@type function Rotina EspecÃ­fica
+@version P12
+@author TOTVS
+@since 25/10/2018
+@param nTipo, numeric, descricao
+@param cCodFun, characters, descricao
+@param cCodDest, characters, descricao
+@param cObs, characters, descricao
+@return logical, lRet
+/*/
 User function MontaMail(nTipo,cCodFun,cCodDest,cObs)
 Local cTabRd0	  := GetNextAlias()
 Local cCodDor	  := ""
-Local cQry		  := "" 
+Local cQry		  := ""
 LOCAL lRet		  := .T.
 Local cMensagem := ''
 Local cDest     := ''
-Local cSubject  := ''                        
-Local cHTML     := ''                        
-
+Local cSubject  := ''
+Local cHTML     := ''
+Local aArea     := GetArea()
 DEFAULT nTipo   := 0
 DEFAULT cObs    := ''
 
 If nTipo == 0
-   return .F.
+	RestArea(aArea)
+	return .F.
 EndIf
 
 
@@ -237,17 +227,17 @@ cQry+= " Where RD0_FILIAL = '"+ xFilial("RD0")+"'"+CRLF
 cQry+= "   and RD0_CODIGO = '" + cCodFun + "'"+CRLF
 cQry+= "   and D_E_L_E_T_ = ''"+CRLF
 
-TcQuery cQry NEW ALIAS (cTabRd0)	                                                   
-(cTabRd0)->(dbSelectArea((cTabRd0)))                    
-(cTabRd0)->(dbGoTop())                               	
+TcQuery cQry NEW ALIAS (cTabRd0)
+(cTabRd0)->(dbSelectArea((cTabRd0)))
+(cTabRd0)->(dbGoTop())
 If (cTabRd0)->(!EOF())
-	cSubject 	:= "Avaliacao - Mudanca de Status - "	 	
-	DO CASE              
+	cSubject 	:= "Avaliacao - Mudanca de Status - "
+	DO CASE
 		CASE nTipo == 1
            cHTML += '<p class="TituloMenor"> A autoavaliação de &nbsp;' +alltrim((cTabRd0)->RD0_NOME) +'&nbsp; foi finalizada. </p>'
            cHTML += '<p class="TituloMenor"> Favor realizar a etapa de avaliação! </p>'
 		   cSubject	+= "AVALIACAO"
-		CASE nTipo == 2			
+		CASE nTipo == 2
            cHTML += '<p class="TituloMenor"> A avaliação de &nbsp;' +alltrim((cTabRd0)->RD0_NOME) +'&nbsp; foi finalizada. </p>'
            cHTML += '<p class="TituloMenor"> Favor realizar a etapa de aprovação! </p>'
 		   cSubject	+= "APROVACAO"
@@ -259,7 +249,7 @@ If (cTabRd0)->(!EOF())
            cHTML += '<p class="TituloMenor"> A avaliação de &nbsp;' +alltrim((cTabRd0)->RD0_NOME) +'&nbsp; foi reprovada. </p>'
            cHTML += '<p class="TituloMenor"> Favor revisar a avaliação considerando a observação abaixo. </p>'
 		   cSubject	+= "REVISAR"
-	ENDCASE	
+	ENDCASE
 
    If cObs != ''
       cHTML += '<p>&nbsp;</p>'
@@ -272,13 +262,13 @@ If (cTabRd0)->(!EOF())
     cHTML += '</form>'
     cHTML += '</body>'
     cHTML += '</html>'
-	                              	
+
 	cSubject  += " - " + alltrim((cTabRd0)->RD0_NOME)
-	cDest     := alltrim(POSICIONE("RD0",1,XFILIAL("RD0")+cCodDest,"RD0_EMAIL"))			
+	cDest     := alltrim(POSICIONE("RD0",1,XFILIAL("RD0")+cCodDest,"RD0_EMAIL"))
 	lRet      := U_EnvMail(cSubject,cHTML, cDest,,.f.)
-	
-EndIf  
-(cTabRd0)->(dbCloseArea()) 
-       
+
+EndIf
+(cTabRd0)->(dbCloseArea())
+RestArea(aArea)
 RETURN lRet
 
